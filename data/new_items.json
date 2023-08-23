@@ -1,0 +1,41 @@
+{
+   "1": {
+      "name": "Scanner from my granny",
+      "description":"Old scanner, barely working",
+      "type": "scanner",
+      "effects": {
+         "scan_power": "1"
+      },
+      "craft": "None",
+      "price":"100"
+   },
+   "2": {
+      "name": "Rusty machine gun",
+      "description":"Still works...",
+      "type": "weapon",
+      "effects": {
+         "range": "5",
+         "wp_type": "bullets",
+         "damage_min": "3",
+         "damage_max": "5",
+         "crit_chance":"0",
+         "":""
+      },
+      "craft": "None",
+      "price":"100"
+   },
+   "3": {
+      "name": "Craft beer",
+      "description":"good af",
+      "type": "consumable",
+      "effects": {
+         "firendly": "True"
+      },
+      "craft": {
+         "id_1": "10",
+         "id_2": "100",
+         "id3": "1000"
+      },
+      "price":"10000"
+   }
+}

@@ -1,0 +1,11 @@
+{
+    "stats": {
+        "health": "100",
+        "damage": "5",
+        "defence": "5",
+        "shields": "5"
+    },
+    "attributes": {
+        "faction": "None"
+    }
+}

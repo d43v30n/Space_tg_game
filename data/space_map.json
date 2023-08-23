@@ -1,0 +1,178 @@
+{
+   "0": {
+      "name": "Ringworld",
+      "type": "main",
+      "features": [
+         "shipyard",
+         "consortium",
+         "bazaar"
+      ],
+      "events": "None"
+   },
+   "1": {
+      "name": "Orion",
+      "type": "1",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "2": {
+      "name": "Mars",
+      "type": "2",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "3": {
+      "name": "Neruba",
+      "type": "3",
+      "features": [
+         "enemies",
+         "drop",
+         "mining"
+      ],
+      "events": "None"
+   },
+   "4": {
+      "name": "Amidala",
+      "type": "4",
+      "features": [
+         "enemies",
+         "drop",
+         "mining"
+      ],
+      "events": "None"
+   },
+   "5": {
+      "name": "Void-404",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop",
+         "mining"
+      ],
+      "events": "None"
+   },
+   "6": {
+      "name": "Zapravka, STO",
+      "type": "5",
+      "features": [
+         "drop",
+         "shipyard"
+      ],
+      "events": "None"
+   },
+   "7": {
+      "name": "Lumina",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "8": {
+      "name": "Velyka Bila Tserkva",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "9": {
+      "name": "Dune",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "10": {
+      "name": "Seraphis",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "11": {
+      "name": "Celestia",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "12": {
+      "name": "Zephyr",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "13": {
+      "name": "Verdant Nova",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "14": {
+      "name": "Echelon",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "15": {
+      "name": "Ombra",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "16": {
+      "name": "Thalassia",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "17": {
+      "name": "Quanta",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop"
+      ],
+      "events": "None"
+   },
+   "18": {
+      "name": "Caelum",
+      "type": "5",
+      "features": [
+         "enemies",
+         "drop",
+         "mining"
+      ],
+      "events": "None"
+   }
+}

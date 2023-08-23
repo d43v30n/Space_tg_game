@@ -1,0 +1,5 @@
+aiogram==3.0.0rc2
+python-dotenv
+json5
+aiohttp_socks
+aiohttp

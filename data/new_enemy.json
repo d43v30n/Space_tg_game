@@ -1,0 +1,48 @@
+{
+   "1": {
+      "name": "Zac the Baddest",
+      "description" : "some descr",
+      "stats": {
+         "health": "100",
+         "damage": "5",
+         "defence": "5",
+         "shields": "5"
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "mob",
+         "race": "alien",
+         "chance":"0.35",
+         "min_loc":"2",
+         "max_loc":"5"
+      },
+      "drop": {
+         "exp": "10",
+         "credits": "100",
+         "items_ids": "100"
+      }
+   },
+   "2": {
+      "name": "Elon Musk",
+      "description": "some descr",
+      "stats": {
+         "health": "1000",
+         "damage": "100",
+         "defence": "100",
+         "shields": "100"
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "bam",
+         "race": "martianin",
+         "chance":"0.1",
+         "min_loc":"7",
+         "max_loc":"9"
+      },
+      "drop": {
+         "exp": "10",
+         "credits": "100",
+         "items_ids": "100"
+      }
+   }
+}
