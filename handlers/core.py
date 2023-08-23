@@ -25,7 +25,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
     is_new_user = await db.new_user_check(message.from_user.id)
     if current_state is None and is_new_user:
-        print("New user registered with tg_id=", message.from_user.id)
+        print(
+            f"New user registered: id={message.from_user.id}, username=@{message.from_user.username}")
         await db.cmd_start_db(message.from_user.id)
         await message.answer(f"Welcome, @{message.from_user.username}. ", reply_markup=kb.main_kb(0))
         gps = await m.get_location(message.from_user.id)
@@ -39,6 +40,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         await state.update_data(job="entering state")
+        print(
+            f"User logged in: id={message.from_user.id}, username=@{message.from_user.username}")
         keyboard = await kb.keyboard_selector(state)
         await message.answer(f"Welcome back, @{message.from_user.username}, my old friend!\nGame server has been updated. ", reply_markup=keyboard)
 
@@ -80,18 +83,32 @@ async def terminal_menu(message: Message, state: FSMContext) -> None:
 
 @router.message(F.text == "Back")
 async def back_button_handler(message: Message, state: FSMContext) -> None:
-    try:
+    current_state = await state.get_state()
+    if current_state == "State:confirmation":
+        print("entered confirmation reset")
+        gps = await m.get_location(message.from_user.id)
         energy = await m.get_energy(message.from_user.id)
-        state_data = await state.get_data()
-        gps = state_data["gps_state"]
-        text = state_data["job"]
         keyboard = await kb.keyboard_selector(state)
-        if await is_busy(state_data):
-            await message.answer(f"You are {text}.", reply_markup=kb.main_kb(gps))
-        else:
-            await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
-    except:
-        await errors.unknown_input_handler(message, state)
+        job_text = "Exiting confirmation"
+        await state.clear()
+        await state.set_state(State.gps_state)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        await state.update_data(job=job_text)
+        await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+    else:
+        try:
+            energy = await m.get_energy(message.from_user.id)
+            state_data = await state.get_data()
+            gps = state_data["gps_state"]
+            text = state_data["job"]
+            keyboard = await kb.keyboard_selector(state)
+            if await is_busy(state_data):
+                await message.answer(f"You are {text}.", reply_markup=kb.main_kb(gps))
+            else:
+                await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+        except:
+            await errors.unknown_input_handler(message, state)
 
 
 @router.message(State.job, F.text == "Dock to Ringworld station")

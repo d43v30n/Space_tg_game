@@ -1,4 +1,4 @@
-import json 
+import json
 import os
 import logging
 import asyncio
@@ -28,7 +28,7 @@ async def register_webhook():
             try:
                 assert resp.status == 200
             except Exception as e:
-                return {'success':False, 'message':'Возникла ошибка'}
+                return {'success': False, 'message': 'Возникла ошибка'}
             result = await resp.json()
             return {'success': result['result'], 'message': result['description']}
 

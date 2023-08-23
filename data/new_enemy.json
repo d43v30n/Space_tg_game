@@ -1,6 +1,7 @@
 {
    "1": {
       "name": "Zac the Baddest",
+      "shortname": "zac_the_baddest",
       "description" : "some descr",
       "stats": {
          "health": "100",
@@ -24,6 +25,7 @@
    },
    "2": {
       "name": "Elon Musk",
+      "shortname": "elon_musk",
       "description": "some descr",
       "stats": {
          "health": "1000",

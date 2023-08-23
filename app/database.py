@@ -14,21 +14,37 @@ async def db_start():
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 "tg_id INTEGER, "
                 "location INTEGER, "
+                "max_health INTEGER, "
+                "current_health INTEGER, "
                 "current_energy INTEGER, "
                 "max_energy INTEGER, "
+                "inventory TEXT, "
+                "credits INTEGER, "
+                "experience INTEGER, "
+                "level INTEGER, "
+                "main_quest INTEGER, "
+                "side_quest TEXT, "
+                "tutorial_quest INTEGER, "
+                "cargo TEXT, "
+                # ship type is  dict with ship details (max weapon slots, max armor slots, max_hp etc.)
+                "ship_type TEXT, "
+                "ship_weapon_slots TEXT, "
                 "attributes TEXT, "
                 "stats TEXT)")
     cur.execute("CREATE TABLE IF NOT EXISTS items("
                 "i_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 "it_name TEXT,"
+                "it_shortname TEXT,"
                 "desc TEXT, "
                 "type TEXT, "
                 "effects TEXT, "
                 "craft TEXT, "
-                "price INTEGER)")
+                "price INTEGER, "
+                "attributes TEXT)")
     cur.execute("CREATE TABLE IF NOT EXISTS enemies("
                 "en_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 "en_name TEXT,"
+                "en_shortname TEXT,"
                 "desc TEXT, "
                 "type TEXT, "
                 "attributes TEXT, "
@@ -37,9 +53,10 @@ async def db_start():
     cur.execute("CREATE TABLE IF NOT EXISTS materials("
                 "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 "mt_name TEXT, "
+                "mt_shortname TEXT, "
                 "type TEXT, "
                 "price INTEGER, "
-                "conver TEXT)")
+                "conver TEXT)"),
     db.commit()
 
 
@@ -47,9 +64,12 @@ async def cmd_start_db(user_id):  # initialize new player
     user = cur.execute(
         "SELECT * FROM players WHERE tg_id = ?", (user_id,)).fetchone()
     if not user:
+        # hardcoded new user parameters
         cur.execute(
-            "INSERT INTO players (tg_id, location, current_energy, max_energy, stats, attributes) VALUES (?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, json_imports.player_stats(), json_imports.player_attributes()))  # defaults are location=0 current_energy=0, max_energy=0
+            "INSERT INTO players (tg_id, location, current_energy, max_energy, inventory, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_weapon_slots, stats, attributes, max_health, current_health) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, "{}", 100, 0, 1, 0, "None", 0, "{}", "starter_ship", "[2]", json_imports.player_stats(), json_imports.player_attributes(), 100, 100))  # defaults are location=0 current_energy=0, max_energy=0
         db.commit()
+        await db_write_items_json()
+        await db_write_enemies_json()
 
 
 async def new_user_check(user_id) -> bool:
@@ -126,11 +146,12 @@ async def db_write_enemies_json():
         stats = json.dumps(output.get("stats"))
         attributes = json.dumps(output.get("attributes"))
         drop = json.dumps(output.get("drop"))
+        shortname = json.dumps(output.get("shortname"))
         item_exists = cur.execute(
             "SELECT * FROM enemies WHERE en_name = ?", (name,)).fetchone()
         if not item_exists:
             cur.execute(
-                "INSERT INTO enemies (en_name, desc, stats, attributes, en_drop) VALUES (?, ?, ?, ?, ?)", (name, description, stats, attributes, drop))
+                "INSERT INTO enemies (en_name, desc, stats, attributes, en_drop, en_shortname) VALUES (?, ?, ?, ?, ?, ?)", (name, description, stats, attributes, drop, shortname))
             db.commit()
 
 
@@ -140,19 +161,22 @@ async def db_write_items_json():
         output = items[row]
         name = json.dumps(output.get("name"))
         description = json.dumps(output.get("description"))
-        stats = json.dumps(output.get("stats"))
+        item_type = json.dumps(output.get("type"))
+        effects = json.dumps(output.get("effects"))
+        craft = json.dumps(output.get("craft"))
+        price = json.dumps(output.get("price"))
         attributes = json.dumps(output.get("attributes"))
-        drop = json.dumps(output.get("drop"))
+        shortname = json.dumps(output.get("shortname"))
         item_exists = cur.execute(
-            "SELECT * FROM items WHERE en_name = ?", (name,)).fetchone()
+            "SELECT * FROM items WHERE it_name = ?", (name,)).fetchone()
         if not item_exists:
             cur.execute(
-                "INSERT INTO items (en_name, desc, effects, craft, price) VALUES (?, ?, ?, ?, ?)", (name, description, stats, attributes, drop))
+                "INSERT INTO items (it_name, desc, type, effects, craft, price, attributes, it_shortname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (name, description, item_type, effects, craft, price, attributes, shortname))
             db.commit()
 
 #
 # -----need functions to read jsons from db
-# -----and also to add items/enemies/materials from admin
+# -----and also to add materials from admin
 #
 # cur.execute("CREATE TABLE IF NOT EXISTS materials("
 #             "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -162,11 +186,13 @@ async def db_write_items_json():
 #             "conver TEXT)")
 
 
+# read what enemies can spawn at loc
 async def db_read_enemies_attributes(gps):
-    data = cur.execute("SELECT en_id, attributes FROM enemies").fetchall()
+    data = cur.execute(
+        "SELECT en_shortname, attributes FROM enemies").fetchall()
     output = []
     for line in data:
-        id = int(line[0])
+        shortname = line[0]
         # description = line[1]
         # stats = line[2]
         attributes = json.loads(line[1])
@@ -174,9 +200,8 @@ async def db_read_enemies_attributes(gps):
         max_loc = int(attributes.get("max_loc"))
         # drop = line[4]
         if gps >= min_loc and gps <= max_loc:
-            output.append(id)
-            print(f"appending en_id {id}")
-    print("found following mobs: ", output)
+            output.append(shortname)
+            # print(f"appending en_shortname {shortname}")
     return output
 
 

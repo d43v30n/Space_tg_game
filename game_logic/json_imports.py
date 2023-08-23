@@ -6,7 +6,6 @@ def read_players() -> list:
     try:
         with open(file_path, "r") as json_file:
             new_player = json.load(json_file)
-            print(new_player)
             return new_player
     except json.JSONDecodeError as e:
         print(f"JSON decoding error: {e}")

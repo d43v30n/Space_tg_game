@@ -77,7 +77,7 @@ def ringworld_kb() -> ReplyKeyboardMarkup:
 
 def admin_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="/logout")
-    kb.button(text="/load_enemies")
+    kb.button(text="/help")
+    kb.button(text="/test")
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)

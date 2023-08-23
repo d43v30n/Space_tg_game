@@ -1,7 +1,7 @@
 from app.database import *
 from asyncio import sleep  # create_task, gather
 from game_logic import space_map
-from random import randint
+from random import randint, choice
 import keyboards.main_kb as kb
 
 
@@ -68,32 +68,37 @@ async def roll_chance(chance: float) -> bool:
     '''chance is float, min 0.00001 max 1'''
     val = randint(1, 100000)/100000
     if val <= float(chance):
-        print(f"Chance of {chance} rolled for True with {val}")
+        # print(f"Chance of {chance} rolled for True with {val}")
         return True
     else:
-        print(f"Chance of {chance} rolled for False with {val}")
+        # print(f"Chance of {chance} rolled for False with {val}")
         return False
 
 
 async def rand_event(gps) -> str:
-    loc_features = await space_map.features(gps)
-    variants = ["randevent"]
-    possible_enemies = await db_read_enemies_attributes(gps)
-    variants += possible_enemies
-    print("variants", variants)
-    for en_id in possible_enemies:
-        chance = await db_read_details("enemies", en_id, "attributes", "en_id")
-        chance = chance.get("chance")
-        if await roll_chance(chance):
-            enemy_name = await db_read_details("enemies", en_id, "en_name", "en_id")
-            return enemy_name
+    events = await space_map.event(gps)
+    event = choice(events)
+    # event = None
+    if event == "enemies":
+        # print("rolled for enemie...")
+        possible_enemies = await db_read_enemies_attributes(gps)
+        for en_shortname in possible_enemies:
+            chance = await db_read_details("enemies", en_shortname, "attributes", "en_shortname")
+            # print(F"trying to spawn {en_shortname} with chance={chance}")
+            chance = chance.get("chance")
+            if await roll_chance(chance):
+                enemy_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
+                return enemy_name
+            else:
+                return None
         else:
             return None
-    else:
-        return None
-    # loc_name = await space_map.name(gps)
-    # keyboard = await kb.keyboard_selector(state)
-
-    # if "enemy" in loc_features:
-    #     if roll_chance(0.1):
-    #         await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+    elif event == "drop":
+        chance = 0
+        if await roll_chance(chance):
+            drop_name = None
+            return drop_name
+        else:
+            return None
+    elif event == "":  # other events
+        pass

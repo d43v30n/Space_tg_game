@@ -41,4 +41,4 @@ async def features(gps: int) -> list:
 async def event(gps: int) -> str:
     loc = await read_map(gps=gps)
     loc_name = loc
-    return loc_name.get("event")
+    return loc_name.get("events")

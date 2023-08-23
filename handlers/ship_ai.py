@@ -37,7 +37,6 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await state.update_data(travelling="Jumping Home")
     await message.answer(f"3.. 2.. 1.. Jump!", reply_markup=keyboard)
     await m.jump_home(message.from_user.id)
-    new_loc_gps = 0
     await state.clear()
     await state.set_state(State.gps_state)
     gps = await m.get_location(message.from_user.id)
