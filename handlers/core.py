@@ -56,8 +56,8 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
         pass
     else:  # if player is busy
         pass
-    keyboard = await kb.keyboard_selector(state, "Ship AI")
-    await message.answer(f"Ship AI reporting.\n\n\"We are currently at {loc_name}, this is {gps} parsek from {home}\", \n\nAny further orders, cap?", reply_markup=keyboard)
+    # keyboard = await kb.keyboard_selector(state, "Ship AI")
+    await message.answer(f"Ship AI reporting.\n\n\"We are currently at {loc_name}, this is {gps} parsek from {home}\", \n\nAny further orders, cap?", reply_markup=kb.ship_ai_kb())
 
 
 @router.message(F.text == "Ship AI")

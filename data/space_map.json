@@ -205,7 +205,8 @@
       ],
       "events": [
          "enemies",
-         "drop"
+         "drop",
+         "mining_event"
       ]
    }
 }

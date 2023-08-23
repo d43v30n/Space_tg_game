@@ -42,6 +42,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     gps = await m.get_location(message.from_user.id)
     await state.update_data(gps_state=gps)
     await state.set_state(State.job)
+    keyboard = await kb.keyboard_selector(state)
     await state.update_data(job=f"after Home Jump")
     await message.answer(f"Finally, Home!", reply_markup=keyboard)
 
