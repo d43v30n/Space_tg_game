@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import asyncio
 from os import getenv
 from dotenv import load_dotenv
