@@ -69,6 +69,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         event = await m.rand_event(gps)
 
         if event[0] == "enemies":
+
             enemy_shorname = event[1]
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
             await state.update_data(job=f"just arrived to {loc_name} and encountered {event}")
