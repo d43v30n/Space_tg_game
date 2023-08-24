@@ -23,8 +23,8 @@
       "effects": {
          "range": 5,
          "wp_type": "bullets",
-         "damage_min": 3,
-         "damage_max": 5,
+         "damage_min": 5,
+         "damage_max": 8,
          "crit_chance": 0,
          "":""
       },
