@@ -1,11 +1,15 @@
 {
-    "stats": {
-        "health": "100",
-        "damage": "5",
-        "defence": "5",
-        "shields": "5"
+    "abilities": {
+        "None":""
     },
     "attributes": {
-        "faction": "None"
-    }
+        "faction": ""
+    },
+	"ship_slots": {
+		"weapons_1":"rusty_machine_gun",
+		"weapons_2":"",
+		"scanner":"scanner_from_granny",
+		"shields":"",
+		"armor":"hull_armor_for_beginners"
+	}
 }

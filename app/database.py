@@ -28,9 +28,9 @@ async def db_start():
                 "cargo TEXT, "
                 # ship type is  dict with ship details (max weapon slots, max armor slots, max_hp etc.)
                 "ship_type TEXT, "
-                "ship_weapon_slots TEXT, "
+                "ship_slots TEXT, "
                 "attributes TEXT, "
-                "stats TEXT)")
+                "abilities TEXT)")
     cur.execute("CREATE TABLE IF NOT EXISTS items("
                 "i_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 "it_name TEXT,"
@@ -65,8 +65,9 @@ async def cmd_start_db(user_id):  # initialize new player
         "SELECT * FROM players WHERE tg_id = ?", (user_id,)).fetchone()
     if not user:
         # hardcoded new user parameters
+        ship_slots = json_imports.player_ship_slots()
         cur.execute(
-            "INSERT INTO players (tg_id, location, current_energy, max_energy, inventory, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_weapon_slots, stats, attributes, max_health, current_health) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, "{}", 100, 0, 1, 0, "None", 0, "{}", "starter_ship", "[2]", json_imports.player_stats(), json_imports.player_attributes(), 100, 100))  # defaults are location=0 current_energy=0, max_energy=0
+            "INSERT INTO players (tg_id, location, current_energy, max_energy, inventory, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, "{}", 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100))  # defaults are location=0 current_energy=0, max_energy=0
         db.commit()
         await db_write_items_json()
         await db_write_enemies_json()
@@ -203,6 +204,7 @@ async def db_read_enemies_attributes(gps):
             output.append(shortname)
             # print(f"appending en_shortname {shortname}")
     return output
+
 
 
 async def db_read_details(table, value, column, search_col):  # custom db_access

@@ -2,6 +2,7 @@ from aiogram import types, Router, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.enums import ParseMode
 
 from app import database as db
 
@@ -17,10 +18,10 @@ import keyboards.main_kb as kb
 router = Router()
 
 
-@router.message(Command("start", "help"))
+@router.message(Command("start"))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
     """
-    This handler receives messages with `/start` or `/help` command
+    This handler receives messages with `/start` command
     """
     current_state = await state.get_state()
     is_new_user = await db.new_user_check(message.from_user.id)
@@ -35,7 +36,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         await state.update_data(job="new user")
-    else:
+    elif current_state is None:
         gps = await m.get_location(message.from_user.id)
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
@@ -44,6 +45,46 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
             f"User logged in: id={message.from_user.id}, username=@{message.from_user.username}")
         keyboard = await kb.keyboard_selector(state)
         await message.answer(f"Welcome back, @{message.from_user.username}, my old friend!\nGame server has been updated. ", reply_markup=keyboard)
+    else:
+        await errors.unknown_input_handler(message, state)
+
+
+@router.message(Command("help"))
+async def command_start_handler(message: Message, state: FSMContext) -> None:
+    await message.answer(f"""<b>Welcome to Conquerors of the Void Bot - Your Galactic Journey Begins! 🚀</b>
+
+<i>Embark on an Epic Space Exploration Adventure! 🌌</i>
+
+<b>Commander</b>, get ready to dive into the cosmos and experience the thrill of interstellar travel, resource management, and intense turn-based battles. In Conquerors of the Void, you'll navigate uncharted galaxies, discover alien civilizations, and test your strategic prowess in a mix of <b>RPG</b> and <i>survival</i> gameplay.
+
+<b>Getting Started:</b>
+To start your cosmic adventure, simply type <code>/start</code>. You'll receive a sturdy starship, a handful of resources, and a loyal crew to begin your journey.
+
+<b>Gameplay Basics:</b>
+- <b>Exploration:</b> Navigate through star systems by using commands like <code>/travel</code>. Unveil new planets, anomalies, and celestial wonders. Keep an eye on your ship's fuel and hull integrity!
+- <b>Upgrades:</b> Enhance your starship, crew skills, and weaponry using resources you collect during your travels. Access the upgrade menu with <code>/upgrades</code>.
+- <b>Trading:</b> Visit space stations to trade resources, buy equipment, and sell rare discoveries. Engage in commerce to bolster your resources and fund your adventure.
+- <b>Turn-Based Battles:</b> Encounter hostile space creatures and rival explorers. Engage in tactical turn-based battles using your crew's unique abilities and your ship's advanced weaponry.
+- <b>Strategy:</b> Every decision matters. Choose your path wisely, manage your resources efficiently, and strategize during battles to emerge victorious.
+
+<b>RPG Elements:</b>
+- <b>Crew Development:</b> Your crew members have distinct skills and backgrounds. Train them to improve their abilities and unlock new talents for a variety of strategic advantages.
+- <b>Character Progression:</b> As you explore and conquer challenges, your commander's skills will grow. Tailor your character's development to match your preferred playstyle.
+- <b>Alliances and Factions:</b> Form alliances with alien civilizations, gain their trust, and unlock unique quests, technologies, and storylines.
+
+<b>Survival Challenges:</b>
+- <b>Resource Management:</b> Keep an eye on your ship's energy, food supplies, and life support systems. Scarcity of resources adds a layer of survival challenge.
+- <b>Quests and Objectives:</b> Engage in story-driven quests that will test your decision-making abilities and determine the fate of your spacefaring journey.
+
+<b>Join the Community:</b>
+Connect with fellow spacefarers, share tips, and participate in discussions in our official Conquerors of the Void Telegram group <a href='http://www.example.com/'>here</a>.
+
+<b>Get Help:</b>
+For a list of available commands, type <code>/commands</code>. If you need assistance at any point, type <code>/help</code> to display this message again.
+
+<i>May the stars guide you, Commander! Your legacy among the galaxies awaits. 🌌</i>
+
+""", reply_markup=kb.main_kb(0), parse_mode=ParseMode.HTML)
 
 
 @router.message(State.job, F.text == "Ship AI")

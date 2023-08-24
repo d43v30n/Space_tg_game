@@ -13,6 +13,8 @@ from handlers import errors
 
 import keyboards.main_kb as kb
 
+# debug:
+from game_logic import fight
 
 load_dotenv()
 router = Router()
@@ -33,7 +35,7 @@ async def adm_login_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("logout"))
 async def adm_logout_handler(message: Message, state: FSMContext) -> None:
-    ADMIN_ID
+    global ADMIN_ID
     if message.from_user.id == int(ADMIN_ID):
         print("Admin logged out id=", message.from_user.id)
         await errors.reset_handler(message, state)
@@ -43,28 +45,24 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 
 @router.message(State.admin, Command("help"))
-async def adm_login_handler(message: Message, state: FSMContext) -> None:
+async def adm_help_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
-async def adm_login_handler(message: Message, state: FSMContext) -> None:
+async def adm_load_enemies_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"Loading enemies from json to db", reply_markup=kb.admin_kb())
     await db.db_write_enemies_json()
 
 
 @router.message(State.admin, Command("load_items"))
-async def adm_login_handler(message: Message, state: FSMContext) -> None:
+async def adm_load_items_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"Loading enemies from json to db", reply_markup=kb.admin_kb())
     await db.db_write_items_json()
 
 
 @router.message(State.admin, Command("test"))
-async def adm_login_handler(message: Message, state: FSMContext) -> None:
-    gps = await m.get_location(message.from_user.id)
-    event = await m.rand_event(gps)
-    # counter = 0
-    # while not chance:
-    #     chance = await m.roll_chance(0.01)
-    #     counter += 1
-    # print("counter was: ", counter)
+async def adm_test_handler(message: Message, state: FSMContext) -> None:
+    enemy = "elon_musk"
+    results = await fight.init_fight(message.from_user.id, enemy)
+    await message.answer(f"battle results are: \n{results}", reply_markup=kb.admin_kb())

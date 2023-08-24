@@ -13,9 +13,14 @@ def read_players() -> list:
         print(f"File not found: {file_path}")
 
 
-def player_stats():
+def player_abilities():
     new_player = read_players()
-    return json.dumps(new_player.get("stats"))
+    return json.dumps(new_player.get("abilities"))
+    
+
+def player_ship_slots():
+    new_player = read_players()
+    return json.dumps(new_player.get("ship_slots"))    
 
 
 def player_attributes():

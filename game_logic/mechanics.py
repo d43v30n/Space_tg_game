@@ -37,18 +37,29 @@ async def get_current_energy(user_id):
     return await db_read_int("players", user_id, "current_energy")
 
 
-async def get_player_information(user_id, info_type, *args: str) -> tuple:
-    if args:
-        items = []
-        if info_type == "attributes":
-            for item in args:
-                attributes = await db_read_dict("players", user_id, "attributes")
-                items.append(attributes.get(item))
-        elif info_type == "stats":
-            for item in args:
-                stats = await db_read_dict("players", user_id, "stats")
-                items.append(stats.get(item))
-        return items
+async def get_player_information(user_id, *args: str) -> list:
+    '''returns list of strings'''
+    items = []
+    for item in args:
+        if item == "inventory":
+            inventory = await db_read_dict("players", user_id, "inventory")
+            items.append(inventory)
+        elif item == "cargo":
+            cargo = await db_read_dict("players", user_id, "cargo")
+            items.append(cargo)
+        elif item == "ship_slots":
+            ship_slots = await db_read_dict("players", user_id, "ship_slots")
+            items.append(ship_slots)
+        elif item == "attributes":
+            attributes = await db_read_dict("players", user_id, "attributes")
+            items.append(attributes)
+        elif item == "abilities":
+            abilities = await db_read_dict("players", user_id, "abilities")
+            items.append(abilities)
+        else:
+            column = await db_read_int("players", user_id, item)
+            items.append(column)
+    return items
 
 
 async def get_energy(user_id) -> tuple:
