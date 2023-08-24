@@ -12,9 +12,9 @@ class State(StatesGroup):
     travelling = State()
     docked = State()
     admin = State()
+    fighting = State()
 
     # under_attack = State()
-    # fighting = State()
     # running = State()
     # at_loc = State()
 

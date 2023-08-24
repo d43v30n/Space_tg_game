@@ -74,7 +74,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
             await state.update_data(job=f"just arrived to {loc_name} and encountered {event}")
             # fight_result -> "win" of "loose" str
-            fight_result = await fight.init_fight(message, enemy_shorname)
+            fight_result = await fight.init_fight(message, enemy_shorname, state)
             print(f"fight_result, {fight_result}")
             if fight_result == "win":
                 await message.answer(f"(WON) Figth result is : {fight_result}.", reply_markup=keyboard)

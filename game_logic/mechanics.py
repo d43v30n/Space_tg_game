@@ -3,6 +3,7 @@ from asyncio import sleep  # create_task, gather
 from game_logic import space_map
 from random import randint, choice
 import keyboards.main_kb as kb
+from handlers import errors
 
 
 COOLDOWN = 2
@@ -22,6 +23,11 @@ async def move_forward(user_id):
 async def jump_home(user_id):
     home = 0
     await sleep(COOLDOWN)
+    await db_write_int("players", user_id, "location", home)
+
+
+async def teleport_home(user_id):
+    home = 0
     await db_write_int("players", user_id, "location", home)
 
 
@@ -65,6 +71,11 @@ async def get_player_information(user_id, *args: str) -> list:
 async def restore_hp(user_id):
     max_hp = await db_read_int("players", user_id, "max_health")
     await db_write_int("players", user_id, "current_health", max_hp)
+
+
+async def player_dead(user_id):
+    await restore_hp(user_id)
+    await jump_home(user_id)
 
 
 async def get_energy(user_id) -> tuple:

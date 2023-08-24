@@ -2,14 +2,18 @@ from aiogram.types import Message
 from app.database import db_read_details, db_write_int, db_read_int
 import asyncio
 from random import randint
+import game_logic.mechanics as m
 from game_logic.space_map import *
-from game_logic.mechanics import get_player_information, jump_home
+from game_logic.states import State
+import keyboards.main_kb as kb
 
 
-async def init_fight(message: Message, enemy_id):
+async def init_fight(message: Message, enemy_id, state: State):
     user_id = message.from_user.id
-    stats = await get_player_information(user_id, "location", "max_health", "current_health", "level", "ship_slots")
-    # print(stats)
+    state_data = await state.get_data()
+    keyboard = await kb.keyboard_selector(state)
+    await state.set_state(State.fighting)
+    stats = await m.get_player_information(user_id, "location", "max_health", "current_health", "level", "ship_slots")
     location = int(stats[0])  # to use in possible location debuffs
     max_health = int(stats[1])
     current_health = int(stats[2])
@@ -22,10 +26,13 @@ async def init_fight(message: Message, enemy_id):
 
     # dmg calculation
     enemy_stats = await get_enemy_fight_stats(enemy_id)
+    en_name = await db_read_details("enemies", enemy_id, "en_name", "en_shortname")
     en_hp = enemy_stats.get("health")
     en_dmg = enemy_stats.get("damage")
     en_arm = enemy_stats.get("armor")
     en_shld = enemy_stats.get("shields")
+
+    await message.answer(f"You are fighting against {en_name}. Yor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
@@ -34,7 +41,14 @@ async def init_fight(message: Message, enemy_id):
 
         if en_hp <= 0:  # player win
             await get_fight_drop(user_id, enemy_id)
-
+            print("en_hp = ", en_hp)
+            print("current_health = ", current_health)
+            await state.clear()
+            await state.set_state(State.gps_state)
+            gps = await m.get_location(message.from_user.id)
+            await state.update_data(gps_state=gps)
+            await state.set_state(State.job)
+            await state.update_data(job=f"Won after fight with {enemy_id}")
             return "win"
 
         # enemy hit player
@@ -42,7 +56,14 @@ async def init_fight(message: Message, enemy_id):
         current_health = max(0, current_health - eff_en_dmg)
 
         if current_health <= 0:  # enemy win
-            jump_home_task = await jump_home(user_id)
+            jump_home_task = await m.player_dead(user_id)
+            await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left. You will now respawn at home", reply_markup=keyboard)
+            await state.clear()
+            await state.set_state(State.gps_state)
+            gps = await m.get_location(message.from_user.id)
+            await state.update_data(gps_state=gps)
+            await state.set_state(State.job)
+            await state.update_data(job=f"Loose after fight with {enemy_id}")
             return "loose"
         await db_write_int("players", user_id, "current_health", current_health)
     print("en_hp = ", en_hp)
