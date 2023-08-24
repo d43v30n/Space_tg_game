@@ -39,4 +39,5 @@ async def undock_handler(message: Message, state: FSMContext) -> None:
 @router.message(State.docked, F.text == "Bar")
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"entering bar", reply_markup=keyboard)
+    await m.restore_hp(message.from_user.id)
+    await message.answer(f"Restored HP at bar", reply_markup=keyboard)

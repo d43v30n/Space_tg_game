@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from app.database import db_read_details
+from app.database import db_read_details, db_write_int, db_read_int
 import asyncio
 from random import randint
 from game_logic.space_map import *
@@ -33,7 +33,7 @@ async def init_fight(message: Message, enemy_id):
         en_hp = max(0, en_hp - eff_player_dmg)
 
         if en_hp <= 0:  # player win
-            loot = await get_fight_drop(user_id, enemy_id)
+            await get_fight_drop(user_id, enemy_id)
 
             return "win"
 
@@ -44,6 +44,7 @@ async def init_fight(message: Message, enemy_id):
         if current_health <= 0:  # enemy win
             jump_home_task = await jump_home(user_id)
             return "loose"
+        await db_write_int("players", user_id, "current_health", current_health)
     print("en_hp = ", en_hp)
     print("current_health = ", current_health)
 
@@ -109,6 +110,13 @@ async def get_fight_drop(user_id, en_shortname):
     for item in items.values():
         drop.append(item)
     print("drop", drop)
+
+    old_exp = await db_read_int("players", user_id, "experience")
+    await db_write_int("players", user_id, "experience", old_exp + exp)
+
+    old_credits = await db_read_int("players", user_id, "credits")
+    await db_write_int("players", user_id, "credits", old_credits + credits)
+
     return drop  # [exp, credits, loot]
 
 

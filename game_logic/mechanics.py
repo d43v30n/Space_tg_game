@@ -62,6 +62,11 @@ async def get_player_information(user_id, *args: str) -> list:
     return items
 
 
+async def restore_hp(user_id):
+    max_hp = await db_read_int("players", user_id, "max_health")
+    await db_write_int("players", user_id, "current_health", max_hp)
+
+
 async def get_energy(user_id) -> tuple:
     '''("current_energy", "max_energy")'''
     energy = await get_current_energy(user_id), await get_max_energy(user_id)
