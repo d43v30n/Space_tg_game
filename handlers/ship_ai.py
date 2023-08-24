@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from game_logic import space_map
+from game_logic import space_map, fight
 from game_logic import mechanics as m
 from game_logic.states import State
 
@@ -42,8 +42,8 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     gps = await m.get_location(message.from_user.id)
     await state.update_data(gps_state=gps)
     await state.set_state(State.job)
-    keyboard = await kb.keyboard_selector(state)
     await state.update_data(job=f"after Home Jump")
+    keyboard = await kb.keyboard_selector(state)
     await message.answer(f"Finally, Home!", reply_markup=keyboard)
 
 
@@ -67,9 +67,18 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         event = await m.rand_event(gps)
-        if event:
+
+        if event[0] == "enemies":
+            enemy_shorname = event[1]
+            # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
             await state.update_data(job=f"just arrived to {loc_name} and encountered {event}")
-            await message.answer(f"Triggered event {event}.", reply_markup=keyboard)
+            # fight_result -> "win" of "loose" str
+            fight_result = await fight.init_fight(message, enemy_shorname)
+            print(f"fight_result, {fight_result}")
+            if fight_result == "win":
+                await message.answer(f"(WON) Figth result is : {fight_result}.", reply_markup=keyboard)
+            else:
+                await message.answer(f"(LOST) Figth result is : {fight_result}.", reply_markup=keyboard)
         else:
             await state.update_data(job=f"just arrived to {loc_name}")
             if "mining" in loc_features:

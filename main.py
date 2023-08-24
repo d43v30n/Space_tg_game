@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from app import database as db
 from handlers import admin, core, ship_ai, terminal, locations, errors
+from game_logic import fight as f
+
+# debug
 
 load_dotenv()
 TOKEN = getenv("BOT_TOKEN")
@@ -14,7 +17,11 @@ TOKEN = getenv("BOT_TOKEN")
 async def on_startup(bot: Bot) -> None:
     '''initialize db'''
     await db.db_start()
-    # await db.
+
+    # timer_task = asyncio.create_task(f.timer())
+
+    # await asyncio.gather(timer_task)
+
     print('Бот успешно запущен!')
 
 

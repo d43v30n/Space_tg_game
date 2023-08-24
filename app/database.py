@@ -206,7 +206,6 @@ async def db_read_enemies_attributes(gps):
     return output
 
 
-
 async def db_read_details(table, value, column, search_col):  # custom db_access
     value = cur.execute(
         f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))

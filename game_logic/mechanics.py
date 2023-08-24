@@ -5,7 +5,7 @@ from random import randint, choice
 import keyboards.main_kb as kb
 
 
-COOLDOWN = 10
+COOLDOWN = 2
 
 
 async def move_forward(user_id):
@@ -88,28 +88,29 @@ async def roll_chance(chance: float) -> bool:
 
 async def rand_event(gps) -> str:
     events = await space_map.event(gps)
+    # event = f"\"{choice(events)}\""
     event = choice(events)
-    # event = None
     if event == "enemies":
-        # print("rolled for enemie...")
+        print("rolled for enemie...")
         possible_enemies = await db_read_enemies_attributes(gps)
+        print("possible_enemies ", possible_enemies)
         for en_shortname in possible_enemies:
             chance = await db_read_details("enemies", en_shortname, "attributes", "en_shortname")
-            # print(F"trying to spawn {en_shortname} with chance={chance}")
+            print(F"trying to spawn {en_shortname} with chance={chance}")
             chance = chance.get("chance")
             if await roll_chance(chance):
-                enemy_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
-                return enemy_name
+                print("spawning ", en_shortname)
+                return "enemies", en_shortname
             else:
-                return None
+                return None, None
         else:
-            return None
+            return None, None
     elif event == "drop":
         chance = 0
         if await roll_chance(chance):
             drop_name = None
-            return drop_name
+            return "drop", drop_name
         else:
-            return None
+            return None, None
     elif event == "":  # other events
         pass

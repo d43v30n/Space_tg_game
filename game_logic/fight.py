@@ -1,11 +1,13 @@
-from app.database import db_read_int, db_read_dict, db_write_int, db_write_dict, db_read_details, db_read_enemies_attributes
-from asyncio import sleep, gather
+from aiogram.types import Message
+from app.database import db_read_details
+import asyncio
 from random import randint
 from game_logic.space_map import *
 from game_logic.mechanics import get_player_information, jump_home
 
 
-async def init_fight(user_id, enemy_id):
+async def init_fight(message: Message, enemy_id):
+    user_id = message.from_user.id
     stats = await get_player_information(user_id, "location", "max_health", "current_health", "level", "ship_slots")
     # print(stats)
     location = int(stats[0])  # to use in possible location debuffs
@@ -13,46 +15,37 @@ async def init_fight(user_id, enemy_id):
     current_health = int(stats[2])
     level = int(stats[3])  # for escaping calc
     ship_slots = {key: value for key, value in stats[4].items() if value != ""}
-    # print(ship_slots)
-    # print(f"location={location} max_health={max_health} current_health={current_health}, level={level}")
 
     player_dmg = await get_player_dmg(ship_slots)
     player_shield = await get_player_shield(ship_slots)
     player_armor = await get_player_armor(ship_slots)
 
     # dmg calculation
-
     enemy_stats = await get_enemy_fight_stats(enemy_id)
     en_hp = enemy_stats.get("health")
     en_dmg = enemy_stats.get("damage")
     en_arm = enemy_stats.get("armor")
     en_shld = enemy_stats.get("shields")
-    # battle_log = []
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
         eff_player_dmg = max(player_dmg - en_shld, 0)
         en_hp = max(0, en_hp - eff_player_dmg)
-        # battle_log.append(f"Enemy HP: {en_hp}".rjust(
-        # 12) + f" Enemy hit: {eff_player_dmg}".rjust(12))
 
         if en_hp <= 0:  # player win
             loot = await get_fight_drop(user_id, enemy_id)
-            # battle_log.append(f"You looted: {loot}\n")
-            # print("printing -----", battle_log)
-            return "You won!"
+
+            return "win"
 
         # enemy hit player
         eff_en_dmg = max(en_dmg - player_shield, 0)
         current_health = max(0, current_health - eff_en_dmg)
-        # battle_log.append(f"Your HP: {current_health}".rjust(
-        #     12) + f" Your hit: {eff_en_dmg}".rjust(12))
 
         if current_health <= 0:  # enemy win
-            jump_home(user_id)
-            return "You are dead"
-        print("en_hp = ", en_hp)
-        print("current_health = ", current_health)
+            jump_home_task = await jump_home(user_id)
+            return "loose"
+    print("en_hp = ", en_hp)
+    print("current_health = ", current_health)
 
 
 async def get_player_dmg(ship_slots) -> int:
@@ -97,13 +90,14 @@ async def get_player_armor(ship_slots) -> int:
 
 
 async def get_enemy_fight_stats(en_shortname):
-    enemy = f"\"{en_shortname}\""
+    # enemy = f"\"{en_shortname}\""
+    enemy = en_shortname
     stats = await db_read_details("enemies", enemy, "stats", "en_shortname")
     return stats
 
 
 async def get_fight_drop(user_id, en_shortname):
-    en_shortname = f"\"{en_shortname}\""
+    # en_shortname = f"\"{en_shortname}\""
     drop = []
     drop_items = await db_read_details("enemies", en_shortname, "en_drop", "en_shortname")
     exp = drop_items.get("exp")
@@ -114,5 +108,11 @@ async def get_fight_drop(user_id, en_shortname):
         "it_name")}
     for item in items.values():
         drop.append(item)
-
+    print("drop", drop)
     return drop  # [exp, credits, loot]
+
+
+async def timer():
+    print("awaiting timer")
+    await asyncio.sleep(60)
+    print("timer ended")
