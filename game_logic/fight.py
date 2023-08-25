@@ -166,6 +166,22 @@ async def get_fight_drop(user_id, en_shortname):
     en_drop_materials = {key: value for key, value in en_drop.items() if key.startswith(
         "mt_name_")}
     print("en_drop_materials", en_drop_materials)
+    # {'it_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
+    for drop_only_materials in en_drop_materials.values():
+        try:
+            droprate = drop_only_materials.get("droprate")
+        except:
+            droprate = 1  # defauld drop rate ist 100%
+        if await m.roll_chance(droprate):
+            print("droprate ", droprate)
+            only_materials = {key: value for key,
+                        value in drop_only_materials.items() if key != "droprate"}
+            print("only_materials ", only_materials)
+            for item, count in only_materials.items():
+                it_shortname = item
+                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
+                drop.append(text)
+    print("drop", drop)
     
 
 
