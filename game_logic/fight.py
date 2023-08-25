@@ -202,12 +202,11 @@ async def add_pl_items(user_id, it_shortname, count):
     if old_items == {}: # if inventory is empty
         new_items = old_items.update({it_shortname:count})
         print("old count =", count)
-        
+        db_write_dict("players", user_id, "pl_items", new_items, it_shortname)  # write complete new dictionary
     else:
         print("if inventory is empty")
-        new_items = old_items.update({it_shortname:count}) 
         count = old_items.get(it_shortname)
-        db_write_dict("players", user_id, "pl_items", new_items, it_shortname)
+        db_write_dict("players", user_id, "pl_items", new_items, it_shortname)  # new function to update value in dictionary 
 
 
 # async def add_pl_materials():
