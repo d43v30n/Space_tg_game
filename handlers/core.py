@@ -91,6 +91,8 @@ For a list of available commands, type <code>/commands</code>. If you need assis
 async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
+    if gps is None:
+        gps = await m.get_location(message.from_user.id)
     loc_name = await space_map.name(gps)
     home = await space_map.name(0)
     if None:  # if action is possible
