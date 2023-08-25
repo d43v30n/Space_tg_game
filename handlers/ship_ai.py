@@ -84,6 +84,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
         # event check
         if event[0] is None:
+
             print("entered 1")
             await state.update_data(job=f"just arrived to {loc_name}")
             #
