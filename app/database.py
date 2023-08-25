@@ -148,11 +148,12 @@ async def db_write_enemies_json():
         attributes = json.dumps(output.get("attributes"))
         drop = json.dumps(output.get("drop"))
         shortname = json.dumps(output.get("shortname"))
+        en_type = json.dumps(output.get("type"))
         item_exists = cur.execute(
-            "SELECT * FROM enemies WHERE en_name = ?", (name,)).fetchone()
+            "SELECT * FROM enemies WHERE en_shortname = ?", (shortname,)).fetchone()
         if not item_exists:
             cur.execute(
-                "INSERT INTO enemies (en_name, desc, stats, attributes, en_drop, en_shortname) VALUES (?, ?, ?, ?, ?, ?)", (name, description, stats, attributes, drop, shortname))
+                "INSERT INTO enemies (en_name, desc, stats, attributes, en_drop, en_shortname, type) VALUES (?, ?, ?, ?, ?, ?, ?)", (name, description, stats, attributes, drop, shortname, en_type))
             db.commit()
 
 

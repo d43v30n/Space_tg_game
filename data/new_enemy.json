@@ -1,8 +1,9 @@
 {
    "0": {
       "name": "Zac the Baddest",
-      "shortname": "zakie_badmaan",
+      "shortname": "zakie_the_baddest",
       "description" : "some descr",
+	  "type":"unknown",
       "stats": {
          "health": 50,
          "damage": 5,
@@ -27,6 +28,7 @@
       "name": "Zakie Badman",
       "shortname": "zakie_badmaan",
       "description" : "some descr",
+	  "type":"unknown",
       "stats": {
          "health": 50,
          "damage": 5,
@@ -51,6 +53,7 @@
       "name": "Elon Musk",
       "shortname": "elon_musk",
       "description": "T0b! P!ZD@",
+	  "type":"unknown",
       "stats": {
          "health": 1000,
          "damage": 100,
@@ -70,5 +73,30 @@
          "credits": 100,
          "it_name_1": "shields_for_beginner"
       }
-   }
+   },
+   "3": {
+      "name": "Peetusharij-2000",
+      "shortname": "peetusharij_2000",
+      "description": "some descr",
+	  "type":"unknown",
+      "stats": {
+         "health": 10,
+         "damage": 100000,
+         "armor": 100,
+         "shields": 100
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "bam",
+         "race": "martianin",
+         "chance": 0.5,
+         "min_loc": 18,
+         "max_loc": 18
+      },
+      "drop": {
+         "exp": 100,
+         "credits": 1000,
+         "it_name_1": "shields_for_beginner"
+      }
+   }   
 }
