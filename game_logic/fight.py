@@ -146,13 +146,15 @@ async def get_fight_drop(user_id, en_shortname):
             droprate = drop_only_items.get("droprate")
         except:
             droprate = 1  # defauld drop rate ist 100%
-        print()
-        only_items = {key: value for key,
-                      value in drop_only_items.items() if key != "droprate"}
-        # for item, count in only_items:
-        #     it_shortname = item
-        #     text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
-        #     drop.append(text)
+        if await m.roll_chance(droprate):
+            print("droprate ", droprate)
+            only_items = {key: value for key,
+                        value in drop_only_items.items() if key != "droprate"}
+            print("only_items ", only_items)
+            for item, count in only_items.items():
+                it_shortname = item
+                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
+                drop.append(text)
     print("drop", drop)
     old_items = await db_read_int("players", user_id, "pl_items")
 
