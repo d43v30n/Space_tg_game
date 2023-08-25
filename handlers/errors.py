@@ -35,6 +35,12 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     print(f"current_state = {current_state}")
     print(f"state_data = {state_data}")
+    
+    
+@router.message(Command("reset"))
+async def command_start_handler(message: Message, state: FSMContext) -> None:
+    await message.answer(f"Resetting..", reply_markup=kb.main_kb(gps))
+    await reset_handler()
 
 
 @router.message(State.job)
