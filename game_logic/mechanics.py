@@ -117,8 +117,7 @@ async def rand_event(gps) -> str:
             if await roll_chance(chance):
                 print("spawning ", en_shortname)
                 return "enemies", en_shortname
-            else:
-                return None, None
+            return None, None
         else:
             return None, None
     elif event == "drop":

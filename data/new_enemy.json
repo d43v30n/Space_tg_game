@@ -21,8 +21,10 @@
       "drop": {
          "exp": 10,
          "credits": 100,
-         "it_name_1": "scrap_metal",
-		 "droprate_1": 0.5
+         "it_name_1": {
+			 "droprate": 0.5,
+			 "scrap_metal":1
+			 }		 
       }
    },
    "1": {
@@ -47,7 +49,10 @@
       "drop": {
          "exp": 10,
          "credits": 100,
-         "it_name_1": ""
+         "it_name_1": {
+			 "droprate": 0.5,
+			 "scrap_metal":1
+			 }
       }
    },
    "2": {
@@ -72,8 +77,11 @@
       "drop": {
          "exp": 10,
          "credits": 100,
-         "it_name_1": "shields_for_beginner"
-      }
+         "it_name_1": {
+			 "droprate": 0.5,
+			 "shields_for_beginner":1
+			 }
+	  }
    },
    "3": {
       "name": "Peetusharij-2000",
@@ -97,7 +105,10 @@
       "drop": {
          "exp": 100,
          "credits": 1000,
-         "it_name_1": "shields_for_beginner"
+		 "it_name_1": {
+			 "droprate": 0.5,
+			 "shields_for_beginner":1
+			 }
       }
-   }   
+   }
 }

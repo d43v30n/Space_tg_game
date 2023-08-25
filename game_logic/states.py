@@ -13,6 +13,8 @@ class State(StatesGroup):
     docked = State()
     admin = State()
     fighting = State()
+    
+    adm_add_item = State()
 
     # under_attack = State()
     # running = State()
