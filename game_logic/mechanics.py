@@ -93,12 +93,12 @@ async def get_energy(user_id) -> tuple:
 
 async def roll_chance(chance: float) -> bool:
     '''chance is float, min 0.00001 max 1'''
-    val = randint(1, 100000)/100000
+    val = randint(1, 100000) / 100000
     if val <= float(chance):
-        # print(f"Chance of {chance} rolled for True with {val}")
+        print(f"Chance of {chance} rolled for True with {val}")
         return True
     else:
-        # print(f"Chance of {chance} rolled for False with {val}")
+        print(f"Chance of {chance} rolled for False with {val}")
         return False
 
 
@@ -112,20 +112,22 @@ async def rand_event(gps) -> str:
         print("possible_enemies ", possible_enemies)
         for en_shortname in possible_enemies:
             chance = await db_read_details("enemies", en_shortname, "attributes", "en_shortname")
-            print(F"trying to spawn {en_shortname} with chance={chance}")
             chance = chance.get("chance")
+            print(F"trying to spawn {en_shortname} with chance={chance}")
             if await roll_chance(chance):
                 print("spawning ", en_shortname)
                 return "enemies", en_shortname
-            return None, None
-        else:
-            return None, None
     elif event == "drop":
+        print("event is drop")
         chance = 0
         if await roll_chance(chance):
+            print("triggered drop")
             drop_name = None
             return "drop", drop_name
         else:
+            print("no drop")
             return None, None
     elif event == "":  # other events
+        print("event == ''")
         pass
+    return None, None

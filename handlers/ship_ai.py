@@ -78,10 +78,25 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
+
         event = await m.rand_event(gps)
+        print(event[0])
 
-        if event[0] == "enemies":
-
+        # event check
+        if event[0] is None:
+            print("entered 1")
+            await state.update_data(job=f"just arrived to {loc_name}")
+            #
+            #
+            #       loc features function
+            #
+            #
+            if "mining" in loc_features:
+                await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
+            else:
+                await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+        elif event[0] == "enemies":
+            print("entered 2")
             enemy_shorname = event[1]
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
             await state.update_data(job=f"just arrived to {loc_name} and encountered {event}")
@@ -92,15 +107,46 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
                 await message.answer(f"(WON) Figth result is : {fight_result}.", reply_markup=keyboard)
             else:
                 await message.answer(f"(LOST) Figth result is : {fight_result}.", reply_markup=keyboard)
-        else:
+        elif event[0] == "drop":
+            print("entered 3")
             await state.update_data(job=f"just arrived to {loc_name}")
+            #
+            #
+            #       loc features function
+            #
+            #
             if "mining" in loc_features:
                 await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
             else:
                 await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+        elif event[0] == "shipyard":
+            print("entered 4")
+            await state.update_data(job=f"just arrived to {loc_name}")
+            #
+            #
+            #       loc features function
+            #
+            #
+            if "mining" in loc_features:
+                await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
+            else:
+                await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+        else: 
+            await state.update_data(job=f"just arrived to {loc_name}")
+            await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+            print("should not happen. unknown event in location")
+
     else:
+        print("reached end of map")
+        await state.clear()
+        await state.set_state(State.gps_state)
+        gps = 0
+        await m.jump_home(message.from_user.id)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        await state.update_data(job=f"Reached map end, returning")
+        keyboard = await kb.keyboard_selector(state)
         await message.answer(f"I was travelling too long, and lost my disres. I should rest now..", reply_markup=keyboard)
-        await jump_home_confirm_handler(message, state)
 
 
 # busy traveling forward or home

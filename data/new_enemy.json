@@ -6,7 +6,7 @@
 	  "type":"unknown",
       "stats": {
          "health": 50,
-         "damage": 5,
+         "damage": 4,
          "armor": 5,
          "shields": 5
       },
@@ -33,7 +33,7 @@
       "description" : "some descr",
 	  "type":"unknown",
       "stats": {
-         "health": 50,
+         "health": 60,
          "damage": 5,
          "armor": 5,
          "shields": 5
