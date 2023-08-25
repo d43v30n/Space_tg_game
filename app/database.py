@@ -132,6 +132,16 @@ async def db_write_dict(table, user_id, column, key, value) -> None:  # custom d
     db.commit()
 
 
+async def db_write_dict_full(table, user_id, column, key, value) -> None:  # custom db_access
+    '''write data to dict'''
+    data = await db_read_dict(table, user_id, column)
+    data[key] = value
+    json_data = json.dumps(data)
+    cur.execute(
+        f"UPDATE {table} SET {column} = ? WHERE tg_id = ?", (json_data, user_id))
+    db.commit()    
+
+
 # async def add_items(state):
 #     async with state.proxy() as data:
 #         cur.execute("INSERT INTO items (name, desc, price, photo, brand) VALUES (?, ?, ?, ?, ?)",

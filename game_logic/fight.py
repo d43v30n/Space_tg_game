@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from app.database import db_read_details, db_write_int, db_read_int
+from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict
 import asyncio
 from random import randint
 import game_logic.mechanics as m
@@ -155,8 +155,8 @@ async def get_fight_drop(user_id, en_shortname):
                 it_shortname = item
                 text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
                 drop.append(text)
+                await add_pl_items(user_id, it_shortname, count)
     print("drop", drop)
-    old_items = await db_read_int("players", user_id, "pl_items")
 
 
     
@@ -172,7 +172,7 @@ async def get_fight_drop(user_id, en_shortname):
             droprate = drop_only_materials.get("droprate")
         except:
             droprate = 1  # defauld drop rate ist 100%
-        if await m.roll_chance(droprate):
+        if True:#await m.roll_chance(droprate):
             print("droprate ", droprate)
             only_materials = {key: value for key,
                         value in drop_only_materials.items() if key != "droprate"}
@@ -185,7 +185,6 @@ async def get_fight_drop(user_id, en_shortname):
     
 
 
-    print(old_items)
     print(old_materials)
 
     return "\n".join(drop)
@@ -195,3 +194,20 @@ async def timer():
     print("awaiting timer")
     await asyncio.sleep(60)
     print("timer ended")
+
+
+async def add_pl_items(user_id, it_shortname, count):
+    old_items = await db_read_dict("players", user_id, "pl_items")
+    print("234dfdss",old_items)
+    if old_items == {}: # if inventory is empty
+        new_items = old_items.update({it_shortname:count})
+        print("old count =", count)
+        
+    else:
+        print("if inventory is empty")
+        new_items = old_items.update({it_shortname:count}) 
+        count = old_items.get(it_shortname)
+        db_write_dict("players", user_id, "pl_items", new_items, it_shortname)
+
+
+# async def add_pl_materials():
