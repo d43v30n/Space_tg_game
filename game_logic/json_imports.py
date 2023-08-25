@@ -50,3 +50,15 @@ def read_items() -> list:
         print(f"JSON decoding error: {e}")
     except FileNotFoundError:
         print(f"File not found: {read_items_file_path}")
+
+
+def read_materials() -> list:
+    read_items_file_path = "data/new_material.json"
+    try:
+        with open(read_items_file_path, "r") as json_file:
+            new_item = json.load(json_file)
+            return new_item
+    except json.JSONDecodeError as e:
+        print(f"JSON decoding error: {e}")
+    except FileNotFoundError:
+        print(f"File not found: {read_items_file_path}")

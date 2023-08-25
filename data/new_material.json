@@ -1,0 +1,24 @@
+{
+   "0": {
+      "name": "Scrap Metal",
+      "shortname":"scrap_metal",
+      "type": "craft",
+      "price":1,
+      "conver": {
+         "chance":0.35,
+         "min_loc":2,
+         "max_loc":5
+      }
+   },
+   "1": {
+      "name": "Oil Barrel",
+      "shortname":"olil_barrel",
+      "type": "garbage",
+      "price":0,
+      "conver": {
+         "chance":0.35,
+         "min_loc":2,
+         "max_loc":5
+      }
+   }
+}

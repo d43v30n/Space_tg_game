@@ -176,16 +176,35 @@ async def db_write_items_json():
                 "INSERT INTO items (it_name, desc, type, effects, craft, price, attributes, it_shortname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (name, description, item_type, effects, craft, price, attributes, shortname))
             db.commit()
 
+
+async def db_write_materials_json():
+    items = json_imports.read_materials()
+    for row in items:
+        output = items[row]
+        name = json.dumps(output.get("name"))
+        shortname = json.dumps(output.get("shortname"))
+        mat_type = json.dumps(output.get("type"))
+        price = json.dumps(output.get("price"))
+        conver = json.dumps(output.get("conver"))       
+        item_exists = cur.execute(
+            "SELECT * FROM materials WHERE mt_name = ?", (name,)).fetchone()
+        if not item_exists:
+            cur.execute(
+                "INSERT INTO materials (mt_name, mt_shortname, type, price, conver) VALUES (?, ?, ?, ?, ?)", (name, shortname, mat_type, price, conver))
+            db.commit()
+
+
 #
-# -----need functions to read jsons from db
+# -----need functions to save jsons from db
 # -----and also to add materials from admin
-#
-# cur.execute("CREATE TABLE IF NOT EXISTS materials("
-#             "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-#             "mt_name TEXT, "
-#             "type TEXT, "
-#             "price INTEGER)"
-#             "conver TEXT)")
+
+    # cur.execute("CREATE TABLE IF NOT EXISTS materials("
+                # "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                # "mt_name TEXT, "
+                # "mt_shortname TEXT, "
+                # "type TEXT, "
+                # "price INTEGER, "
+                # "conver TEXT)"),
 
 
 # read what enemies can spawn at loc
