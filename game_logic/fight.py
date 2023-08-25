@@ -121,24 +121,56 @@ async def get_enemy_fight_stats(en_shortname):
 async def get_fight_drop(user_id, en_shortname):
     # en_shortname = f"\"{en_shortname}\""
     drop = []
-    drop_items = await db_read_details("enemies", en_shortname, "en_drop", "en_shortname")
-    exp = drop_items.get("exp")
-    credits = drop_items.get("credits")
-    drop.append(exp)
-    drop.append(credits)
-    items = {key: value for key, value in drop_items.items() if key.startswith(
-        "it_name")}
-    for item in items.values():
-        drop.append(item)
-    print("drop", drop)
+    en_drop = await db_read_details("enemies", en_shortname, "en_drop", "en_shortname")
+    
+    
+    # credits
+    got_credits = en_drop.get("credits")
+    drop.append(f"Credits: {got_credits}")
+    old_credits = await db_read_int("players", user_id, "credits")
+    await db_write_int("players", user_id, "credits", old_credits + got_credits)
 
+    # exp
+    exp = en_drop.get("exp")
+    drop.append(f"Experience : {exp}")
     old_exp = await db_read_int("players", user_id, "experience")
     await db_write_int("players", user_id, "experience", old_exp + exp)
 
-    old_credits = await db_read_int("players", user_id, "credits")
-    await db_write_int("players", user_id, "credits", old_credits + credits)
+    #items
+    en_drop_items = {key: value for key, value in en_drop.items() if key.startswith(
+        "it_name_")}
+    print("en_drop_items", en_drop_items)
+    # {'it_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
+    for drop_only_items in en_drop_items.values():
+        try:
+            droprate = drop_only_items.get("droprate")
+        except:
+            droprate = 1  # defauld drop rate ist 100%
+        print()
+        only_items = {key: value for key,
+                      value in drop_only_items.items() if key != "droprate"}
+        # for item, count in only_items:
+        #     it_shortname = item
+        #     text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
+        #     drop.append(text)
+    print("drop", drop)
+    old_items = await db_read_int("players", user_id, "pl_items")
 
-    return drop  # [exp, credits, loot]
+
+    
+    
+    #materials
+    old_materials = await db_read_int("players", user_id, "pl_materials")
+    en_drop_materials = {key: value for key, value in en_drop.items() if key.startswith(
+        "mt_name_")}
+    print("en_drop_materials", en_drop_materials)
+    
+
+
+    print(old_items)
+    print(old_materials)
+
+    return "\n".join(drop)
 
 
 async def timer():
