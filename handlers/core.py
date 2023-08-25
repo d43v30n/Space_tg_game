@@ -45,6 +45,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
             f"User logged in: id={message.from_user.id}, username=@{message.from_user.username}")
         keyboard = await kb.keyboard_selector(state)
         await message.answer(f"Welcome back, @{message.from_user.username}, my old friend!\nGame server has been updated. ", reply_markup=keyboard)
+    elif current_state == "State:admin":
+        await errors.command_reset_handler(message, state)
     else:
         await errors.unknown_input_handler(message, state)
 

@@ -41,7 +41,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
         await errors.reset_handler(message, state)
         await message.answer(f"Bye Admin!", reply_markup=kb.main_kb())
     else:
-        await errors.unknown_input_handler(message, state)
+        await errors.reset_handler(message, state)
 
 
 @router.message(State.admin, Command("help"))
