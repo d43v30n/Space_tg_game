@@ -6,7 +6,7 @@ import keyboards.main_kb as kb
 from handlers import errors
 
 
-COOLDOWN = 2
+COOLDOWN = 10
 
 
 async def move_forward(user_id):

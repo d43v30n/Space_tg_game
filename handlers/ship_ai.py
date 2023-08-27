@@ -20,7 +20,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
     if gps != 0:
         await state.set_state(State.confirmation)
         await state.update_data(confirmation="jumping home confirmation")
-        await message.answer(f"Sure want to Jump Home?", reply_markup=kb.ship_ai_kb())
+        await message.answer(f"Are you sure? Press Jump Home again to confirm.", reply_markup=kb.ship_ai_kb())
     else:
         keyboard = await kb.keyboard_selector(state)
         await message.answer(f"You already here", reply_markup=keyboard)
@@ -44,7 +44,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await state.set_state(State.job)
     await state.update_data(job=f"after Home Jump")
     keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"Finally, Home!", reply_markup=keyboard)
+    await message.answer(f"Finally, Home!", reply_markup=kb.main_kb())
 
 
 @router.message(State.confirmation, F.text != "Jump Home")
@@ -56,7 +56,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await state.set_state(State.job)
     await state.update_data(job=f"aborted Home Jump")
     keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"aborted home jump!", reply_markup=keyboard)    
+    await message.answer(f"aborted home jump!", reply_markup=keyboard)
 
 
 @router.message(State.job, F.text == "Travel forward")
@@ -132,7 +132,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
                 await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
             else:
                 await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
-        else: 
+        else:
             await state.update_data(job=f"just arrived to {loc_name}")
             await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
             print("should not happen. unknown event in location")

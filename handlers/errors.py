@@ -35,8 +35,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     print(f"current_state = {current_state}")
     print(f"state_data = {state_data}")
-    
-    
+
+
 @router.message(Command("reset"))
 async def command_reset_handler(message: Message, state: FSMContext) -> None:
     gps = await m.get_location(message.from_user.id)
@@ -51,6 +51,12 @@ async def command_reset_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.job)
 async def wrong_input_handler(message: Message, state: FSMContext) -> None:
+    gps = await m.get_location(message.from_user.id)
+    await message.answer(f"Wrong input, try again", reply_markup=kb.main_kb(gps))
+
+
+@router.message(State.confirmation)
+async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
     gps = await m.get_location(message.from_user.id)
     await message.answer(f"Wrong input, try again", reply_markup=kb.main_kb(gps))
 

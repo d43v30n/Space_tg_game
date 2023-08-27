@@ -160,14 +160,17 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
-    text_job = state_data["job"]
-    loc_name = await space_map.name(gps)
-    await state.set_state(State.docked)
-    await state.update_data(job="docked to {loc_name}", docked="to Ringworld station")
-    keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"You are docking to {loc_name}.", reply_markup=keyboard)
-    # 1 docking timer
-    # 2 essage docked with plenty of station information
+    if gps == 0:
+        text_job = state_data["job"]
+        loc_name = await space_map.name(gps)
+        await state.set_state(State.docked)
+        await state.update_data(job="docked to {loc_name}", docked="to Ringworld station")
+        keyboard = await kb.keyboard_selector(state)
+        await message.answer(f"You are docking to {loc_name}.", reply_markup=keyboard)
+        # 1 docking timer
+        # 2 essage docked with plenty of station information
+    else:
+        errors.unknown_input_handler()
 
 
 @router.message(State.docked, F.text == "Dock to Ringworld station")
