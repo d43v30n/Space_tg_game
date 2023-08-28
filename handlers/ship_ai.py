@@ -86,9 +86,11 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
         # event check
         if event[0] is None:
+            keyboard = await kb.keyboard_selector(state)
 
             print("entered 1")
             await state.update_data(job=f"just arrived to {loc_name}")
+
             #
             #
             #       loc features function
@@ -99,6 +101,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             else:
                 await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
         elif event[0] == "enemies":
+            keyboard = await kb.keyboard_selector(state)
             print("entered 2")
             enemy_shorname = event[1]
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
@@ -111,6 +114,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             else:
                 await message.answer(f"(LOST) Figth result is : {fight_result}.", reply_markup=keyboard)
         elif event[0] == "drop":
+            keyboard = await kb.keyboard_selector(state)
+
             print("entered 3")
             await state.update_data(job=f"just arrived to {loc_name}")
             #
@@ -123,6 +128,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             else:
                 await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
         elif event[0] == "shipyard":
+            keyboard = await kb.keyboard_selector(state)
+
             print("entered 4")
             await state.update_data(job=f"just arrived to {loc_name}")
             #
@@ -136,6 +143,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
                 await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
         else:
             await state.update_data(job=f"just arrived to {loc_name}")
+            keyboard = await kb.keyboard_selector(state)
             await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
             print("should not happen. unknown event in location")
 
