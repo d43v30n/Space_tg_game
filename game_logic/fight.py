@@ -42,7 +42,7 @@ async def init_fight(message: Message, enemy_id, state: State):
         if en_hp <= 0:  # player win
             drop_text = await get_fight_drop(user_id, enemy_id)
             print("en_hp = ", en_hp)
-            print("current_health = ", current_health)
+            print("drop_text = ", drop_text)
             await state.clear()
             await state.set_state(State.gps_state)
             gps = await m.get_location(message.from_user.id)
@@ -123,8 +123,7 @@ async def get_fight_drop(user_id, en_shortname):
     # en_shortname = f"\"{en_shortname}\""
     drop = []
     en_drop = await db_read_details("enemies", en_shortname, "en_drop", "en_shortname")
-    
-    
+
     # credits
     got_credits = en_drop.get("credits")
     drop.append(f"Credits: {got_credits}")
@@ -137,7 +136,7 @@ async def get_fight_drop(user_id, en_shortname):
     old_exp = await db_read_int("players", user_id, "experience")
     await db_write_int("players", user_id, "experience", old_exp + exp)
 
-    #items
+    # items
     en_drop_items = {key: value for key, value in en_drop.items() if key.startswith(
         "it_name_")}
     print("en_drop_items", en_drop_items)
@@ -147,20 +146,18 @@ async def get_fight_drop(user_id, en_shortname):
             droprate = drop_only_items.get("droprate")
         except:
             droprate = 1  # defauld drop rate ist 100%
+        print("drop_only_items ", drop_only_items)
         if await m.roll_chance(droprate):
             print("droprate ", droprate)
             only_items = {key: value for key,
-                        value in drop_only_items.items() if key != "droprate"}
-            print("only_items ", only_items)
+                          value in drop_only_items.items() if key != "droprate"}
             for it_shortname, count in only_items.items():
-                print("it_shortname = ", it_shortname)
-                print("count = ", count)
-                it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
-                text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
+                # it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
+                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
                 await add_pl_items(user_id, it_shortname, count)
                 drop.append(text)
-    
-    #materials
+
+    # materials
     old_materials = await db_read_int("players", user_id, "pl_materials")
     en_drop_materials = {key: value for key, value in en_drop.items() if key.startswith(
         "mt_name_")}
@@ -171,19 +168,17 @@ async def get_fight_drop(user_id, en_shortname):
             droprate = drop_only_materials.get("droprate")
         except:
             droprate = 1  # defauld drop rate ist 100%
-        if True:#await m.roll_chance(droprate):
+        if True:  # await m.roll_chance(droprate):
             print("droprate ", droprate)
             only_materials = {key: value for key,
-                        value in drop_only_materials.items() if key != "droprate"}
+                              value in drop_only_materials.items() if key != "droprate"}
             print("only_materials ", only_materials)
             for mt_shortname, count in only_materials.items():
-                mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
-                text = f"Dropped {mt_name} (x{count}) with drop chance {droprate}."
+                # mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
+                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
                 await add_pl_materials(user_id, mt_shortname, count)
                 drop.append(text)
     print("drop", drop)
-    
-
 
     print(old_materials)
 
@@ -198,31 +193,37 @@ async def timer():
 
 async def add_pl_items(user_id, it_shortname, count):
     pl_items = await db_read_dict("players", user_id, "pl_items")
-    print("before IF in add_pl_items",pl_items)
-    if pl_items.get(it_shortname, False): # if item is already in inventory
+    print("before IF in add_pl_items", pl_items)
+    if pl_items.get(it_shortname, False):  # if item is already in inventory
         count_old = pl_items.get(it_shortname)
-        pl_items.update({it_shortname:count+count_old})
-        print("inside 1 IF in add_pl_items",pl_items)
-        print(f"adding item {it_shortname}, player owned count =", count, " + ", count_old)
+        pl_items.update({it_shortname: count+count_old})
+        print("inside 1 IF in add_pl_items", pl_items)
+        print(
+            f"adding item {it_shortname}, player owned count =", count, " + ", count_old)
     else:
         count_old = pl_items.get(it_shortname)
-        pl_items.update({it_shortname:count})
-        print(f"inventory was empty ({count_old}), adding {it_shortname} (x{count})")
-        print("inside 2 IF in add_pl_items",pl_items)
-    await db_write_dict_full("players", user_id, "pl_items", pl_items)  # new function to update value in dictionary 
+        pl_items.update({it_shortname: count})
+        print(
+            f"inventory was empty ({count_old}), adding {it_shortname} (x{count})")
+        print("inside 2 IF in add_pl_items", pl_items)
+    # new function to update value in dictionary
+    await db_write_dict_full("players", user_id, "pl_items", pl_items)
 
 
 async def add_pl_materials(user_id, mt_shortname, count):
     pl_materials = await db_read_dict("players", user_id, "pl_materials")
-    print("before IF in add_pl_materials",pl_materials)
-    if pl_materials.get(mt_shortname, False): # if item is already in inventory
+    print("before IF in add_pl_materials", pl_materials)
+    if pl_materials.get(mt_shortname, False):  # if item is already in inventory
         count_old = pl_materials.get(mt_shortname)
-        pl_materials.update({mt_shortname:count+count_old})
-        print("inside 1 IF in add_pl_materials",pl_materials)
-        print(f"adding item {mt_shortname}, player owned count =", count, " + ", count_old)
+        pl_materials.update({mt_shortname: count+count_old})
+        print("inside 1 IF in add_pl_materials", pl_materials)
+        print(
+            f"adding item {mt_shortname}, player owned count =", count, " + ", count_old)
     else:
         count_old = pl_materials.get(mt_shortname)
-        pl_materials.update({mt_shortname:count})
-        print(f"inventory was empty ({count_old}), adding {mt_shortname} (x{count})")
-        print("inside 2 IF in add_pl_materials",pl_materials)
-    await db_write_dict_full("players", user_id, "pl_materials", pl_materials)  # new function to update value in dictionary 
+        pl_materials.update({mt_shortname: count})
+        print(
+            f"inventory was empty ({count_old}), adding {mt_shortname} (x{count})")
+        print("inside 2 IF in add_pl_materials", pl_materials)
+    # new function to update value in dictionary
+    await db_write_dict_full("players", user_id, "pl_materials", pl_materials)
