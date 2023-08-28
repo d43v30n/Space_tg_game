@@ -43,8 +43,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await state.update_data(gps_state=gps)
     await state.set_state(State.job)
     await state.update_data(job=f"after Home Jump")
-    keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"Finally, Home!", reply_markup=kb.main_kb())
+    await message.answer(f"Finally, Home!", reply_markup=kb.main_kb(gps))
 
 
 @router.message(State.confirmation, F.text != "Jump Home")
