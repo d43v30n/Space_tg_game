@@ -67,8 +67,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     await state.set_state(State.travelling)
     await state.update_data(job=f"jumped forward from {loc_name}")
     await state.update_data(travelling="Travelling Forward")
-    await message.answer(f"Engines starting, space exploration proceeding..", reply_markup=keyboard)
     if await space_map.read_map(gps+1):
+        await message.answer(f"Engines starting, space exploration proceeding..", reply_markup=kb.main_kb(gps+1))
         new_loc_gps = await m.move_forward(message.from_user.id)
         gps = new_loc_gps
         loc_features = await space_map.features(gps)
@@ -103,8 +103,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             # fight_result -> "win" of "loose" str
             fight_result = await fight.init_fight(message, enemy_shorname, state)
             print(f"fight_result, {fight_result}")
-            if fight_result == "win":
-                await message.answer(f"(WON) Figth result is : {fight_result}.", reply_markup=keyboard)
+            if fight_result[0] == "win":
+                await message.answer(f"(WON) Figth result is : {fight_result[0]}.\nLoot:{fight_result[1]}", reply_markup=keyboard)
             else:
                 await message.answer(f"(LOST) Figth result is : {fight_result}.", reply_markup=keyboard)
         elif event[0] == "drop":
