@@ -73,7 +73,7 @@ async def restore_hp(user_id):
     current_hp = await db_read_int("players", user_id, "current_health")
     max_hp = await db_read_int("players", user_id, "max_health")
     if current_hp < max_hp:
-        sleep(COOLDOWN_HEAL)
+        await sleep(COOLDOWN_HEAL)
         await db_write_int("players", user_id, "current_health", max_hp)
         return True
     else:
