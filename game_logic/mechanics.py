@@ -74,7 +74,7 @@ async def restore_hp(user_id):
 
 
 async def player_dead(user_id):
-    await restore_hp(user_id)
+    await db_write_int("players", user_id, "current_health", 1) # set 1 hp 
     await jump_home(user_id)
 
 
@@ -131,3 +131,27 @@ async def rand_event(gps) -> str:
         print("event == ''")
         pass
     return None, None
+
+
+async def show_items(user_id) -> str:
+    invent_items = await db_read_dict("players", user_id, "pl_items")
+    text = ""
+    for it_shortname, count in invent_items.items():
+        it_shortname = f"\"{it_shortname}\""
+        print(it_shortname, " ", count)
+        it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
+        print("name_ ", it_name)
+        text += f"- {it_name} (x{count})\n"
+    return text
+
+
+async def show_materials(user_id) -> str:
+    invent_materials = await db_read_dict("players", user_id, "pl_materials")
+    text = ""
+    for mt_shortname, count in invent_materials.items():
+        mt_shortname = f"\"{mt_shortname}\""
+        print(mt_shortname, " ", count)
+        mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
+        print("name_ ", mt_name)
+        text += f"- {mt_name} (x{count})\n"
+    return text
