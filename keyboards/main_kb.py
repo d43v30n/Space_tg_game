@@ -4,19 +4,19 @@ from emojis import *
 
 
 async def keyboard_selector(state, menu=None):
-    state_data = await state.get_data()
-    gps = state_data["gps_state"]
-    job_name = state_data["job"]
-    state_name = await state.get_state()
-    if state_name == "State:docked" and gps == 0:
-        keyboard = ringworld_kb()
-    elif job_name == "found ore, mining is possible":
-        keyboard = at_location_kb(gps)
-    elif menu == "Ship AI":
-        keyboard = ship_ai_kb()
-    else:
-        keyboard = main_kb(gps)
-    return keyboard
+    # state_data = await state.get_data()
+    # gps = state_data["gps_state"]
+    # job_name = state_data["job"]
+    # state_name = await state.get_state()
+    # if state_name == "State:docked" and gps == 0:
+    #     keyboard = ringworld_kb()
+    # elif job_name == "found ore, mining is possible":
+    #     keyboard = at_location_kb(gps)
+    # elif menu == "Ship AI":
+    #     keyboard = ship_ai_kb()
+    # else:
+    #     keyboard = main_kb(gps)
+    return main_kb()
 
 
 def core_kb(gps=None) -> ReplyKeyboardMarkup:
