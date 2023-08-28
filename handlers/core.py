@@ -177,3 +177,14 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     await message.answer(f"Already docked", reply_markup=keyboard)
+
+
+@router.message(State.item_selector)
+async def item_selector_handler(message: Message, state: FSMContext) -> None:
+    try:
+        id = str(message.text)
+        flag = id.split("_")[0][1:]
+        id = int(id.split("_")[1])
+        return flag, id
+    except:
+        await message.answer(f"Wrong input!", reply_markup=kb.admin_kb())
