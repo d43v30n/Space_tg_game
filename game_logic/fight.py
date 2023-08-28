@@ -153,6 +153,8 @@ async def get_fight_drop(user_id, en_shortname):
                         value in drop_only_items.items() if key != "droprate"}
             print("only_items ", only_items)
             for it_shortname, count in only_items.items():
+                print("it_shortname = ", it_shortname)
+                print("count = ", count)
                 it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
                 text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
                 await add_pl_items(user_id, it_shortname, count)
