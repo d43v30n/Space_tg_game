@@ -54,21 +54,23 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(F.text == "Cargo")
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    try:
-        state_data = await state.get_data()
-        gps = state_data["gps_state"]
-        keyboard = await kb.keyboard_selector(state)
-        await message.answer(f"Here is your Cargo info", reply_markup=keyboard)
-    except:
-        await errors.unknown_input_handler(message, state)
+    #try:
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    keyboard = await kb.keyboard_selector(state)
+    cargo = await m.show_materials(message.from_user.id)
+    await message.answer(f"Here is your Cargo:\n{cargo}", reply_markup=keyboard)
+    #except:
+    #    await errors.unknown_input_handler(message, state)
 
 
 @router.message(F.text == "Inventory")
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    try:
-        state_data = await state.get_data()
-        gps = state_data["gps_state"]
-        keyboard = await kb.keyboard_selector(state)
-        await message.answer(f"Here is your Inventory", reply_markup=keyboard)
-    except:
-        await errors.unknown_input_handler(message, state)
+    #try:
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    keyboard = await kb.keyboard_selector(state)
+    inv = await m.show_items(message.from_user.id)
+    await message.answer(f"Here is your Inventory:\n{inv}", reply_markup=keyboard)
+    #except:
+    #    await errors.unknown_input_handler(message, state)

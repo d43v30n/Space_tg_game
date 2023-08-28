@@ -70,7 +70,7 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
 @router.message(State.admin, Command("test"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
     enemy = f"\"zac_the_baddest\""
-    await fight.add_pl_items(message.from_user.id, "craft_beer", 1)
+    await fight.add_pl_materials(message.from_user.id, "olil_barrel", 1)
 
 
 

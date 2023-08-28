@@ -240,3 +240,10 @@ async def db_read_details(table, value, column, search_col):  # custom db_access
         f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
     value = json.loads(value.fetchone()[0])
     return value
+
+
+async def db_read_full_name(table, value, column, search_col) -> str:
+    value = cur.execute(
+        f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
+    value = value.fetchone()[0]
+    return value
