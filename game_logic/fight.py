@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict, db_write_dict_full
+from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict, db_write_dict_full, db_read_full_name
 import asyncio
 from random import randint
 import game_logic.mechanics as m
@@ -152,9 +152,9 @@ async def get_fight_drop(user_id, en_shortname):
             only_items = {key: value for key,
                         value in drop_only_items.items() if key != "droprate"}
             print("only_items ", only_items)
-            for item, count in only_items.items():
-                it_shortname = item
-                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
+            for it_shortname, count in only_items.items():
+                it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
+                text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
                 await add_pl_items(user_id, it_shortname, count)
                 drop.append(text)
     
@@ -174,9 +174,9 @@ async def get_fight_drop(user_id, en_shortname):
             only_materials = {key: value for key,
                         value in drop_only_materials.items() if key != "droprate"}
             print("only_materials ", only_materials)
-            for item, count in only_materials.items():
-                mt_shortname = item
-                text = f"Dropped {mt_shortname} (x{count}) with drop chance {droprate}."
+            for mt_shortname, count in only_materials.items():
+                mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
+                text = f"Dropped {mt_name} (x{count}) with drop chance {droprate}."
                 await add_pl_materials(user_id, mt_shortname, count)
                 drop.append(text)
     print("drop", drop)
