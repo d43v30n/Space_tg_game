@@ -14,7 +14,7 @@ import keyboards.main_kb as kb
 router = Router()
 
 
-@router.message(State.job, F.text == "{emoji}Jump Home".format(emoji=refresh_symbol ))
+@router.message(State.job, F.text == "{emoji}Jump Home".format(emoji=refresh_symbol))
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -27,7 +27,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"You already here", reply_markup=keyboard)
 
 
-@router.message(State.confirmation, F.text == "{emoji}Jump Home".format(emoji=refresh_symbol ))
+@router.message(State.confirmation, F.text == "{emoji}Jump Home".format(emoji=refresh_symbol))
 async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -47,7 +47,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await message.answer(f"Finally, Home!", reply_markup=kb.main_kb(gps))
 
 
-@router.message(State.confirmation, F.text != "{emoji}Jump Home".format(emoji=refresh_symbol ))
+@router.message(State.confirmation, F.text != "{emoji}Jump Home".format(emoji=refresh_symbol))
 async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
     await state.clear()
     await state.set_state(State.gps_state)
@@ -59,7 +59,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await message.answer(f"aborted home jump!", reply_markup=keyboard)
 
 
-@router.message(State.job, F.text == "{emoji}Travel Forward".format(emoji=play_button ))
+@router.message(State.job, F.text == "{emoji}Travel Forward".format(emoji=play_button))
 async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -72,7 +72,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     await state.update_data(job=f"jumped forward from {loc_name}")
     await state.update_data(travelling="Travelling Forward")
     if await space_map.read_map(gps+1):
-        await message.answer(f"Engines starting, space exploration proceeding..", reply_markup=kb.main_kb(gps+1))
+        await message.answer("Engines starting, space exploration proceeding..", reply_markup=kb.main_kb(gps+1))
         new_loc_gps = await m.move_forward(message.from_user.id)
         gps = new_loc_gps
         loc_features = await space_map.features(gps)
@@ -81,6 +81,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
+        await state.update_data(job=f"rolling for event")
 
         event = await m.rand_event(gps)
         print(event[0])
@@ -162,7 +163,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
 
 # busy traveling forward or home
-@router.message(F.text.in_({"{emoji}Travel Forward".format(emoji=play_button ), "{emoji}Jump Home".format(emoji=refresh_symbol )}))
+@router.message(F.text.in_({"{emoji}Travel Forward".format(emoji=play_button), "{emoji}Jump Home".format(emoji=refresh_symbol)}))
 async def busy_travel_handler(message: Message, state: FSMContext) -> None:
     state_name = await state.get_state()
     if state_name is not None:
