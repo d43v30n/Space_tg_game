@@ -80,6 +80,11 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 @router.message(F.text.startswith("/item_"))
 async def item_selector_handler(message: Message, state: FSMContext) -> None:
     text = message.text
+    current_state = await state.get_state()
+    if current_state != "State:job":
+        keyboard = await kb.keyboard_selector(state)
+        await message.answer(f"You can not do this right now", reply_markup=keyboard)
+        return
     if text.startswith("/item_"):
         try:
             id = str(message.text)
@@ -91,7 +96,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
 
         state_data = await state.get_data()
         gps = state_data["gps_state"]
-        job_text = f"Aplied id {id}"
+        job_text = f"Applying {flag} with id {id}"
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
