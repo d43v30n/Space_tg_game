@@ -57,6 +57,7 @@ async def init_fight(message: Message, enemy_id, state: State):
 
         if current_health <= 0:  # enemy win
             jump_home_task = await m.player_dead(user_id)
+            keyboard = await kb.keyboard_selector(state)
             await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left. You will now respawn at home", reply_markup=keyboard)
             await state.clear()
             await state.set_state(State.gps_state)
