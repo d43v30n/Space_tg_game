@@ -2,8 +2,8 @@
    "0": {
       "name": "Zac the Baddest",
       "shortname": "zac_the_baddest",
-      "description" : "some descr",
-	  "type":"unknown",
+      "description": "some descr",
+      "type": "unknown",
       "stats": {
          "health": 50,
          "damage": 4,
@@ -22,16 +22,16 @@
          "exp": 10,
          "credits": 100,
          "it_name_1": {
-			 "droprate": 0.5,
-			 "scrap_metal":1
-			 }		 
+            "droprate": 0.5,
+            "scrap_metal": 1
+         }
       }
    },
    "1": {
       "name": "Zakie Badman",
       "shortname": "zakie_badmaan",
-      "description" : "some descr",
-	  "type":"unknown",
+      "description": "some descr",
+      "type": "unknown",
       "stats": {
          "health": 60,
          "damage": 5,
@@ -50,16 +50,16 @@
          "exp": 10,
          "credits": 100,
          "it_name_1": {
-			 "droprate": 0.5,
-			 "scrap_metal":1
-			 }
+            "droprate": 0.5,
+            "scrap_metal": 1
+         }
       }
    },
    "2": {
       "name": "Elon Musk",
       "shortname": "elon_musk",
       "description": "T0b! P!ZD@",
-	  "type":"unknown",
+      "type": "unknown",
       "stats": {
          "health": 1000,
          "damage": 100,
@@ -78,37 +78,249 @@
          "exp": 10,
          "credits": 100,
          "it_name_1": {
-			 "droprate": 0.5,
-			 "shields_for_beginner":1
-			 }
-	  }
+            "droprate": 0.5,
+            "shields_for_beginner": 1
+         }
+      }
    },
    "3": {
-      "name": "Peetusharij-2000",
-      "shortname": "peetusharij_2000",
-      "description": "some descr",
-	  "type":"unknown",
+      "name": "Void Reaver",
+      "shortname": "void_reaver",
+      "description": "A mysterious pirate who harnesses the power of the void to unleash devastating attacks.",
+      "type": "unknown",
       "stats": {
-         "health": 10,
-         "damage": 100000,
-         "armor": 100,
-         "shields": 100
+         "health": 150,
+         "damage": 20,
+         "armor": 10,
+         "shields": 12
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.05,
+         "min_loc": 10,
+         "max_loc": 12
+      },
+      "drop": {
+         "exp": 50,
+         "credits": 400
+      }
+   },
+   "4": {
+      "name": "Scavenger Joe",
+      "shortname": "scavenger_joe",
+      "description": "A low-level pirate known for scavenging scraps and avoiding direct conflict.",
+      "type": "unknown",
+      "stats": {
+         "health": 30,
+         "damage": 2,
+         "armor": 2,
+         "shields": 1
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "mob",
+         "race": "pirates",
+         "chance": 0.5,
+         "min_loc": 1,
+         "max_loc": 3
+      },
+      "drop": {
+         "exp": 5,
+         "credits": 50
+      }
+   },
+   "5": {
+      "name": "Rusty Blade",
+      "shortname": "rusty_blade",
+      "description": "Armed with a worn-out blade, this pirate relies on sheer brute force.",
+      "type": "unknown",
+      "stats": {
+         "health": 40,
+         "damage": 5,
+         "armor": 3,
+         "shields": 0
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "mob",
+         "race": "pirates",
+         "chance": 0.45,
+         "min_loc": 2,
+         "max_loc": 4
+      },
+      "drop": {
+         "exp": 7,
+         "credits": 60
+      }
+   },
+   "6": {
+      "name": "Vicious Vicky",
+      "shortname": "vicious_vicky",
+      "description": "A cunning pirate who uses her agility to strike quickly and retreat.",
+      "type": "unknown",
+      "stats": {
+         "health": 35,
+         "damage": 6,
+         "armor": 1,
+         "shields": 2
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "mob",
+         "race": "pirates",
+         "chance": 0.4,
+         "min_loc": 3,
+         "max_loc": 5
+      },
+      "drop": {
+         "exp": 8,
+         "credits": 70
+      }
+   },
+   "7": {
+      "name": "Blaster Baron",
+      "shortname": "blaster_baron",
+      "description": "Equipped with a powerful blaster, this pirate packs a punch from a distance.",
+      "type": "unknown",
+      "stats": {
+         "health": 50,
+         "damage": 8,
+         "armor": 2,
+         "shields": 3
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "mob",
+         "race": "pirates",
+         "chance": 0.35,
+         "min_loc": 4,
+         "max_loc": 6
+      },
+      "drop": {
+         "exp": 10,
+         "credits": 80
+      }
+   },
+   "8": {
+      "name": "Captain Steelheart",
+      "shortname": "captain_steelheart",
+      "description": "A veteran pirate captain known for leading ruthless raids on space freighters.",
+      "type": "unknown",
+      "stats": {
+         "health": 70,
+         "damage": 10,
+         "armor": 4,
+         "shields": 4
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "mob",
+         "race": "pirates",
+         "chance": 0.3,
+         "min_loc": 5,
+         "max_loc": 7
+      },
+      "drop": {
+         "exp": 15,
+         "credits": 100
+      }
+   },
+   "9": {
+      "name": "Ironclad Ivan",
+      "shortname": "ironclad_ivan",
+      "description": "Encased in heavy armor, this pirate can withstand tremendous damage.",
+      "type": "unknown",
+      "stats": {
+         "health": 100,
+         "damage": 12,
+         "armor": 8,
+         "shields": 2
       },
       "attributes": {
          "faction": "Space Pirates",
          "class": "bam",
-         "race": "martianin",
-         "chance": 0.5,
-         "min_loc": 18,
-         "max_loc": 18
+         "race": "pirates",
+         "chance": 0.25,
+         "min_loc": 6,
+         "max_loc": 8
       },
       "drop": {
-         "exp": 100,
-         "credits": 1000,
-		 "it_name_1": {
-			 "droprate": 0.5,
-			 "shields_for_beginner":1
-			 }
+         "exp": 20,
+         "credits": 150
+      }
+   },
+   "10": {
+      "name": "Plasma Raider X",
+      "shortname": "plasma_raider_x",
+      "description": "A notorious pirate wielding advanced plasma weaponry with devastating effect.",
+      "type": "unknown",
+      "stats": {
+         "health": 80,
+         "damage": 14,
+         "armor": 6,
+         "shields": 6
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "bam",
+         "race": "pirates",
+         "chance": 0.2,
+         "min_loc": 7,
+         "max_loc": 9
+      },
+      "drop": {
+         "exp": 25,
+         "credits": 200
+      }
+   },
+   "11": {
+      "name": "Nebula Marauder",
+      "shortname": "nebula_marauder",
+      "description": "A pirate with the ability to manipulate nebulae, creating tactical advantages.",
+      "type": "unknown",
+      "stats": {
+         "health": 90,
+         "damage": 16,
+         "armor": 5,
+         "shields": 8
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "bam",
+         "race": "pirates",
+         "chance": 0.15,
+         "min_loc": 8,
+         "max_loc": 10
+      },
+      "drop": {
+         "exp": 30,
+         "credits": 250
+      }
+   },
+   "12": {
+      "name": "Blackstar Corsair",
+      "shortname": "blackstar_corsair",
+      "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
+      "type": "unknown",
+      "stats": {
+         "health": 120,
+         "damage": 18,
+         "armor": 7,
+         "shields": 10
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.1,
+         "min_loc": 9,
+         "max_loc": 11
+      },
+      "drop": {
+         "exp": 40,
+         "credits": 300
       }
    }
 }
