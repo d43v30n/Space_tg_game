@@ -7,6 +7,7 @@ from handlers import errors
 
 
 COOLDOWN = 10
+COOLDOWN_HEAL = 10
 
 
 async def move_forward(user_id):
@@ -69,9 +70,14 @@ async def get_player_information(user_id, *args: str) -> list:
 
 
 async def restore_hp(user_id):
+    current_hp = await db_read_int("players", user_id, "current_health")
     max_hp = await db_read_int("players", user_id, "max_health")
-    await db_write_int("players", user_id, "current_health", max_hp)
-
+    if current_hp < max_hp:
+        sleep(COOLDOWN_HEAL)
+        await db_write_int("players", user_id, "current_health", max_hp)
+        return True
+    else:
+        return False
 
 async def player_dead(user_id):
     await db_write_int("players", user_id, "current_health", 1) # set 1 hp 
