@@ -59,22 +59,22 @@ async def adm_load_enemies_handler(message: Message, state: FSMContext) -> None:
 async def adm_load_items_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"Loading items from json to db", reply_markup=kb.admin_kb())
     await db.db_write_items_json()
-    
-    
+
+
 @router.message(State.admin, Command("load_materials"))
 async def adm_load_materials_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"Loading materials from json to db", reply_markup=kb.admin_kb())
-    await db.db_write_materials_json()    
+    await db.db_write_materials_json()
 
 
 @router.message(State.admin, Command("test"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
-    await state.set_state(State.item_selector)
-
+    enemy = "\"zac_the_baddest\""
+    # await state.set_state(State.item_selector)
+    await fight.init_fight(message, enemy, state)
 
 
 @router.message(State.admin, Command("add_materials"))
 async def adm_load_materials_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
-    
