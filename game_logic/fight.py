@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict
+from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict, db_write_dict_full
 import asyncio
 from random import randint
 import game_logic.mechanics as m
@@ -155,7 +155,7 @@ async def get_fight_drop(user_id, en_shortname):
                 it_shortname = item
                 text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
                 drop.append(text)
-                await add_pl_items(user_id, it_shortname, count)
+                #await add_pl_items(user_id, it_shortname, count)
     print("drop", drop)
 
 
@@ -197,16 +197,19 @@ async def timer():
 
 
 async def add_pl_items(user_id, it_shortname, count):
-    old_items = await db_read_dict("players", user_id, "pl_items")
-    print("234dfdss",old_items)
-    if old_items == {}: # if inventory is empty
-        new_items = old_items.update({it_shortname:count})
-        print("old count =", count)
-        db_write_dict("players", user_id, "pl_items", new_items, it_shortname)  # write complete new dictionary
+    pl_items = await db_read_dict("players", user_id, "pl_items")
+    print("before IF in add_pl_items",pl_items)
+    if pl_items.get(it_shortname, False): # if item is already in inventory
+        count_old = pl_items.get(it_shortname)
+        pl_items.update({it_shortname:count+count_old})
+        print("inside 1 IF in add_pl_items",pl_items)
+        print(f"adding item {it_shortname}, player owned count =", count, " + ", count_old)
     else:
-        print("if inventory is empty")
-        count = old_items.get(it_shortname)
-        db_write_dict("players", user_id, "pl_items", new_items, it_shortname)  # new function to update value in dictionary 
+        count_old = pl_items.get(it_shortname)
+        pl_items.update({it_shortname:count})
+        print(f"inventory was empty ({count_old}), adding {it_shortname} (x{count})")
+        print("inside 2 IF in add_pl_items",pl_items)
+    await db_write_dict_full("players", user_id, "pl_items", pl_items)  # new function to update value in dictionary 
 
 
 # async def add_pl_materials():

@@ -2,3 +2,5 @@
 /.venv
 /tg.db
 /__pycache__
+__pycache__/
+*.py[cod]
