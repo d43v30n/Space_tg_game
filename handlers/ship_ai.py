@@ -4,6 +4,7 @@ from aiogram.types import Message
 from game_logic import space_map, fight
 from game_logic import mechanics as m
 from game_logic.states import State
+from emojis import *
 
 from handlers import errors
 
@@ -13,7 +14,7 @@ import keyboards.main_kb as kb
 router = Router()
 
 
-@router.message(State.job, F.text == "Jump Home")
+@router.message(State.job, F.text == "{emoji}Jump Home".format(emoji=refresh_symbol ))
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -26,7 +27,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"You already here", reply_markup=keyboard)
 
 
-@router.message(State.confirmation, F.text == "Jump Home")
+@router.message(State.confirmation, F.text == "{emoji}Jump Home".format(emoji=refresh_symbol ))
 async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -46,7 +47,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await message.answer(f"Finally, Home!", reply_markup=kb.main_kb(gps))
 
 
-@router.message(State.confirmation, F.text != "Jump Home")
+@router.message(State.confirmation, F.text != "{emoji}Jump Home".format(emoji=refresh_symbol ))
 async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
     await state.clear()
     await state.set_state(State.gps_state)
@@ -58,7 +59,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await message.answer(f"aborted home jump!", reply_markup=keyboard)
 
 
-@router.message(State.job, F.text == "Travel forward")
+@router.message(State.job, F.text == "{emoji}Travel Forward".format(emoji=play_button ))
 async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -161,7 +162,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
 
 # busy traveling forward or home
-@router.message(F.text.in_({"Travel forward", "Jump Home"}))
+@router.message(F.text.in_({"{emoji}Travel Forward".format(emoji=play_button ), "{emoji}Jump Home".format(emoji=refresh_symbol )}))
 async def busy_travel_handler(message: Message, state: FSMContext) -> None:
     state_name = await state.get_state()
     if state_name is not None:
@@ -181,7 +182,7 @@ async def busy_travel_handler(message: Message, state: FSMContext) -> None:
         await errors.unknown_input_handler(message, state)
 
 
-@router.message(State.job, F.text == "Mine here")
+@router.message(State.job, F.text == "{emoji}Mine here".format(emoji=pickaxe))
 async def mining_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -195,7 +196,7 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"No ore around", reply_markup=keyboard)
 
 
-@router.message(State.job, F.text == "Scan area")
+@router.message(State.job, F.text == "{emoji}Scan area".format(emoji=magnifying_glass))
 async def scanning_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]

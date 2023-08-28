@@ -5,7 +5,7 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.enums import ParseMode
 
 from app import database as db
-
+from emojis import *
 from game_logic import mechanics as m
 from game_logic import space_map
 from game_logic.states import *
@@ -118,7 +118,7 @@ async def ship_ai_busy(message: Message, state: FSMContext) -> None:
 
 
 # Terminal should be always accessable
-@router.message(F.text == "Terminal")
+@router.message(F.text == "{emoji}Terminal".format(emoji=computer))
 async def terminal_menu(message: Message, state: FSMContext) -> None:
     try:
         await message.answer(f"You opened your Terminal Menu.", reply_markup=kb.terminal_kb())
