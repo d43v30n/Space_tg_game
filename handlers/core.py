@@ -170,7 +170,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
         # 1 docking timer
         # 2 essage docked with plenty of station information
     else:
-        errors.unknown_input_handler(message, state)
+        await errors.unknown_input_handler(message, state)
 
 
 @router.message(State.docked, F.text == "Dock to Ringworld station")
