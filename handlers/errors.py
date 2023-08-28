@@ -14,11 +14,14 @@ async def reset_handler(message: Message, state=None, gps=None, jobtext=None) ->
     if state is not None and jobtext is not None:
         state_data = await state.get_data()
         gps = state_data["gps_state"]
+        jobtext = state_data["job"]
     if state is not None and jobtext is None:
+        gps = await m.get_location(message.from_user.id)
         jobtext = f"floating at {gps}"
     elif state is None and jobtext is None:
         jobtext = f"floating somewhere.."
     else:  # state is None and jobtext is not None
+        jobtext = f"floating somewhere.."
         gps = await m.get_location(message.from_user.id)
     await state.clear()
     await state.set_state(State.gps_state)
