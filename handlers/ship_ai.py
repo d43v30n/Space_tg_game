@@ -62,6 +62,9 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
 async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
+    if gps is None:
+        print("debug 1231")
+        gps = await m.get_location(message.from_user.id)
     loc_name = await space_map.name(gps)  # old loc
     keyboard = await kb.keyboard_selector(state)
     await state.set_state(State.travelling)

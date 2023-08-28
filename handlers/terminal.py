@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
+from game_logic.states import State
 from game_logic import mechanics as m
 # from game_logic import enregy_manager as em
 
@@ -74,3 +75,28 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"Here is your Inventory:\n{inv}", reply_markup=keyboard)
     #except:
     #    await errors.unknown_input_handler(message, state)
+
+
+@router.message(F.text.startswith("/item_"))
+async def item_selector_handler(message: Message, state: FSMContext) -> None:
+    text = message.text
+    if text.startswith("/item_"):
+        try:
+            id = str(message.text)
+            flag = id.split("_")[0][1:]
+            id = int(id.split("_")[1])
+            print(f"applying {flag} with id {id}")
+        except:
+            print("ERROR")
+
+        state_data = await state.get_data()
+        gps = state_data["gps_state"]
+        job_text = f"Aplied id {id}"
+        await state.clear()
+        await state.set_state(State.gps_state)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        await state.update_data(job=job_text)
+    else:
+        print(f"wrong_command_exception: ", message.text)
+        await errors.unknown_input_handler(message, state)

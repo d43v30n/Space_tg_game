@@ -46,7 +46,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/add_materials", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))

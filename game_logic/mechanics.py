@@ -145,7 +145,8 @@ async def show_items(user_id) -> str:
     for it_shortname, count in invent_items.items():
         it_shortname = f"\"{it_shortname}\""
         it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
-        text += f"- {it_name} (x{count})\n"
+        it_id = await db_read_full_name("items", it_shortname, "i_id", "it_shortname")
+        text += f"- {it_name} (x{count}) /item_{it_id}\n"
     return text
 
 
@@ -157,3 +158,5 @@ async def show_materials(user_id) -> str:
         mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
         text += f"- {mt_name} (x{count})\n"
     return text
+
+

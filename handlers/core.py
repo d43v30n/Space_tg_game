@@ -60,13 +60,13 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 <b>Commander</b>, get ready to dive into the cosmos and experience the thrill of interstellar travel, resource management, and intense turn-based battles. In Conquerors of the Void, you'll navigate uncharted galaxies, discover alien civilizations, and test your strategic prowess in a mix of <b>RPG</b> and <i>survival</i> gameplay.
 
 <b>Getting Started:</b>
-To start your cosmic adventure, simply type <code>/start</code>. You'll receive a sturdy starship, a handful of resources, and a loyal crew to begin your journey.
+To start your cosmic adventure, simply type <code>/start</code>. You'll receive a sturdy starship, a handful of resources, and a loyal AI to begin your journey.
 
 <b>Gameplay Basics:</b>
-- <b>Exploration:</b> Navigate through star systems by using commands like <code>/travel</code>. Unveil new planets, anomalies, and celestial wonders. Keep an eye on your ship's fuel and hull integrity!
-- <b>Upgrades:</b> Enhance your starship, crew skills, and weaponry using resources you collect during your travels. Access the upgrade menu with <code>/upgrades</code>.
+- <b>Exploration:</b> Navigate through star systems by using your Ship AI. Unveil new planets, anomalies, and celestial wonders. Keep an eye on your ship's HP and Energy!
+- <b>Upgrades:</b> Enhance your starship, crew skills, and weaponry using resources you collect during your travels. Access the upgrade menu with  /upgrades.
 - <b>Trading:</b> Visit space stations to trade resources, buy equipment, and sell rare discoveries. Engage in commerce to bolster your resources and fund your adventure.
-- <b>Turn-Based Battles:</b> Encounter hostile space creatures and rival explorers. Engage in tactical turn-based battles using your crew's unique abilities and your ship's advanced weaponry.
+- <b>Turn-Based Battles:</b> Encounter hostile space creatures and rival explorers.
 - <b>Strategy:</b> Every decision matters. Choose your path wisely, manage your resources efficiently, and strategize during battles to emerge victorious.
 
 <b>RPG Elements:</b>
@@ -177,14 +177,3 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     await message.answer(f"Already docked", reply_markup=keyboard)
-
-
-@router.message(State.item_selector)
-async def item_selector_handler(message: Message, state: FSMContext) -> None:
-    try:
-        id = str(message.text)
-        flag = id.split("_")[0][1:]
-        id = int(id.split("_")[1])
-        return flag, id
-    except:
-        await message.answer(f"Wrong input!", reply_markup=kb.admin_kb())
