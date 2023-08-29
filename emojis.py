@@ -10,3 +10,4 @@ flying_saucer = '\U0001F6F8'  # 🛸
 gps_emj = '\U0001F6F0'  # 🛰️
 heart = '\U00002764'  # ❤️
 energy_smiley = '\U0001F50B'  # 🔋
+void_emj = '\U0001F30C' # 🌌
