@@ -16,6 +16,8 @@ class State(StatesGroup):
     item_selector = State()
     repairing = State()
     adm_add_item = State()
+    scanning = State()
+    mining = State()
 
     # under_attack = State()
     # running = State()

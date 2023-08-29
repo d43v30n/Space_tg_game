@@ -21,7 +21,7 @@ async def reset_handler(message: Message, state=None, gps=None, jobtext=None) ->
     elif state is None and jobtext is None:
         jobtext = f"floating somewhere.."
     else:  # state is None and jobtext is not None
-        jobtext = f"floating somewhere.."
+        jobtext = f"floating somewhere2.."
         gps = await m.get_location(message.from_user.id)
     await state.clear()
     await state.set_state(State.gps_state)

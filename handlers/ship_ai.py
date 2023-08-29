@@ -167,35 +167,51 @@ async def busy_travel_handler(message: Message, state: FSMContext) -> None:
 async def mining_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
+    text_job=state_data["job"]
     loc_name = await space_map.name(gps)
     loc_features = await space_map.features(gps)
     current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
-    if "mining" in loc_features:
+    if "mining" in loc_features and not text_job.startswith("after mining at"):
         if current_energy >=1:
-            await state.update_data(job=f"mining in progress")
-            await energy_manager.use_one_energy(message.from_user.id)
-            await message.answer(f"Mining at {loc_name}", reply_markup=keyboard)
+            await state.set_state(State.mining)
+            await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
+            result = m.mine_here(message.from_user.id)
+            await message.answer("Mining at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+            jobtext = "after mining at {loc_name}".format(loc_name=loc_name)
+            await state.clear()
+            await state.set_state(State.gps_state)
+            await state.update_data(gps_state=gps)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
         else:
-            await message.answer(f"Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+            await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
     else:
-        await message.answer(f"No ore around", reply_markup=keyboard)
+        await message.answer("No ore around", reply_markup=keyboard)
 
 
 @router.message(State.job, F.text == "{emoji}Scan area".format(emoji=magnifying_glass))
 async def scanning_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
+    text_job=state_data["job"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
     current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
-    if "mining" in loc_features:
+    if "mining" in loc_features and not text_job.startswith("scanning."):
         if current_energy >=1:
-            await state.update_data(job=f"found ore, mining is possible")
-            await energy_manager.use_one_energy(message.from_user.id)
-            await message.answer(f"Scanning {loc_name}, found ore", reply_markup=keyboard)
+            await state.set_state(State.scanning)
+            await state.update_data(job="scanning, found ore, mining is possible", scanning="scanning in progress...")
+            result = m.scan_area(message.from_user.id)
+            await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+            jobtext = "after mining at {loc_name}".format(loc_name=loc_name)
+            await state.clear()
+            await state.set_state(State.gps_state)
+            await state.update_data(gps_state=gps)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
         else:
-            await message.answer(f"Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+            await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
     else:
         await message.answer(f"Scanning {loc_name}, found nothing", reply_markup=keyboard)
