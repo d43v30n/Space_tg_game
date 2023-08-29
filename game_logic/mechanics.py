@@ -135,49 +135,49 @@ async def rand_event(gps) -> str:
     # event = f"\"{choice(events)}\""
     events_list = [key for key in events.keys()]
     event = choice(events_list)
-    print("event of choice is :", event)
+    # print("event of choice is :", event)
 
     if event == "enemies":
         # print("rolled for enemie...")
         possible_enemies = await db_read_enemies_attributes(gps)
-        print("possible_enemies ", possible_enemies)
+        # print("possible_enemies ", possible_enemies)
         for en_shortname in possible_enemies:
             chance = await db_read_details("enemies", en_shortname, "attributes", "en_shortname")
             chance = chance.get("chance")
             # print(F"trying to spawn {en_shortname} with chance={chance}")
             if await roll_chance(chance):
-                print("spawning ", en_shortname)
+                # print("spawning ", en_shortname)
                 return "enemies", en_shortname
 
     elif event == "mining_event":
         event_details = await space_map.event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
-            print("mining_event ", event_details)
+            # print("mining_event ", event_details)
             return "mining_event", event_details
         else:
-            print("nothing mined")
+            # print("nothing mined")
             return None, None
 
     elif event == "scanning_event":
         event_details = await space_map.event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
-            print("scanning_event ", event_details)
+            # print("scanning_event ", event_details)
             return "scanning_event", event_details
         else:
-            print("nothing scanned")
+            # print("nothing scanned")
             return "map_event", None
 
     elif event == "encounter":
         event_details = await space_map.event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
-            print("scanning_event ", event_details)
-            return "scanning_event", event_details
+            # print("encounter ", event_details)
+            return "encounter", event_details
         else:
-            print("nothing scanned")
-        return "encounter", None
+            # print("nothing scanned")
+            return "encounter", None
 
     elif event == "None":
         return None, None
