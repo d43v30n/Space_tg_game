@@ -36,7 +36,7 @@ async def undock_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"You are undocked and free to go", reply_markup=keyboard)
 
 
-@router.message(State.docked, F.text == "Bar")
+@router.message(State.docked, F.text == "{emoji}Shipyard".format(emoji=flying_saucer))
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     heal_ok = await m.restore_hp(message.from_user.id)

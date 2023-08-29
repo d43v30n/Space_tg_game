@@ -6,3 +6,4 @@ computer = '\U0001F4BB'  # 💻
 rocket = '\U0001F680'  # 🚀
 barrel = '\U0001F6E2'  # 🛢️
 paperbox = '\U0001F4E6'  # 📦
+flying_saucer = '\U0001F6F8'  # 🛸

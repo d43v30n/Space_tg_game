@@ -69,7 +69,7 @@ def at_location_kb(gps) -> ReplyKeyboardMarkup:
 
 def ringworld_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="Bar")
+    kb.button(text="{emoji}Shipyard".format(emoji=flying_saucer))
     kb.button(text="Undock")
     kb.button(text="{emoji}Terminal".format(emoji=computer))
     kb.adjust(2)
