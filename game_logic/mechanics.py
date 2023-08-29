@@ -133,28 +133,28 @@ async def rand_event(gps) -> str:
     # event = f"\"{choice(events)}\""
     event = choice(events)
     if event == "enemies":
-        print("rolled for enemie...")
+        # print("rolled for enemie...")
         possible_enemies = await db_read_enemies_attributes(gps)
         print("possible_enemies ", possible_enemies)
         for en_shortname in possible_enemies:
             chance = await db_read_details("enemies", en_shortname, "attributes", "en_shortname")
             chance = chance.get("chance")
-            print(F"trying to spawn {en_shortname} with chance={chance}")
+            # print(F"trying to spawn {en_shortname} with chance={chance}")
             if await roll_chance(chance):
                 print("spawning ", en_shortname)
                 return "enemies", en_shortname
     elif event == "drop":
-        print("event is drop")
+        # possible_materials = 
         chance = 0
         if await roll_chance(chance):
-            print("triggered drop")
+
             drop_name = None
             return "drop", drop_name
         else:
             print("no drop")
             return None, None
     elif event == "":  # other events
-        print("event == ''")
+        print("event == ''   this should not happen!!")
         pass
     return None, None
 
