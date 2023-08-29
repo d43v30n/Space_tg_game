@@ -106,7 +106,7 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     
     # keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
     row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
-    await message.answer("{row1}{row2}\n\We are currently free to go. \n\nAny further orders, cap?".format(row1=row1, row2=row2), reply_markup=kb.ship_ai_kb())
+    await message.answer("{row1}{row2}\nShip AI: \"We are currently free to go.\" \n\nAny further orders, cap?".format(row1=row1, row2=row2), reply_markup=kb.ship_ai_kb())
 
 
 @ router.message(F.text == "{emoji}Ship AI".format(emoji=rocket))
