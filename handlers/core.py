@@ -61,7 +61,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 @ router.message(Command("help"))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"""<b>Welcome to Conquerors of the Void Bot - Your Galactic Journey Begins! 🚀</b>
+    await message.answer("""<b>Welcome to Conquerors of the Void Bot - Your Galactic Journey Begins! 🚀</b>
 
 <i>Embark on an Epic Space Exploration Adventure! 🌌</i>
 
