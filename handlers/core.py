@@ -29,7 +29,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         print(
             f"New user registered: id={message.from_user.id}, username=@{message.from_user.username}")
         await db.cmd_start_db(message.from_user.id)
-        await message.answer(f"Welcome, @{message.from_user.username}. ", reply_markup=kb.main_kb(0))
+        await message.answer(f"🌌Void greets you commander!\n\n@{message.from_user.username}, you are in trouble, but you should figure it out on your own. Try to asking your 🚀Ship AI for help.", reply_markup=kb.main_kb(0))
         gps = await m.get_location(message.from_user.id)
         # lore messages for new player guidance
         await state.set_state(State.gps_state)
@@ -89,7 +89,7 @@ For a list of available commands, type <code>/commands</code>. If you need assis
 """, reply_markup=kb.main_kb(0), parse_mode=ParseMode.HTML)
 
 
-@router.message(State.job, F.text == "Ship AI")
+@router.message(State.job, F.text == "{emoji}Ship AI".format(emoji=rocket))
 async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
@@ -101,17 +101,17 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
         pass
     else:  # if player is busy
         pass
-    # keyboard = await kb.keyboard_selector(state, "Ship AI")
+    # keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
     await message.answer(f"Ship AI reporting.\n\n\"We are currently at {loc_name}, this is {gps} parsek from {home}\", \n\nAny further orders, cap?", reply_markup=kb.ship_ai_kb())
 
 
-@router.message(F.text == "Ship AI")
+@router.message(F.text == "{emoji}Ship AI".format(emoji=rocket))
 async def ship_ai_busy(message: Message, state: FSMContext) -> None:
     try:
         state_data = await state.get_data()
         gps = state_data["gps_state"]
         travelling = state_data["travelling"]
-        keyboard = await kb.keyboard_selector(state, "Ship AI")
+        keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
         await message.answer(f"Your Ship AI is busy right now ({travelling})", reply_markup=keyboard)
     except:
         await errors.unknown_input_handler(message, state)

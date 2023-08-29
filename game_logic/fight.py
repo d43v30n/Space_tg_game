@@ -36,6 +36,7 @@ async def init_fight(message: Message, enemy_id, state: State):
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
+        print("looping..")
         eff_player_dmg = max(player_dmg - en_shld, 0)
         en_hp = max(0, en_hp - eff_player_dmg)
 

@@ -12,7 +12,7 @@ async def keyboard_selector(state, menu=None):
     #     keyboard = ringworld_kb()
     # elif job_name == "found ore, mining is possible":
     #     keyboard = at_location_kb(gps)
-    # elif menu == "Ship AI":
+    # elif menu == "{emoji}Ship AI".format(emoji=rocket):
     #     keyboard = ship_ai_kb()
     # else:
     #     keyboard = main_kb(gps)
@@ -21,7 +21,7 @@ async def keyboard_selector(state, menu=None):
 
 def core_kb(gps=None) -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="Ship AI")
+    kb.button(text="{emoji}Ship AI".format(emoji=rocket))
     kb.button(text="{emoji}Terminal".format(emoji=computer))
     return kb
 
