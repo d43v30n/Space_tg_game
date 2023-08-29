@@ -7,3 +7,6 @@ rocket = '\U0001F680'  # 🚀
 barrel = '\U0001F6E2'  # 🛢️
 paperbox = '\U0001F4E6'  # 📦
 flying_saucer = '\U0001F6F8'  # 🛸
+gps_emj = '\U0001F6F0'  # 🛰️
+heart = '\U00002764'  # ❤️
+energy_smiley = '\U0001F50B'  # 🔋

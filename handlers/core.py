@@ -120,8 +120,9 @@ async def ship_ai_busy(message: Message, state: FSMContext) -> None:
 # Terminal should be always accessable
 @router.message(F.text == "{emoji}Terminal".format(emoji=computer))
 async def terminal_menu(message: Message, state: FSMContext) -> None:
+    row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
     try:
-        await message.answer(f"You opened your Terminal Menu.", reply_markup=kb.terminal_kb())
+        await message.answer("{row1}{row2}\n{row3}".format(row1=row1, row2=row2, row3=row3), reply_markup=kb.terminal_kb())
     except:
         await errors.unknown_input_handler(message, state)
 

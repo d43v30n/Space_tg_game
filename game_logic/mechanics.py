@@ -4,6 +4,7 @@ from game_logic import space_map
 from random import randint, choice
 import keyboards.main_kb as kb
 from handlers import errors
+from emojis import *
 
 
 COOLDOWN = 10
@@ -42,6 +43,25 @@ async def get_max_energy(user_id):
 
 async def get_current_energy(user_id):
     return await db_read_int("players", user_id, "current_energy")
+
+
+async def get_main_text_row(user_id):
+    attributes = await get_player_information(user_id, "attributes")
+    information = await get_player_information(user_id, "current_health", "max_health", "credits", "experience", "level", "main_quest", "side_quest", "ship_type", "abilities")
+    faction = attributes[0].get("faction")
+    gps = await get_location(user_id)
+    loc_name = await space_map.name(gps)
+    energy = await get_energy(user_id)
+    current_energy, max_energy = energy  # Unpack the energy tuple
+    current_health, max_health, player_credits, experience, level, main_quest, side_quest, ship_type, abilities = information
+
+    # Use .format() for string formatting with custom emojis
+    row1= "{loc_name}\n".format(loc_name=loc_name)
+    row2 = "{gps_emj}{gps} {heart}{current_health}/{max_health} {energy_smiley}{current_energy}/{max_energy}".format(
+        gps_emj=gps_emj, gps=gps, heart=heart, current_health=current_health, max_health=max_health, current_energy=current_energy, max_energy=max_energy, energy_smiley=energy_smiley
+    )
+    row3 = f"Faction: {faction}\n\nShip Stats:\nHP: {current_health}/{max_health},\nmain_quest: {main_quest}\nside_quest: {side_quest}\n\nCredits: {player_credits}\nExperience: {experience}\nLevel: {level}"
+    return row1, row2, row3
 
 
 async def get_player_information(user_id, *args: str) -> list:

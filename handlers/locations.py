@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
+from emojis import *
 from game_logic import space_map
 from game_logic import mechanics as m
 from game_logic.states import State, is_busy

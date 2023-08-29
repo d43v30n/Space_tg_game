@@ -21,8 +21,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     keyboard = await kb.keyboard_selector(state)
     gps = state_data["gps_state"]
-    faction = await m.get_player_information(message.from_user.id, "attributes")
-    faction = faction[0].get("faction")
+    attributes = await m.get_player_information(message.from_user.id, "attributes")
+    faction = attributes[0].get("faction")
     energy = await m.get_energy(message.from_user.id)
     current_energy = energy[0]
     max_energy = energy[1]
@@ -55,7 +55,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         await errors.unknown_input_handler(message, state)
 
 
-@router.message(F.text == "Cargo")
+@router.message(F.text == "{emoji}Cargo".format(emoji=barrel))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
     #try:
     state_data = await state.get_data()
@@ -67,7 +67,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     #    await errors.unknown_input_handler(message, state)
 
 
-@router.message(F.text == "Inventory")
+@router.message(F.text == "{emoji}Inventory".format(emoji=paperbox))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
     #try:
     state_data = await state.get_data()
