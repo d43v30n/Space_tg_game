@@ -2,6 +2,8 @@ from app.database import *
 from asyncio import sleep  # create_task, gather
 from game_logic import space_map
 from random import randint, choice
+from game_logic import energy_manager
+from game_logic.states import State
 import game_logic.inventory as invent
 import keyboards.main_kb as kb
 from handlers import errors
@@ -135,55 +137,56 @@ async def rand_event(gps) -> str:
     # event = f"\"{choice(events)}\""
     events_list = [key for key in events.keys()]
     event = choice(events_list)
-    # print("event of choice is :", event)
+    print("event of choice is :", event)
 
     if event == "enemies":
-        # print("rolled for enemie...")
+        print("rolled for enemie...")
         possible_enemies = await db_read_enemies_attributes(gps)
-        # print("possible_enemies ", possible_enemies)
+        print("possible_enemies ", possible_enemies)
         for en_shortname in possible_enemies:
             chance = await db_read_details("enemies", en_shortname, "attributes", "en_shortname")
             chance = chance.get("chance")
-            # print(F"trying to spawn {en_shortname} with chance={chance}")
+            print(F"trying to spawn {en_shortname} with chance={chance}")
             if await roll_chance(chance):
-                # print("spawning ", en_shortname)
+                print("spawning ", en_shortname)
                 return "enemies", en_shortname
 
     elif event == "mining_event":
         event_details = await space_map.event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
-            # print("mining_event ", event_details)
+            print("mining_event ", event_details)
             return "mining_event", event_details
         else:
-            # print("nothing mined")
+            print("nothing mined")
             return None, None
 
     elif event == "scanning_event":
         event_details = await space_map.event_details(gps)
         chance = event_details["chance"]
+        # if level ok
         if await roll_chance(chance):
-            # print("scanning_event ", event_details)
-            return "scanning_event", event_details
+            print("scanning_event ", event_details)
+            return f"scanning_event", event_details
         else:
-            # print("nothing scanned")
+            print("nothing scanned")
             return "map_event", None
 
     elif event == "encounter":
         event_details = await space_map.event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
-            # print("encounter ", event_details)
+            print("encounter ", event_details)
             return "encounter", event_details
         else:
-            # print("nothing scanned")
+            print("nothing scanned")
             return "encounter", None
 
     elif event == "None":
-        return None, None
+        return None
     else:  # other events
         print("event exception ''   this should not happen!! [mechanics.py]")
-        return None, None
+        return None
 
 
 async def show_items(user_id) -> str:
@@ -210,7 +213,6 @@ async def show_materials(user_id) -> str:
 async def mine_here(user_id, gps: int) -> dict:
     possible_ores = await db_parse_all_ores(gps)
     drop_text = []
-    print("possible_ores ", possible_ores)
     for ore in possible_ores:
         mt_name, mt_shortname, mt_drop = ore
         mt_drop_dict = eval(mt_drop)  # Convert mt_drop string to a dictionary
@@ -226,10 +228,45 @@ async def mine_here(user_id, gps: int) -> dict:
                 drop_text.append(
                     f"You found {mt_name} (x{count}) with chance {chance} ")
 
-                print("LOOOOOOT", drop_text)
     await sleep(COOLDOWN)
     return "\n".join(drop_text)
 
 
-async def scan_area(user_id):
-    await sleep(COOLDOWN)
+async def scan_area(message, state):
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    text_job = state_data["job"]
+    loc_features = await space_map.features(gps)
+    loc_name = await space_map.name(gps)
+    current_energy = await get_current_energy(message.from_user.id)
+    keyboard = await kb.keyboard_selector(state)
+
+    if current_energy >= 1:
+        await state.set_state(State.scanning)
+        await state.update_data(job="scanning, found ore, mining is possible", scanning="scanning in progress...")
+        await energy_manager.use_one_energy(message.from_user.id)
+        await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+        await sleep(COOLDOWN)
+        await message.answer("Found:\n".format(), reply_markup=keyboard)
+        jobtext = "after scanning at {loc_name}".format(loc_name=loc_name)
+        await state.clear()
+        await state.set_state(State.gps_state)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        # await state.update_data(job=jobtext)
+    else:
+        await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+
+
+async def trigger_scan_event(message, state):
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    text_job = state_data["job"]
+    loc_features = await space_map.features(gps)
+    loc_name = await space_map.name(gps)
+    keyboard = await kb.keyboard_selector(state)
+    event_details = await space_map.event_details(gps)
+    drop = event_details["scanning_event"]
+    exp = drop["experience"]
+    await invent.add_pl_exp(message.from_user.id, )
+    await message.answer("Received:\nExperienceP{exp}".format(exp=exp))

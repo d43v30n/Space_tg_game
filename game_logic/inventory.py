@@ -1,4 +1,14 @@
-from app.database import db_read_dict, db_write_dict_full
+from app.database import db_read_dict, db_write_dict_full, db_write_int, db_read_int
+
+
+async def add_pl_exp(user_id, exp):
+    old_exp = await db_read_int("players", user_id, "experience")
+    await db_write_int("players", user_id, "experience", old_exp + exp)
+
+
+async def add_pl_credits(user_id, got_credits):
+    old_credits = await db_read_int("players", user_id, "credits")
+    await db_write_int("players", user_id, "credits", old_credits + got_credits)
 
 
 async def add_pl_items(user_id, it_shortname, count):

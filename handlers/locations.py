@@ -39,18 +39,21 @@ async def undock_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.docked, F.text == "{emoji}Shipyard".format(emoji=flying_saucer))
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
-    keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"You leaved your vessel for repair. Wait until it is ready", reply_markup=keyboard)
-    state_data = await state.get_data()
-    gps = state_data["gps_state"]
-    loc_name=await space_map.name(gps)
-    repairing_text = "Parked at shipyard at {loc_name}".format(loc_name=loc_name)
-    await state.set_state(State.repairing)
-    await state.update_data(job="started repairing at {loc_name}".format(loc_name=loc_name), docked="docked to {loc_name}".format(loc_name=loc_name), repairing=repairing_text)
-    heal_ok = await m.restore_hp(message.from_user.id)
-    if heal_ok:
+    max_health, current_health = await m.get_player_information(message.from_user.id, "max_health", "current_health")
+    if current_health <= max_health:
+        keyboard = await kb.keyboard_selector(state)
+        state_data = await state.get_data()
+        gps = state_data["gps_state"]
+        loc_name = await space_map.name(gps)
+        repairing_text = "Parked at shipyard at {loc_name}".format(
+            loc_name=loc_name)
+        await message.answer(f"You leaved your vessel for repair. Wait until it is ready", reply_markup=keyboard)
+        await state.set_state(State.repairing)
+        await state.update_data(job="started repairing at {loc_name}".format(loc_name=loc_name), docked="docked to {loc_name}".format(loc_name=loc_name), repairing=repairing_text)
+        await m.restore_hp(message.from_user.id)
         await message.answer("Your Ship has been repaired", reply_markup=keyboard)
-        jobtext_str = "Parked at shipyard at {loc_name}".format(loc_name=loc_name)
+        jobtext_str = "Parked at shipyard at {loc_name}".format(
+            loc_name=loc_name)
         await errors.reset_handler(message, state, gps=gps, jobtext=jobtext_str)
         await state.set_state(State.docked)
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")

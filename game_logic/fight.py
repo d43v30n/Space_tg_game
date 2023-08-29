@@ -37,7 +37,7 @@ async def init_fight(message: Message, enemy_id, state: State):
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
-        # print("looping..")
+        print("looping..")
         eff_player_dmg = max(player_dmg - en_shld, 0)
         en_hp = max(0, en_hp - eff_player_dmg)
 
@@ -129,19 +129,11 @@ async def get_fight_drop(user_id, en_shortname):
     # credits
     got_credits = en_drop.get("credits")
     drop.append(f"Credits: {got_credits}")
-    old_credits = await db_read_int("players", user_id, "credits")
-    await db_write_int("players", user_id, "credits", old_credits + got_credits)
-
+    await invent.add_pl_credits(user_id, got_credits)
     # exp
     exp = en_drop.get("exp")
     drop.append(f"Experience : {exp}")
-    old_exp = await db_read_int("players", user_id, "experience")
-    await db_write_int("players", user_id, "experience", old_exp + exp)
-
-
-
-
-
+    await invent.add_pl_exp(user_id, exp)
 
     # items
     en_drop_items = {key: value for key, value in en_drop.items() if key.startswith(
@@ -164,13 +156,6 @@ async def get_fight_drop(user_id, en_shortname):
                 text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
                 await invent.add_pl_items(user_id, it_shortname[1:-1], count)
                 drop.append(text)
-
-
-
-
-
-
-
 
     # materials
     old_materials = await db_read_int("players", user_id, "pl_materials")
@@ -205,4 +190,3 @@ async def timer():
     print("awaiting timer")
     await asyncio.sleep(60)
     print("timer ended")
-

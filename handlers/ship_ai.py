@@ -72,8 +72,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     await state.update_data(travelling="Travelling Forward")
     if await space_map.read_map(gps+1):
         await message.answer("Engines starting, space exploration proceeding..", reply_markup=kb.main_kb(gps+1))
-        new_loc_gps = await m.move_forward(message.from_user.id)
-        gps = new_loc_gps
+        # new_loc_gps = await m.move_forward(message.from_user.id)
+        # gps = new_loc_gps
         loc_features = await space_map.features(gps)
         loc_name = await space_map.name(gps)
         await state.clear()
@@ -83,8 +83,12 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(job=f"rolling for event")
 
         event = await m.rand_event(gps)
-        print(event[0])
-
+        # print(event[0])
+        if not event:
+            await state.update_data(job=f"just arrived to {loc_name}")
+            keyboard = await kb.keyboard_selector(state)
+            await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+            return
         # event check
         if event[0] is None:
             print("entered 1")
@@ -118,7 +122,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         elif event[0] == "scanning_event":
             print("entered 4")
             keyboard = await kb.keyboard_selector(state)
-            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
+            scans = event[1]["scans_required"]
+            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}_{scans}")
             if "mining" in loc_features:
                 await message.answer(f"You arrived to {loc_name}, Try to scan here (scan event).", reply_markup=keyboard)
             else:
@@ -178,8 +183,9 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
             await state.set_state(State.mining)
             await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
             await energy_manager.use_one_energy(message.from_user.id)
-            result = m.mine_here(message.from_user.id)
             await message.answer("Mining at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+            result = await m.mine_here(message.from_user.id, gps)
+            await message.answer("Found:\n{result}".format(result=result), reply_markup=keyboard)
             jobtext = "after mining at {loc_name}".format(loc_name=loc_name)
             await state.clear()
             await state.set_state(State.gps_state)
@@ -188,8 +194,16 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
             await state.update_data(job=jobtext)
         else:
             await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+    elif text_job.startswith("after scanning at") and text_job.endswith(""):
+        pass
     else:
         await message.answer("No ore around", reply_markup=keyboard)
+
+
+@router.message(State.mining)
+async def busy_mining_handler(message: Message, state: FSMContext) -> None:
+    keyboard = await kb.keyboard_selector(state)
+    await message.answer("You are busy mining", reply_markup=keyboard)
 
 
 @router.message(State.job, F.text == "{emoji}Scan area".format(emoji=magnifying_glass))
@@ -199,22 +213,32 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
     text_job = state_data["job"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
-    current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
+
+    if text_job.endswith("scanning_event_3"):
+        await m.scan_area(message, state)
+        jobtext = "just arrived to {loc_name} and encountered scanning_event_2".format(
+            loc_name=loc_name)
+        await state.set_state(State.job)
+        await state.update_data(job=jobtext)
+        return
+    elif text_job.endswith("scanning_event_2"):
+        await m.scan_area(message, state)
+        jobtext = "just arrived to {loc_name} and encountered scanning_event_1".format(
+            loc_name=loc_name)
+        await state.set_state(State.job)
+        await state.update_data(job=jobtext)
+        return
+    elif text_job.endswith("scanning_event_1"):
+        jobtext = "after scanning at {loc_name}".format(
+            loc_name=loc_name)
+        await state.set_state(State.job)
+        await state.update_data(job=jobtext)
+        # TRIGGER EVENT HERE
+        print("TRIGGER EVENT HERE")
+        return
+
     if "mining" in loc_features and not text_job.startswith("scanning."):
-        if current_energy >= 1:
-            await state.set_state(State.scanning)
-            await state.update_data(job="scanning, found ore, mining is possible", scanning="scanning in progress...")
-            await energy_manager.use_one_energy(message.from_user.id)
-            result = m.scan_area(message.from_user.id)
-            await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
-            jobtext = "after mining at {loc_name}".format(loc_name=loc_name)
-            await state.clear()
-            await state.set_state(State.gps_state)
-            await state.update_data(gps_state=gps)
-            await state.set_state(State.job)
-            await state.update_data(job=jobtext)
-        else:
-            await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+        await m.scan_area(message, state)
     else:
         await message.answer(f"Scanning {loc_name}, found nothing", reply_markup=keyboard)
