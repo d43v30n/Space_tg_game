@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Define the path to the Space_tg_game directory
+game_dir="./Space_tg_game"
+
+# Change directory to the game directory
+cd "$game_dir"
+
 # Find the PID of the running "python3 main.py" process
 pid=$(ps x | grep "python3 main.py" | grep -v grep | awk '{print $1}')
 
@@ -16,6 +22,9 @@ if [ -f "nohup.out" ]; then
     rm "nohup.out"
     echo "nohup.out removed."
 fi
+
+# Perform a git pull to update the code
+git pull
 
 # Start "nohup python3 main.py &"
 nohup python3 main.py &
