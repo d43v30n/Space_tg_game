@@ -33,7 +33,7 @@ async def init_fight(message: Message, enemy_id, state: State):
     en_arm = enemy_stats.get("armor")
     en_shld = enemy_stats.get("shields")
 
-    await message.answer(f"You are fighting against {en_name}. Yor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
+    await message.answer(f"You are fighting against {en_name}.\nYor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
@@ -60,13 +60,13 @@ async def init_fight(message: Message, enemy_id, state: State):
         if current_health <= 0:  # enemy win
             jump_home_task = await m.player_dead(user_id)
             keyboard = await kb.keyboard_selector(state)
-            await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left. You will now respawn at home", reply_markup=keyboard)
+            await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld", reply_markup=kb.core_kb(gps))
             await state.clear()
             await state.set_state(State.gps_state)
             gps = await m.get_location(message.from_user.id)
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
-            await state.update_data(job=f"Loose after fight with {enemy_id}")
+            await state.update_data(job=f"Dead after fight with {enemy_id}")
             return "loose"
         await db_write_int("players", user_id, "current_health", current_health)
         # print("en_hp = ", en_hp)
