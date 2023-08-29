@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from game_logic import space_map, fight, loot
+from game_logic import energy_manager, space_map, fight, loot
 from game_logic import mechanics as m
 from game_logic.states import State
 from emojis import *
@@ -169,10 +169,15 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     loc_name = await space_map.name(gps)
     loc_features = await space_map.features(gps)
+    current_energy = m.get_current_energy()
     keyboard = await kb.keyboard_selector(state)
     if "mining" in loc_features:
-        await state.update_data(job=f"mining in progress")
-        await message.answer(f"Mining at {loc_name}", reply_markup=keyboard)
+        if current_energy >=1:
+            await state.update_data(job=f"mining in progress")
+            await energy_manager.use_one_energy(message.from_user.id)
+            await message.answer(f"Mining at {loc_name}", reply_markup=keyboard)
+        else:
+            await message.answer(f"Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
     else:
         await message.answer(f"No ore around", reply_markup=keyboard)
 
@@ -183,9 +188,14 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
+    current_energy = m.get_current_energy()
     keyboard = await kb.keyboard_selector(state)
     if "mining" in loc_features:
-        await state.update_data(job=f"found ore, mining is possible")
-        await message.answer(f"Scanning {loc_name}, found ore", reply_markup=keyboard)
+        if current_energy >=1:
+            await state.update_data(job=f"found ore, mining is possible")
+            await energy_manager.use_one_energy(message.from_user.id)
+            await message.answer(f"Scanning {loc_name}, found ore", reply_markup=keyboard)
+        else:
+            await message.answer(f"Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
     else:
         await message.answer(f"Scanning {loc_name}, found nothing", reply_markup=keyboard)
