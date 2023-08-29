@@ -57,7 +57,7 @@ async def db_start():
                 "mt_shortname TEXT, "
                 "type TEXT, "
                 "price INTEGER, "
-                "conver TEXT)"),
+                "mt_drop TEXT)"),
     db.commit()
 
 
@@ -197,26 +197,13 @@ async def db_write_materials_json():
         shortname = json.dumps(output.get("shortname"))
         mat_type = json.dumps(output.get("type"))
         price = json.dumps(output.get("price"))
-        conver = json.dumps(output.get("conver"))       
+        drop = json.dumps(output.get("drop"))
         item_exists = cur.execute(
             "SELECT * FROM materials WHERE mt_name = ?", (name,)).fetchone()
         if not item_exists:
             cur.execute(
-                "INSERT INTO materials (mt_name, mt_shortname, type, price, conver) VALUES (?, ?, ?, ?, ?)", (name, shortname, mat_type, price, conver))
+                "INSERT INTO materials (mt_name, mt_shortname, type, price, mt_drop) VALUES (?, ?, ?, ?, ?)", (name, shortname, mat_type, price, drop))
             db.commit()
-
-
-#
-# -----need functions to save jsons from db
-# -----and also to add materials from admin
-
-    # cur.execute("CREATE TABLE IF NOT EXISTS materials("
-                # "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                # "mt_name TEXT, "
-                # "mt_shortname TEXT, "
-                # "type TEXT, "
-                # "price INTEGER, "
-                # "conver TEXT)"),
 
 
 # read what enemies can spawn at loc
@@ -256,3 +243,10 @@ async def db_read_full_name(table, value, column, search_col) -> str:
             return "No matching value found."
     except Exception as e:
         return f"Error: {e}"
+    
+
+async def db_parse_mt_drop_locations(gps):
+    cur.execute("SELECT mt_name, mt_shortname, mt_drop FROM materials")
+    materials = cur.fetchall()
+
+    return materials

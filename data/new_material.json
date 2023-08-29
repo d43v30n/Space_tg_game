@@ -5,6 +5,7 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
          "min_loc": 2,
          "max_loc": 5
@@ -16,9 +17,10 @@
       "type": "garbage",
       "price": 0,
       "drop": {
+         "count":1,
          "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "min_loc": 1,
+         "max_loc": 3
       }
    },
    "2": {
@@ -27,9 +29,10 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
          "min_loc": 2,
-         "max_loc": 5
+         "max_loc": 7
       }
    },
    "3": {
@@ -38,9 +41,10 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "min_loc": 5,
+         "max_loc": 8
       }
    },
    "4": {
@@ -49,9 +53,10 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "min_loc": 9,
+         "max_loc": 12
       }
    },
    "5": {
@@ -60,6 +65,7 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
          "min_loc": 2,
          "max_loc": 5
@@ -71,6 +77,7 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
          "min_loc": 2,
          "max_loc": 5
@@ -82,9 +89,10 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "min_loc": 13,
+         "max_loc": 15
       }
    },
    "8": {
@@ -93,9 +101,10 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "min_loc": 16,
+         "max_loc": 18
       }
    },
    "9": {
@@ -104,9 +113,10 @@
       "type": "craft",
       "price": 1,
       "drop": {
+         "count":1,
          "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "min_loc": 16,
+         "max_loc": 18
       }
    }
 }

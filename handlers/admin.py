@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from os import getenv
 
 from app import database as db
+from game_logic import loot
 from game_logic import mechanics as m
 from game_logic.states import State
 from handlers import errors
@@ -69,11 +70,12 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
 
 @router.message(State.admin, Command("test"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
-    current_state = await state.get_state()
-    enemy = "\"zac_the_baddest\""
-    # await state.set_state(State.item_selector)
-    result = await fight.get_fight_drop(message.from_user.id, enemy)
-    print("DROP = ", result)
+    out = await loot.init_loot_at_loc(2)
+    print("out", out)
+    # for i in range(18):
+    #     gps=i
+    #     result = await db.db_parse_mt_drop_locations(gps)
+    #     print(f"DROP at {gps} = ", result)
 
 
 @router.message(State.admin, Command("add_materials"))

@@ -2,6 +2,7 @@ from aiogram.types import Message
 from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict, db_write_dict_full, db_read_full_name
 import asyncio
 from random import randint
+import game_logic.inventory as invent
 import game_logic.mechanics as m
 from game_logic.space_map import *
 from game_logic.states import State
@@ -161,7 +162,7 @@ async def get_fight_drop(user_id, en_shortname):
                 it_shortname = f"\"{it_shortname}\""
                 it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
                 text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
-                await add_pl_items(user_id, it_shortname[1:-1], count)
+                await invent.add_pl_items(user_id, it_shortname[1:-1], count)
                 drop.append(text)
 
 
@@ -191,7 +192,7 @@ async def get_fight_drop(user_id, en_shortname):
                 mt_shortname = f"\"{mt_shortname}\""
                 mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
                 text = f"Dropped {mt_name} (x{count}) with drop chance {droprate}."
-                await add_pl_materials(user_id, mt_shortname[1:-1], count)
+                await invent.add_pl_materials(user_id, mt_shortname[1:-1], count)
                 drop.append(text)
     print("drop", drop)
 
@@ -205,40 +206,3 @@ async def timer():
     await asyncio.sleep(60)
     print("timer ended")
 
-
-async def add_pl_items(user_id, it_shortname, count):
-    pl_items = await db_read_dict("players", user_id, "pl_items")
-    print("before IF in add_pl_items", pl_items)
-    if pl_items.get(it_shortname, False):  # if item is already in inventory
-        count_old = pl_items.get(it_shortname)
-        pl_items.update({it_shortname: count+count_old})
-        print("inside 1 IF in add_pl_items", pl_items)
-        print(
-            f"adding item {it_shortname}, player owned count =", count, " + ", count_old)
-    else:
-        count_old = pl_items.get(it_shortname)
-        pl_items.update({it_shortname: count})
-        print(
-            f"inventory was empty ({count_old}), adding {it_shortname} (x{count})")
-        print("inside 2 IF in add_pl_items", pl_items)
-    # new function to update value in dictionary
-    await db_write_dict_full("players", user_id, "pl_items", pl_items)
-
-
-async def add_pl_materials(user_id, mt_shortname, count):
-    pl_materials = await db_read_dict("players", user_id, "pl_materials")
-    print("before IF in add_pl_materials", pl_materials)
-    if pl_materials.get(mt_shortname, False):  # if item is already in inventory
-        count_old = pl_materials.get(mt_shortname)
-        pl_materials.update({mt_shortname: count+count_old})
-        print("inside 1 IF in add_pl_materials", pl_materials)
-        print(
-            f"adding item {mt_shortname}, player owned count =", count, " + ", count_old)
-    else:
-        count_old = pl_materials.get(mt_shortname)
-        pl_materials.update({mt_shortname: count})
-        print(
-            f"inventory was empty ({count_old}), adding {mt_shortname} (x{count})")
-        print("inside 2 IF in add_pl_materials", pl_materials)
-    # new function to update value in dictionary
-    await db_write_dict_full("players", user_id, "pl_materials", pl_materials)

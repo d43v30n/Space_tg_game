@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from game_logic import space_map, fight
+from game_logic import space_map, fight, loot
 from game_logic import mechanics as m
 from game_logic.states import State
 from emojis import *
@@ -92,7 +92,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
             print("entered 1")
             await state.update_data(job=f"just arrived to {loc_name}")
-
+            
             #
             #
             #       loc features function
@@ -122,29 +122,11 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
             print("entered 3")
             await state.update_data(job=f"just arrived to {loc_name}")
-            #
-            #
-            #       loc features function
-            #
-            #
+            loot_result = await loot.init_loot_at_loc(message.from_user.id, gps)
             if "mining" in loc_features:
-                await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
+                await message.answer(f"You arrived to {loc_name}, Try to scan here.\n{loot_result}", reply_markup=keyboard)
             else:
-                await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
-        elif event[0] == "shipyard":
-            keyboard = await kb.keyboard_selector(state)
-
-            print("entered 4")
-            await state.update_data(job=f"just arrived to {loc_name}")
-            #
-            #
-            #       loc features function
-            #
-            #
-            if "mining" in loc_features:
-                await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
-            else:
-                await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+                await message.answer(f"You arrived to {loc_name}\n{loot_result}", reply_markup=keyboard)
         else:
             await state.update_data(job=f"just arrived to {loc_name}")
             keyboard = await kb.keyboard_selector(state)
