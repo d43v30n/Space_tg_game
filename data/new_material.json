@@ -1,24 +1,112 @@
 {
    "0": {
       "name": "Scrap Metal",
-      "shortname":"scrap_metal",
+      "shortname": "scrap_metal",
       "type": "craft",
-      "price":1,
-      "conver": {
-         "chance":0.35,
-         "min_loc":2,
-         "max_loc":5
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
       }
    },
    "1": {
       "name": "Oil Barrel",
-      "shortname":"oil_barrel",
+      "shortname": "oil_barrel",
       "type": "garbage",
-      "price":0,
-      "conver": {
-         "chance":0.35,
-         "min_loc":2,
-         "max_loc":5
+      "price": 0,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "2": {
+      "name": "Old Wires",
+      "shortname": "old_wires",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "3": {
+      "name": "Steel Coil",
+      "shortname": "steel_coil",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "4": {
+      "name": "Nanoconductors",
+      "shortname": "nanoconductors",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "5": {
+      "name": "Used Fuel Cell",
+      "shortname": "used_fuel_cell",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "6": {
+      "name": "Damaged Solar Panel",
+      "shortname": "damaged_solar_panel",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "7": {
+      "name": "Flask of Nanofluid",
+      "shortname": "flask_of_nanofluid",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "8": {
+      "name": "Zip-tied Carbon Nanotubes",
+      "shortname": "zip_tied_carbon_nanotubes",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "9": {
+      "name": "3D-Printing material",
+      "shortname": "3d_printing_material",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
       }
    }
 }
