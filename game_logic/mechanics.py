@@ -2,6 +2,7 @@ from app.database import *
 from asyncio import sleep  # create_task, gather
 from game_logic import space_map
 from random import randint, choice
+import game_logic.inventory as invent
 import keyboards.main_kb as kb
 from handlers import errors
 from emojis import *
@@ -26,14 +27,6 @@ async def jump_home(user_id):
     home = 0
     await sleep(COOLDOWN)
     await db_write_int("players", user_id, "location", home)
-
-
-async def mine_here(user_id):
-    await sleep(COOLDOWN)
-
-
-async def scan_area(user_id):
-    await sleep(COOLDOWN)
 
 
 async def teleport_home(user_id):
@@ -64,7 +57,7 @@ async def get_main_text_row(user_id):
     current_health, max_health, player_credits, experience, level, main_quest, side_quest, ship_type, abilities = information
 
     # Use .format() for string formatting with custom emojis
-    row1= "{loc_name}\n".format(loc_name=loc_name)
+    row1 = "{loc_name}\n".format(loc_name=loc_name)
     row2 = "{gps_emj}{gps} {heart}{current_health}/{max_health} {energy_smiley}{current_energy}/{max_energy}".format(
         gps_emj=gps_emj, gps=gps, heart=heart, current_health=current_health, max_health=max_health, current_energy=current_energy, max_energy=max_energy, energy_smiley=energy_smiley
     )
@@ -107,8 +100,9 @@ async def restore_hp(user_id):
     else:
         return False
 
+
 async def player_dead(user_id):
-    await db_write_int("players", user_id, "current_health", 1) # set 1 hp 
+    await db_write_int("players", user_id, "current_health", 1)  # set 1 hp
     await jump_home(user_id)
 
 
@@ -126,8 +120,8 @@ async def get_energy(user_id) -> tuple:
 #     task_scheduler.enter(offset, 1, create_task, (function(*args),))
 
 async def roll_chance(chance: float) -> bool:
-    '''chance is float, min 0.00001 max 1'''
-    val = randint(1, 100000) / 100000
+    '''chance is float, in 0.001 max 1'''
+    val = randint(1, 1000) / 1000
     if val <= float(chance):
         print(f"Chance of {chance} rolled for True with {val}")
         return True
@@ -137,9 +131,12 @@ async def roll_chance(chance: float) -> bool:
 
 
 async def rand_event(gps) -> str:
-    events = await space_map.event(gps)
+    events = await space_map.events(gps)
     # event = f"\"{choice(events)}\""
-    event = choice(events)
+    events_list = [key for key in events.keys()]
+    event = choice(events_list)
+    print("event of choice is :", event)
+
     if event == "enemies":
         # print("rolled for enemie...")
         possible_enemies = await db_read_enemies_attributes(gps)
@@ -151,20 +148,42 @@ async def rand_event(gps) -> str:
             if await roll_chance(chance):
                 print("spawning ", en_shortname)
                 return "enemies", en_shortname
-    elif event == "drop":
-        # possible_materials = 
-        chance = 0
-        if await roll_chance(chance):
 
-            drop_name = None
-            return "drop", drop_name
+    elif event == "mining_event":
+        event_details = await space_map.event_details(gps)
+        chance = event_details["chance"]
+        if await roll_chance(chance):
+            print("mining_event ", event_details)
+            return "mining_event", event_details
         else:
-            print("no drop")
+            print("nothing mined")
             return None, None
-    elif event == "":  # other events
-        print("event == ''   this should not happen!!")
-        pass
-    return None, None
+
+    elif event == "scanning_event":
+        event_details = await space_map.event_details(gps)
+        chance = event_details["chance"]
+        if await roll_chance(chance):
+            print("scanning_event ", event_details)
+            return "scanning_event", event_details
+        else:
+            print("nothing scanned")
+            return "map_event", None
+
+    elif event == "encounter":
+        event_details = await space_map.event_details(gps)
+        chance = event_details["chance"]
+        if await roll_chance(chance):
+            print("scanning_event ", event_details)
+            return "scanning_event", event_details
+        else:
+            print("nothing scanned")
+        return "encounter", None
+
+    elif event == "None":
+        return None, None
+    else:  # other events
+        print("event exception ''   this should not happen!! [mechanics.py]")
+        return None, None
 
 
 async def show_items(user_id) -> str:
@@ -188,3 +207,31 @@ async def show_materials(user_id) -> str:
     return text
 
 
+async def init_encounter_at_loc(user_id, gps: int) -> dict:
+    all_encounter = await db_parse_mt_drop_locations(gps)
+    drop_text = []
+
+    for material in all_encounter:
+        mt_name, mt_shortname, mt_drop = material
+        mt_drop_dict = eval(mt_drop)  # Convert mt_drop string to a dictionary
+        count = mt_drop_dict.get("count", 1)
+        chance = mt_drop_dict.get("chance", 1)
+        min_loc = mt_drop_dict.get("min_loc", 0)
+        max_loc = mt_drop_dict.get("max_loc", 0)
+
+        if min_loc <= gps <= max_loc:
+            flag = await roll_chance(chance)
+            if flag:
+                await invent.add_pl_materials(user_id, mt_shortname, count)
+                drop_text.append(
+                    f"You found {mt_name} (x{count}) with chance {chance} ")
+                print("LOOOOOOT", drop_text)
+    return "\n".join(drop_text)
+
+
+async def mine_here(user_id):
+    await sleep(COOLDOWN)
+
+
+async def scan_area(user_id):
+    await sleep(COOLDOWN)

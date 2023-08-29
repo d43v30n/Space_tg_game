@@ -7,18 +7,27 @@
          "consortium",
          "bazaar"
       ],
-      "events": "None"
+      "events_weights": {"None":100}
    },
    "1": {
       "name": "Orion",
       "type": "1",
-      "features": [
-         "None"
-      ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "features": {
+         "None":100
+      },
+      "events_weights": {
+         "None": 3,
+         "enemies":5, 
+         "encounter":3
+      },
+      "event_details":{
+         "level":1,
+         "scans_required":2,
+         "chance":0.999,
+         "drop": {
+            "experience":100
+         }
+      }
    },
    "2": {
       "name": "Mars",
@@ -26,10 +35,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "3": {
       "name": "Neruba",
@@ -37,10 +46,10 @@
       "features": [
          "mining"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "4": {
       "name": "Amidala",
@@ -48,10 +57,10 @@
       "features": [
          "mining"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "5": {
       "name": "Void-404",
@@ -59,10 +68,10 @@
       "features": [
          "mining"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "6": {
       "name": "Zapravka, STO",
@@ -71,10 +80,19 @@
          "drop",
          "shipyard"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5,
+         "scanning_event":1
+      },
+      "event_details": {
+         "level":2,
+         "scans_required":2,
+         "chance":0.9,
+         "drop": {
+            "experience":100
+         }
+      }
    },
    "7": {
       "name": "Lumina",
@@ -82,10 +100,19 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5,
+         "mining_event":1
+      },
+      "event_details": {
+         "level":2,
+         "scans_required":2,
+         "chance":0.9,
+         "drop": {
+            "experience":100
+         }
+      }
    },
    "8": {
       "name": "Velyka Bila Tserkva",
@@ -93,10 +120,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "9": {
       "name": "Dune",
@@ -104,10 +131,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "10": {
       "name": "Seraphis",
@@ -115,10 +142,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "11": {
       "name": "Celestia",
@@ -126,10 +153,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "12": {
       "name": "Zephyr",
@@ -137,10 +164,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "13": {
       "name": "Verdant Nova",
@@ -148,10 +175,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "14": {
       "name": "Echelon",
@@ -159,10 +186,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "15": {
       "name": "Ombra",
@@ -170,10 +197,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "16": {
       "name": "Thalassia",
@@ -181,10 +208,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "17": {
       "name": "Quanta",
@@ -192,10 +219,10 @@
       "features": [
          "None"
       ],
-      "events": [
-         "enemies",
-         "drop"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    },
    "18": {
       "name": "Caelum",
@@ -203,10 +230,9 @@
       "features": [
          "mining"
       ],
-      "events": [
-         "enemies",
-         "drop",
-         "mining_event"
-      ]
+      "events_weights": {
+         "None": 3,
+         "enemies":5
+      }
    }
 }

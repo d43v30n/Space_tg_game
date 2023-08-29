@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from game_logic import energy_manager, space_map, fight, loot
+from game_logic import energy_manager, space_map, fight
 from game_logic import mechanics as m
 from game_logic.states import State
 from emojis import *
@@ -64,7 +64,6 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
     if gps is None:
-        print("debug 1231")
         gps = await m.get_location(message.from_user.id)
     loc_name = await space_map.name(gps)  # old loc
     keyboard = await kb.keyboard_selector(state)
@@ -88,41 +87,35 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
 
         # event check
         if event[0] is None:
-            keyboard = await kb.keyboard_selector(state)
-
             print("entered 1")
+            keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}")
-            
-            #
-            #
-            #       loc features function
-            #
-            #
             if "mining" in loc_features:
                 await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
             else:
                 await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+
         elif event[0] == "enemies":
-            keyboard = await kb.keyboard_selector(state)
             print("entered 2")
+            keyboard = await kb.keyboard_selector(state)
             enemy_shorname = event[1]
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
-            await state.update_data(job=f"just arrived to {loc_name} and encountered {event}")
+            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
             # fight_result -> "win" of "loose" str
             fight_result = await fight.init_fight(message, enemy_shorname, state)
-            print(f"fight_result, {fight_result}")
             if fight_result[0] == "win":
                 await message.answer(f"Figth result is : {fight_result[0]}.\n\nReceived:\n{fight_result[1]}", reply_markup=keyboard)
-        elif event[0] == "drop":
-            keyboard = await kb.keyboard_selector(state)
 
+        elif event[0] == "mining_event":
             print("entered 3")
-            await state.update_data(job=f"just arrived to {loc_name}")
-            loot_result = await loot.init_loot_at_loc(message.from_user.id, gps)
-            if "mining" in loc_features:
-                await message.answer(f"You arrived to {loc_name}, Try to scan here.\n{loot_result}", reply_markup=keyboard)
-            else:
-                await message.answer(f"You arrived to {loc_name}\n{loot_result}", reply_markup=keyboard)
+            keyboard = await kb.keyboard_selector(state)
+            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
+
+        elif event[0] == "scanning_event":
+            print("entered 4")
+            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
+            pass
+
         else:
             await state.update_data(job=f"just arrived to {loc_name}")
             keyboard = await kb.keyboard_selector(state)
@@ -167,13 +160,13 @@ async def busy_travel_handler(message: Message, state: FSMContext) -> None:
 async def mining_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
-    text_job=state_data["job"]
+    text_job = state_data["job"]
     loc_name = await space_map.name(gps)
     loc_features = await space_map.features(gps)
     current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     if "mining" in loc_features and not text_job.startswith("after mining at"):
-        if current_energy >=1:
+        if current_energy >= 1:
             await state.set_state(State.mining)
             await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
             await energy_manager.use_one_energy(message.from_user.id)
@@ -195,13 +188,13 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
 async def scanning_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
-    text_job=state_data["job"]
+    text_job = state_data["job"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
     current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     if "mining" in loc_features and not text_job.startswith("scanning."):
-        if current_energy >=1:
+        if current_energy >= 1:
             await state.set_state(State.scanning)
             await state.update_data(job="scanning, found ore, mining is possible", scanning="scanning in progress...")
             await energy_manager.use_one_energy(message.from_user.id)

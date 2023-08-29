@@ -1,0 +1,50 @@
+{
+   "01": {
+      "name": "Palladium Ore",
+      "shortname": "palladium_ore",
+      "type": "ore",
+      "price": 1000,
+      "drop": {
+         "count":1,
+         "chance": 0.3,
+         "min_loc": 3,
+         "max_loc": 6
+      }
+   },
+   "02": {
+      "name": "Gold Ore",
+      "shortname": "gold_ore",
+      "type": "ore",
+      "price": 1,
+      "drop": {
+         "count":10000,
+         "chance": 0.25,
+         "min_loc": 5,
+         "max_loc": 9
+      }
+   },
+   "03": {
+      "name": "Nanofractium Ore",
+      "shortname": "nanofractium_ore",
+      "type": "ore",
+      "price": 1,
+      "drop": {
+         "count":100000,
+         "chance": 0.2,
+         "min_loc": 7,
+         "max_loc": 13
+      }
+   },
+   "04": {
+      "name": "Platinum Ore",
+      "shortname": "platinum_ore",
+      "type": "ore",
+      "price": 1,
+      "drop": {
+         "count":5000,
+         "chance": 0.1,
+         "min_loc": 4,
+         "max_loc": 8
+      }
+   }
+}

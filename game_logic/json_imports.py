@@ -16,11 +16,11 @@ def read_players() -> list:
 def player_abilities():
     new_player = read_players()
     return json.dumps(new_player.get("abilities"))
-    
+
 
 def player_ship_slots():
     new_player = read_players()
-    return json.dumps(new_player.get("ship_slots"))    
+    return json.dumps(new_player.get("ship_slots"))
 
 
 def player_pl_items():
@@ -64,6 +64,18 @@ def read_items() -> list:
 
 def read_materials() -> list:
     read_items_file_path = "data/new_material.json"
+    try:
+        with open(read_items_file_path, "r") as json_file:
+            new_item = json.load(json_file)
+            return new_item
+    except json.JSONDecodeError as e:
+        print(f"JSON decoding error: {e}")
+    except FileNotFoundError:
+        print(f"File not found: {read_items_file_path}")
+
+
+def read_ores() -> list:
+    read_items_file_path = "data/new_ores.json"
     try:
         with open(read_items_file_path, "r") as json_file:
             new_item = json.load(json_file)
