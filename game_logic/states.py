@@ -14,7 +14,7 @@ class State(StatesGroup):
     admin = State()
     fighting = State()
     item_selector = State()
-    
+    repairing = State()
     adm_add_item = State()
 
     # under_attack = State()

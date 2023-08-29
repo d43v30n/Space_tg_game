@@ -26,4 +26,5 @@ async def init_loot_at_loc(user_id, gps: int) -> dict:
             if flag:
                 await invent.add_pl_materials(user_id, mt_shortname, count)
                 drop_text.append(f"You found {mt_name} (x{count}) with chance {chance} ")
+                print("LOOOOOOT", drop_text)
     return "\n".join(drop_text)

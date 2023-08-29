@@ -63,7 +63,7 @@ async def init_fight(message: Message, enemy_id, state: State):
             await state.clear()
             await state.set_state(State.gps_state)
             gps = await m.get_location(message.from_user.id)
-            await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld", reply_markup=kb.core_kb(gps))
+            await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld", reply_markup=kb.main_kb(gps))
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=f"Dead after fight with {enemy_id}")
