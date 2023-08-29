@@ -103,23 +103,19 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     gps=state_data["gps_state"]
     if gps is None:
         gps=await m.get_location(message.from_user.id)
-    loc_name=await space_map.name(gps)
-    home=await space_map.name(0)
-    if None:  # if action is possible
-        pass
-    else:  # if player is busy
-        pass
+    
     # keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
-    await message.answer(f"Ship AI reporting.\n\n\"We are currently at {loc_name}, this is {gps} parsek from {home}\", \n\nAny further orders, cap?", reply_markup=kb.ship_ai_kb())
+    row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
+    await message.answer("{row1}{row2}\n\We are currently free to go. \n\nAny further orders, cap?".format(row1=row1, row2=row2), reply_markup=kb.ship_ai_kb())
 
 
 @ router.message(F.text == "{emoji}Ship AI".format(emoji=rocket))
 async def ship_ai_busy(message: Message, state: FSMContext) -> None:
     try:
-        state_data=await state.get_data()
-        gps=state_data["gps_state"]
-        travelling=state_data["travelling"]
-        keyboard=await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
+        state_data = await state.get_data()
+        gps = state_data["gps_state"]
+        travelling = state_data["travelling"]
+        keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
         await message.answer(f"Your Ship AI is busy ({travelling})", reply_markup=keyboard)
     except:
         await errors.unknown_input_handler(message, state)
