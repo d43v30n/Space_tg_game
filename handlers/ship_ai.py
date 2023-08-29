@@ -72,8 +72,8 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
     await state.update_data(travelling="Travelling Forward")
     if await space_map.read_map(gps+1):
         await message.answer("Engines starting, space exploration proceeding..", reply_markup=kb.main_kb(gps+1))
-        # new_loc_gps = await m.move_forward(message.from_user.id)
-        # gps = new_loc_gps
+        new_loc_gps = await m.move_forward(message.from_user.id)
+        gps = new_loc_gps
         loc_features = await space_map.features(gps)
         loc_name = await space_map.name(gps)
         await state.clear()
