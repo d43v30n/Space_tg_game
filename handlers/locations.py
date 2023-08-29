@@ -40,8 +40,9 @@ async def undock_handler(message: Message, state: FSMContext) -> None:
 @router.message(State.docked, F.text == "{emoji}Shipyard".format(emoji=flying_saucer))
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
+    await message.answer(f"You leaved your vessel for repair. Wait until it is ready", reply_markup=keyboard)
     heal_ok = await m.restore_hp(message.from_user.id)
     if heal_ok:
-        await message.answer(f"Restored full HP", reply_markup=keyboard)
+        await message.answer(f"Your Ship has been repaired", reply_markup=keyboard)
     else:
-        await message.answer(f"Already at full HP", reply_markup=keyboard)
+        await message.answer(f"Your Ship is already fully repaired", reply_markup=keyboard)

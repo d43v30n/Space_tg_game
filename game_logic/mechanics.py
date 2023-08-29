@@ -8,7 +8,7 @@ from emojis import *
 
 
 COOLDOWN = 10
-COOLDOWN_HEAL = 10
+COOLDOWN_HEAL = 20
 
 
 async def move_forward(user_id):
