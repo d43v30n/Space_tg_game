@@ -112,7 +112,7 @@ async def ship_ai_busy(message: Message, state: FSMContext) -> None:
         gps = state_data["gps_state"]
         travelling = state_data["travelling"]
         keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
-        await message.answer(f"Your Ship AI is busy right now ({travelling})", reply_markup=keyboard)
+        await message.answer(f"Your Ship AI is busy ({travelling})", reply_markup=keyboard)
     except:
         await errors.unknown_input_handler(message, state)
 
