@@ -57,14 +57,7 @@ async def db_start():
                 "mt_shortname TEXT, "
                 "type TEXT, "
                 "price INTEGER, "
-                "mt_drop TEXT)")
-    cur.execute("CREATE TABLE IF NOT EXISTS ores("
-                "ore_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                "ore_name TEXT, "
-                "ore_shortname TEXT, "
-                "type TEXT, "
-                "price INTEGER, "
-                "ore_drop TEXT)"),
+                "mt_drop TEXT)"),
     db.commit()
 
 
@@ -82,7 +75,6 @@ async def cmd_start_db(user_id):  # initialize new player
         await db_write_items_json()
         await db_write_enemies_json()
         await db_write_materials_json()
-        await db_write_ores_json()
 
 
 async def new_user_check(user_id) -> bool:
@@ -215,23 +207,6 @@ async def db_write_materials_json():
             db.commit()
 
 
-async def db_write_ores_json():
-    items = json_imports.read_ores()
-    for row in items:
-        output = items[row]
-        name = json.dumps(output.get("name"))
-        shortname = json.dumps(output.get("shortname"))
-        mat_type = json.dumps(output.get("type"))
-        price = json.dumps(output.get("price"))
-        drop = json.dumps(output.get("drop"))
-        item_exists = cur.execute(
-            "SELECT * FROM ores WHERE ore_name = ?", (name,)).fetchone()
-        if not item_exists:
-            cur.execute(
-                "INSERT INTO ores (ore_name, ore_shortname, type, price, ore_drop) VALUES (?, ?, ?, ?, ?)", (name, shortname, mat_type, price, drop))
-            db.commit()
-
-
 # read what enemies can spawn at loc
 async def db_read_enemies_attributes(gps):
     data = cur.execute(
@@ -271,8 +246,9 @@ async def db_read_full_name(table, value, column, search_col) -> str:
         return f"Error: {e}"
 
 
-async def db_parse_mt_drop_locations(gps):
-    cur.execute("SELECT ore_name, ore_shortname, ore_drop FROM ores")
+async def db_parse_all_ores(gps):
+    name = f"\"ore\""
+    cur.execute(
+        "SELECT mt_name, mt_shortname, mt_drop FROM materials WHERE type = ?", (name,))
     materials = cur.fetchall()
-
     return materials

@@ -24,7 +24,7 @@ ADMIN_ID = getenv("ADMIN_ID")
 
 @router.message(State.admin, Command("test"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
-    pass
+    await m.mine_here(message.from_user.id, 5)
 
 
 @router.message(Command("admin"))
@@ -88,5 +88,5 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
     for i in range(18):
         gps = i
-        result = await db.db_parse_mt_drop_locations(gps)
+        result = await db.db_parse_ore_drop_locations(gps)
         print(f"DROP at {gps} = ", result)

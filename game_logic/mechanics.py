@@ -207,12 +207,12 @@ async def show_materials(user_id) -> str:
     return text
 
 
-async def init_encounter_at_loc(user_id, gps: int) -> dict:
-    all_encounter = await db_parse_mt_drop_locations(gps)
+async def mine_here(user_id, gps: int) -> dict:
+    possible_ores = await db_parse_all_ores(gps)
     drop_text = []
-
-    for material in all_encounter:
-        mt_name, mt_shortname, mt_drop = material
+    print("possible_ores ", possible_ores)
+    for ore in possible_ores:
+        mt_name, mt_shortname, mt_drop = ore
         mt_drop_dict = eval(mt_drop)  # Convert mt_drop string to a dictionary
         count = mt_drop_dict.get("count", 1)
         chance = mt_drop_dict.get("chance", 1)
@@ -222,15 +222,13 @@ async def init_encounter_at_loc(user_id, gps: int) -> dict:
         if min_loc <= gps <= max_loc:
             flag = await roll_chance(chance)
             if flag:
-                await invent.add_pl_materials(user_id, mt_shortname, count)
+                await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
                     f"You found {mt_name} (x{count}) with chance {chance} ")
+
                 print("LOOOOOOT", drop_text)
-    return "\n".join(drop_text)
-
-
-async def mine_here(user_id):
     await sleep(COOLDOWN)
+    return "\n".join(drop_text)
 
 
 async def scan_area(user_id):

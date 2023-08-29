@@ -93,7 +93,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             if "mining" in loc_features:
                 await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
             else:
-                await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
+                await message.answer(f"You arrived to {loc_name}.", reply_markup=keyboard)
 
         elif event[0] == "enemies":
             print("entered 2")
@@ -110,11 +110,19 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             print("entered 3")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
+            if "mining" in loc_features:
+                await message.answer(f"You arrived to {loc_name}, Try to mine here (mine event).", reply_markup=keyboard)
+            else:
+                await message.answer(f"You arrived to {loc_name} (mine event).", reply_markup=keyboard)
 
         elif event[0] == "scanning_event":
             print("entered 4")
+            keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
-            pass
+            if "mining" in loc_features:
+                await message.answer(f"You arrived to {loc_name}, Try to scan here (scan event).", reply_markup=keyboard)
+            else:
+                await message.answer(f"You arrived to {loc_name} (scan event).", reply_markup=keyboard)
 
         else:
             await state.update_data(job=f"just arrived to {loc_name}")
