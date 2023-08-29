@@ -12,7 +12,7 @@
    },
    "1": {
       "name": "Oil Barrel",
-      "shortname":"olil_barrel",
+      "shortname":"oil_barrel",
       "type": "garbage",
       "price":0,
       "conver": {

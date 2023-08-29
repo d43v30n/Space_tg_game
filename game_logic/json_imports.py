@@ -23,6 +23,16 @@ def player_ship_slots():
     return json.dumps(new_player.get("ship_slots"))    
 
 
+def player_pl_items():
+    new_player = read_players()
+    return json.dumps(new_player.get("pl_items"))
+
+
+def player_pl_materials():
+    new_player = read_players()
+    return json.dumps(new_player.get("pl_materials"))
+
+
 def player_attributes():
     new_player = read_players()
     return json.dumps(new_player.get("attributes"))

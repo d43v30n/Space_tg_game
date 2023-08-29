@@ -67,11 +67,14 @@ async def cmd_start_db(user_id):  # initialize new player
     if not user:
         # hardcoded new user parameters
         ship_slots = json_imports.player_ship_slots()
+        pl_items = json_imports.player_pl_items()
+        pl_materials = json_imports.player_pl_materials()
         cur.execute(
-            "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, "{}", 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, "{}"))  # defaults are location=0 current_energy=0, max_energy=0
+            "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, pl_items, 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, pl_materials))  # defaults are location=0 current_energy=0, max_energy=0
         db.commit()
         await db_write_items_json()
         await db_write_enemies_json()
+        await db_write_materials_json()
 
 
 async def new_user_check(user_id) -> bool:
@@ -244,10 +247,6 @@ async def db_read_details(table, value, column, search_col):  # custom db_access
 
 async def db_read_full_name(table, value, column, search_col) -> str:
     try:
-        print(table)
-        print(value)
-        print(column)
-        print(search_col)
         value = cur.execute(
             f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
         result = value.fetchone()
