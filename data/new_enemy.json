@@ -21,7 +21,7 @@
       "drop": {
          "exp": 10,
          "credits": 100,
-         "it_name_1": {
+         "mt_name_1": {
             "droprate": 0.5,
             "scrap_metal": 1
          }
@@ -49,7 +49,7 @@
       "drop": {
          "exp": 10,
          "credits": 100,
-         "it_name_1": {
+         "mt_name_1": {
             "droprate": 0.5,
             "scrap_metal": 1
          }
@@ -248,7 +248,8 @@
       },
       "drop": {
          "exp": 20,
-         "credits": 150
+         "credits": 150,
+         "it_name_1":{"rusty_machine_gun":1}
       }
    },
    "10": {
