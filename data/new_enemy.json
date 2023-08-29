@@ -24,6 +24,10 @@
          "mt_name_1": {
             "droprate": 0.5,
             "scrap_metal": 1
+         },
+         "mt_name_2": {
+            "droprate": 0.2,
+            "nanoconductors": 1
          }
       }
    },
@@ -98,13 +102,17 @@
          "faction": "Space Pirates",
          "class": "boss",
          "race": "pirates",
-         "chance": 0.05,
+         "chance": 0.5,
          "min_loc": 10,
          "max_loc": 12
       },
       "drop": {
          "exp": 50,
-         "credits": 400
+         "credits": 400,
+         "it_name_1": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         }
       }
    },
    "4": {
@@ -128,7 +136,11 @@
       },
       "drop": {
          "exp": 5,
-         "credits": 50
+         "credits": 50,
+         "it_name_1": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         }
       }
    },
    "5": {
@@ -176,7 +188,11 @@
       },
       "drop": {
          "exp": 8,
-         "credits": 70
+         "credits": 70,
+         "it_name_1": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         }
       }
    },
    "7": {
@@ -200,7 +216,11 @@
       },
       "drop": {
          "exp": 10,
-         "credits": 80
+         "credits": 80,
+         "it_name_1": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         }
       }
    },
    "8": {
@@ -224,7 +244,11 @@
       },
       "drop": {
          "exp": 15,
-         "credits": 100
+         "credits": 100,
+         "it_name_1": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         }
       }
    },
    "9": {
@@ -249,7 +273,13 @@
       "drop": {
          "exp": 20,
          "credits": 150,
-         "it_name_1":{"rusty_machine_gun":1}
+         "it_name_1": {
+            "rusty_machine_gun": 1
+         },
+         "it_name_2": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         }
       }
    },
    "10": {
@@ -273,7 +303,10 @@
       },
       "drop": {
          "exp": 25,
-         "credits": 200
+         "credits": 200,
+         "it_name_1": {
+            "rusty_machine_gun": 1
+         }
       }
    },
    "11": {
@@ -297,7 +330,10 @@
       },
       "drop": {
          "exp": 30,
-         "credits": 250
+         "credits": 250,
+         "it_name_1": {
+            "rusty_machine_gun": 1
+         }
       }
    },
    "12": {
@@ -321,7 +357,10 @@
       },
       "drop": {
          "exp": 40,
-         "credits": 300
+         "credits": 300,
+         "it_name_1": {
+            "rusty_machine_gun": 1
+         }
       }
    }
 }
