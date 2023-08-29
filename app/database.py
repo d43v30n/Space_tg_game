@@ -243,7 +243,13 @@ async def db_read_details(table, value, column, search_col):  # custom db_access
 
 
 async def db_read_full_name(table, value, column, search_col) -> str:
-    value = cur.execute(
-        f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
-    value = value.fetchone()[0]
-    return value
+    try:
+        value = cur.execute(
+            f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
+        result = value.fetchone()
+        if result:
+            return result[0]
+        else:
+            return "No matching value found."
+    except Exception as e:
+        return f"Error: {e}"
