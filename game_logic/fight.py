@@ -36,7 +36,7 @@ async def init_fight(message: Message, enemy_id, state: State):
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
-        print("looping..")
+        # print("looping..")
         eff_player_dmg = max(player_dmg - en_shld, 0)
         en_hp = max(0, en_hp - eff_player_dmg)
 
@@ -50,7 +50,7 @@ async def init_fight(message: Message, enemy_id, state: State):
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=f"Won after fight with {enemy_id}")
-            return "win", drop_text
+            return ("win", drop_text)
 
         # enemy hit player
         eff_en_dmg = max(en_dmg - player_shield, 0)
@@ -68,8 +68,8 @@ async def init_fight(message: Message, enemy_id, state: State):
             await state.update_data(job=f"Loose after fight with {enemy_id}")
             return "loose"
         await db_write_int("players", user_id, "current_health", current_health)
-    print("en_hp = ", en_hp)
-    print("current_health = ", current_health)
+        # print("en_hp = ", en_hp)
+        # print("current_health = ", current_health)
 
 
 async def get_player_dmg(ship_slots) -> int:
@@ -137,6 +137,11 @@ async def get_fight_drop(user_id, en_shortname):
     old_exp = await db_read_int("players", user_id, "experience")
     await db_write_int("players", user_id, "experience", old_exp + exp)
 
+
+
+
+
+
     # items
     en_drop_items = {key: value for key, value in en_drop.items() if key.startswith(
         "it_name_")}
@@ -153,17 +158,25 @@ async def get_fight_drop(user_id, en_shortname):
             only_items = {key: value for key,
                           value in drop_only_items.items() if key != "droprate"}
             for it_shortname, count in only_items.items():
-                # it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
-                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
+                it_shortname = f"\"{it_shortname}\""
+                it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
+                text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
                 await add_pl_items(user_id, it_shortname, count)
                 drop.append(text)
+
+
+
+
+
+
+
 
     # materials
     old_materials = await db_read_int("players", user_id, "pl_materials")
     en_drop_materials = {key: value for key, value in en_drop.items() if key.startswith(
         "mt_name_")}
     print("en_drop_materials", en_drop_materials)
-    # {'it_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
+    # {'mt_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
     for drop_only_materials in en_drop_materials.values():
         try:
             droprate = drop_only_materials.get("droprate")
@@ -175,8 +188,9 @@ async def get_fight_drop(user_id, en_shortname):
                               value in drop_only_materials.items() if key != "droprate"}
             print("only_materials ", only_materials)
             for mt_shortname, count in only_materials.items():
-                # mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
-                text = f"Dropped {it_shortname} (x{count}) with drop chance {droprate}."
+                mt_shortname = f"\"{mt_shortname}\""
+                mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
+                text = f"Dropped {mt_name} (x{count}) with drop chance {droprate}."
                 await add_pl_materials(user_id, mt_shortname, count)
                 drop.append(text)
     print("drop", drop)

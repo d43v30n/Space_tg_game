@@ -72,7 +72,8 @@ async def adm_test_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
     enemy = "\"zac_the_baddest\""
     # await state.set_state(State.item_selector)
-    await fight.init_fight(message, enemy, state)
+    result = await fight.get_fight_drop(message.from_user.id, enemy)
+    print("DROP = ", result)
 
 
 @router.message(State.admin, Command("add_materials"))

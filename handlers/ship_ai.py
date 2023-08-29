@@ -112,8 +112,10 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             fight_result = await fight.init_fight(message, enemy_shorname, state)
             print(f"fight_result, {fight_result}")
             if fight_result[0] == "win":
+                print("WON")
                 await message.answer(f"(WON) Figth result is : {fight_result[0]}.\nLoot:{fight_result[1]}", reply_markup=keyboard)
             else:
+                print("LOST")
                 await message.answer(f"(LOST) Figth result is : {fight_result}.", reply_markup=keyboard)
         elif event[0] == "drop":
             keyboard = await kb.keyboard_selector(state)
