@@ -176,6 +176,7 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
         if current_energy >=1:
             await state.set_state(State.mining)
             await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
+            await energy_manager.use_one_energy(message.from_user.id)
             result = m.mine_here(message.from_user.id)
             await message.answer("Mining at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
             jobtext = "after mining at {loc_name}".format(loc_name=loc_name)
@@ -203,6 +204,7 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
         if current_energy >=1:
             await state.set_state(State.scanning)
             await state.update_data(job="scanning, found ore, mining is possible", scanning="scanning in progress...")
+            await energy_manager.use_one_energy(message.from_user.id)
             result = m.scan_area(message.from_user.id)
             await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
             jobtext = "after mining at {loc_name}".format(loc_name=loc_name)

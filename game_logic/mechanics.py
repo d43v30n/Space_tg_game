@@ -1,6 +1,6 @@
 from app.database import *
 from asyncio import sleep  # create_task, gather
-from game_logic import space_map, energy_manager
+from game_logic import space_map
 from random import randint, choice
 import keyboards.main_kb as kb
 from handlers import errors
@@ -29,12 +29,10 @@ async def jump_home(user_id):
 
 
 async def mine_here(user_id):
-    await energy_manager.use_one_energy(user_id)
     await sleep(COOLDOWN)
 
 
 async def scan_area(user_id):
-    await energy_manager.use_one_energy(user_id)
     await sleep(COOLDOWN)
 
 
