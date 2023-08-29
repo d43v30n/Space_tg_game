@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from os import getenv
 
 from app import database as db
-from game_logic import loot
+from game_logic import loot, energy_manager
 from game_logic import mechanics as m
 from game_logic.states import State
 from handlers import errors
@@ -20,6 +20,12 @@ from game_logic import fight
 load_dotenv()
 router = Router()
 ADMIN_ID = getenv("ADMIN_ID")
+
+
+@router.message(State.admin, Command("test"))
+async def adm_test_handler(message: Message, state: FSMContext) -> None:
+    out = await energy_manager.use_one_energy(message.from_user.id)
+    print("out", out)
 
 
 @router.message(Command("admin"))
@@ -47,7 +53,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/add_materials", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
@@ -68,16 +74,14 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
     await db.db_write_materials_json()
 
 
-@router.message(State.admin, Command("test"))
-async def adm_test_handler(message: Message, state: FSMContext) -> None:
-    out = await loot.init_loot_at_loc(2)
-    print("out", out)
-    # for i in range(18):
-    #     gps=i
-    #     result = await db.db_parse_mt_drop_locations(gps)
-    #     print(f"DROP at {gps} = ", result)
-
-
 @router.message(State.admin, Command("add_materials"))
 async def adm_load_materials_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
+
+
+@router.message(State.admin, Command("list_materials_drop"))
+async def adm_test_handler(message: Message, state: FSMContext) -> None:
+    for i in range(18):
+        gps = i
+        result = await db.db_parse_mt_drop_locations(gps)
+        print(f"DROP at {gps} = ", result)

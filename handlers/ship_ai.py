@@ -169,7 +169,7 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     loc_name = await space_map.name(gps)
     loc_features = await space_map.features(gps)
-    current_energy = m.get_current_energy()
+    current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     if "mining" in loc_features:
         if current_energy >=1:
@@ -188,7 +188,7 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
-    current_energy = m.get_current_energy()
+    current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     if "mining" in loc_features:
         if current_energy >=1:
