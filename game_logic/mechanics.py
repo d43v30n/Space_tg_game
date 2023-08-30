@@ -63,7 +63,7 @@ async def get_main_text_row(user_id):
     row2 = "{gps_emj}{gps} {heart}{current_health}/{max_health} {energy_smiley}{current_energy}/{max_energy}".format(
         gps_emj=gps_emj, gps=gps, heart=heart, current_health=current_health, max_health=max_health, current_energy=current_energy, max_energy=max_energy, energy_smiley=energy_smiley
     )
-    row3 = f"Faction: {faction}\n\nShip Stats:\nHP: {current_health}/{max_health},\nmain_quest: {main_quest}\nside_quest: {side_quest}\n\nCredits: {player_credits}\nExperience: {experience}\nLevel: {level}"
+    row3 = f"Faction: {faction}\n\nShip Stats:\nHP: {current_health}/{max_health},\nmain_quest: {main_quest}\nside_quest: {side_quest}\n\nCredits: {player_credits}\nExploration Data: {experience}\nLevel: {level}"
     return row1, row2, row3
 
 
@@ -231,6 +231,10 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
                 await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
                     f"You found {mt_name} (x{count}) with chance {chance} ")
+                exp = mt_drop_dict.get("price", 1) / 50
+                drop_text.append("Exploration Data gathered: {exp}.".format(exp=exp))
+
+                
         state_data = await state.get_data()
 
     loc_name = await space_map.name(gps)
@@ -243,9 +247,9 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
 
     await sleep(COOLDOWN)
     if drop_text == []:
-        exp = 70
+        exp = 30
         drop_text.append("You found no ore.")
-        drop_text.append("Exploration data gathered: {exp}.".format(exp=exp))
+        drop_text.append("Exploration Data gathered: {exp}.".format(exp=exp))
         await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
 
@@ -278,7 +282,7 @@ async def scan_area(message, state):
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("Found: {result}\nExploration data gathered: {exp}".format(result=result, exp=exp), reply_markup=keyboard)
+        await message.answer("Found: {result}\nExploration Data gathered: {exp}".format(result=result, exp=exp), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
@@ -300,5 +304,5 @@ async def trigger_scan_event(message, state):
     drop = event_details["scanning_event"]
     exp = drop["experience"]
     await invent.add_pl_exp(message.from_user.id, )
-    await message.answer("Received:\nExperienceP{exp}".format(exp=exp))
+    await message.answer("Received:\nExploration DataP{exp}".format(exp=exp))
 
