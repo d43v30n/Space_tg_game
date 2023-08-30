@@ -227,8 +227,9 @@ async def mine_here(user_id, gps: int) -> dict:
                 await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
                     f"You found {mt_name} (x{count}) with chance {chance} ")
-
     await sleep(COOLDOWN)
+    if drop_text == []:
+        drop_text.append("You found nothing.")
     return "\n".join(drop_text)
 
 
@@ -242,26 +243,29 @@ async def scan_area(message, state):
     keyboard = await kb.keyboard_selector(state)
 
     if current_energy >= 1:
-        await state.set_state(State.scanning)
-        await state.update_data(job="scanningin progress", scanning="scanning in progress...")
         await energy_manager.use_one_energy(message.from_user.id)
-        await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
-        await sleep(COOLDOWN)
         if "mining" in loc_features:
             result = "ore."
-        # elif True:
-        #     result = "ore"
+            jobtext = "after scanning at {loc_name}, found ore".format(loc_name=loc_name)
+        elif text_job.endswith("and encountered mining_event"):
+            result = "suspicious ground fractions."
+            jobtext = "after scanning at {loc_name}, mining_event".format(loc_name=loc_name)
         else:
             result = "nothing."
+            jobtext = "after scanning at {loc_name}, found nothing.".format(loc_name=loc_name)
+        await state.set_state(State.scanning)
+        await state.update_data(job="scanningin progress", scanning="scanning in progress...")
+        await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+        await sleep(COOLDOWN)
         await message.answer("Found: {result}".format(result=result), reply_markup=keyboard)
-        jobtext = "after scanning at {loc_name}".format(loc_name=loc_name)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
-        # await state.update_data(job=jobtext)
+        await state.update_data(job=jobtext)
     else:
         await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+    return result
 
 
 async def trigger_scan_event(message, state):

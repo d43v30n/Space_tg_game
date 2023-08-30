@@ -89,22 +89,24 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             keyboard = await kb.keyboard_selector(state)
             await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
             return
+        
+        if "mining" in loc_features:
+            mining_text = ", mining is possible"
+        else:
+            mining_text = ""        
+        
         # event check
         if event[0] is None:
             print("entered 1")
             keyboard = await kb.keyboard_selector(state)
-            await state.update_data(job=f"just arrived to {loc_name}")
-            if "mining" in loc_features:
-                await message.answer(f"You arrived to {loc_name}, Try to scan here.", reply_markup=keyboard)
-            else:
-                await message.answer(f"You arrived to {loc_name}.", reply_markup=keyboard)
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text}.")
 
         elif event[0] == "enemies":
             print("entered 2")
             keyboard = await kb.keyboard_selector(state)
             enemy_shorname = event[1]
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
-            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}")
             # fight_result -> "win" of "loose" str
             fight_result = await fight.init_fight(message, enemy_shorname, state)
             if fight_result[0] == "win":
@@ -113,27 +115,19 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         elif event[0] == "mining_event":
             print("entered 3")
             keyboard = await kb.keyboard_selector(state)
-            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}")
-            if "mining" in loc_features:
-                await message.answer(f"You arrived to {loc_name}, Try to mine here (mine event).", reply_markup=keyboard)
-            else:
-                await message.answer(f"You arrived to {loc_name} (mine event).", reply_markup=keyboard)
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}")
 
         elif event[0] == "scanning_event":
             print("entered 4")
             keyboard = await kb.keyboard_selector(state)
             scans = event[1]["scans_required"]
-            await state.update_data(job=f"just arrived to {loc_name} and encountered {event[0]}_{scans}")
-            if "mining" in loc_features:
-                await message.answer(f"You arrived to {loc_name}, Try to scan here (scan event).", reply_markup=keyboard)
-            else:
-                await message.answer(f"You arrived to {loc_name} (scan event).", reply_markup=keyboard)
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}_{scans}")
 
         else:
-            await state.update_data(job=f"just arrived to {loc_name}")
+            print("should not happen. unknown event in location")
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
             await message.answer(f"You arrived to {loc_name}", reply_markup=keyboard)
-            print("should not happen. unknown event in location")
 
     else:
         print("reached end of map")
@@ -179,14 +173,17 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
     current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     if current_energy >= 1:
-        if "mining" in loc_features and not text_job.startswith("after mining at"):
+        if "mining" in loc_features and not text_job.startswith("after mining at") and "mined ore" not in text_job: # after scanning at {loc_name}, nothing found
             await state.set_state(State.mining)
             await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
             await energy_manager.use_one_energy(message.from_user.id)
             await message.answer("Mining at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
             result = await m.mine_here(message.from_user.id, gps)
-            await message.answer("Found:\n{result}".format(result=result), reply_markup=keyboard)
-            jobtext = "after mining at {loc_name}".format(loc_name=loc_name)
+            if not result.startswith("You found nothing"):
+                jobtext = "mined ore at {loc_name}".format(loc_name=loc_name)
+            else:    
+                jobtext = "mined nothing at {loc_name}".format(loc_name=loc_name)
+            await message.answer("{result}".format(result=result), reply_markup=keyboard)
             await state.clear()
             await state.set_state(State.gps_state)
             await state.update_data(gps_state=gps)
@@ -202,8 +199,11 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.mining)
 async def busy_mining_handler(message: Message, state: FSMContext) -> None:
-    keyboard = await kb.keyboard_selector(state)
-    await message.answer("You are busy mining", reply_markup=keyboard)
+    if message.text.startswith("/state"):
+        await errors.command_state_handler(message, state)
+    else:
+        keyboard = await kb.keyboard_selector(state)
+        await message.answer("You are busy mining", reply_markup=keyboard)
 
 
 @router.message(State.job, F.text == "{emoji}Scan area".format(emoji=magnifying_glass))
@@ -215,6 +215,20 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
     loc_name = await space_map.name(gps)
     keyboard = await kb.keyboard_selector(state)
 
+    if text_job.endswith("scanning_event_5"):
+        await m.scan_area(message, state)
+        jobtext = "just arrived to {loc_name} and encountered scanning_event_4".format(
+            loc_name=loc_name)
+        await state.set_state(State.job)
+        await state.update_data(job=jobtext)
+        return
+    if text_job.endswith("scanning_event_4"):
+        await m.scan_area(message, state)
+        jobtext = "just arrived to {loc_name} and encountered scanning_event_3".format(
+            loc_name=loc_name)
+        await state.set_state(State.job)
+        await state.update_data(job=jobtext)
+        return
     if text_job.endswith("scanning_event_3"):
         await m.scan_area(message, state)
         jobtext = "just arrived to {loc_name} and encountered scanning_event_2".format(
@@ -234,11 +248,11 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
             loc_name=loc_name)
         await state.set_state(State.job)
         await state.update_data(job=jobtext)
-        # TRIGGER EVENT HERE
         print("TRIGGER EVENT HERE")
+        await m.trigger_scan_event(message, state)
         return
 
-    if "mining" in loc_features and not text_job.startswith("scanning."):
+    if "mining" in loc_features and not text_job.startswith("after scanning at ") and not text_job.startswith("mined"):
         scan_result = await m.scan_area(message, state)
         if scan_result:
             jobtext = "after scanning at {loc_name}, found ore".format(
@@ -246,9 +260,9 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
         else:
-            jobtext = "after scanning at {loc_name}".format(
+            jobtext = "after scanning at {loc_name}, nothing found".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
     else:
-        await message.answer(f"Scanning {loc_name}, found nothing", reply_markup=keyboard)
+        await message.answer(f"Nothing to scan at {loc_name} anymore.", reply_markup=keyboard)

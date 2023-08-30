@@ -52,7 +52,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/load_ores\n/list_materials_drop\n/add_materials", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
@@ -71,12 +71,6 @@ async def adm_load_items_handler(message: Message, state: FSMContext) -> None:
 async def adm_load_materials_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"Loading materials from json to db", reply_markup=kb.admin_kb())
     await db.db_write_materials_json()
-
-
-@router.message(State.admin, Command("load_ores"))
-async def adm_load_ores_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"Loading ores from json to db", reply_markup=kb.admin_kb())
-    await db.db_write_ores_json()
 
 
 @router.message(State.admin, Command("add_materials"))
