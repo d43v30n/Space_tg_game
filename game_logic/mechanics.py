@@ -250,7 +250,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
     await sleep(COOLDOWN)
     if drop_text == []:
         exp = 30
-        drop_text.append("You found no ore.")
+        drop_text.append("You got no ore this time, maybe you should try to scan again?")
         drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
         await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
@@ -273,7 +273,7 @@ async def scan_area(message, state):
             jobtext = "after scanning at {loc_name}, found ore".format(loc_name=loc_name)
         elif text_job.endswith("and encountered mining_event"):
             exp = 200
-            result = "suspicious ground fractions."
+            result = "suspicious ground fractions"
             jobtext = "after scanning at {loc_name}, mining_event".format(loc_name=loc_name)
         else:
             exp = 40
@@ -284,7 +284,7 @@ async def scan_area(message, state):
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("<i>{rocket}Ship AI reporting.</i>\n\nScanners found {result}\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
+        await message.answer("<i>{rocket}Ship AI reporting.</i>\n\nAfter scanning i am concerned, that we should mine <b>{result}</b> here.\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
