@@ -265,4 +265,4 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
     else:
-        await message.answer(f"Nothing to scan at {loc_name} anymore.", reply_markup=keyboard)
+        await message.answer(f"Nothing to scan at {loc_name}.", reply_markup=keyboard)
