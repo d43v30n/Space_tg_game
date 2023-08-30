@@ -232,11 +232,11 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
             if flag:
                 await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
-                    f"You found {mt_name} (x{count})") # with chance {chance} ")
+                    f"You found {mt_name} (x{count})")  # with chance {chance} ")
                 exp = mt_drop_dict.get("price", 1) / 50
-                drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
+                drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(
+                    exp=exp, bar_chart=bar_chart))
 
-                
         state_data = await state.get_data()
 
     loc_name = await space_map.name(gps)
@@ -250,8 +250,10 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
     await sleep(COOLDOWN)
     if drop_text == []:
         exp = 30
-        drop_text.append("You got no ore this time, maybe you should try somewhere else?")
-        drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
+        drop_text.append(
+            "You got no ore this time, maybe you should try somewhere else?")
+        drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(
+            exp=exp, bar_chart=bar_chart))
         await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
 
@@ -270,15 +272,18 @@ async def scan_area(message, state):
         if "mining" in loc_features:
             exp = 70
             result = "ore."
-            jobtext = "after scanning at {loc_name}, found ore".format(loc_name=loc_name)
+            jobtext = "after scanning at {loc_name}, found ore".format(
+                loc_name=loc_name)
         elif text_job.endswith("and encountered mining_event"):
             exp = 200
             result = "suspicious ground fractions"
-            jobtext = "after scanning at {loc_name}, mining_event".format(loc_name=loc_name)
+            jobtext = "after scanning at {loc_name}, mining_event".format(
+                loc_name=loc_name)
         else:
             exp = 40
             result = "nothing."
-            jobtext = "after scanning at {loc_name}, found nothing.".format(loc_name=loc_name)
+            jobtext = "after scanning at {loc_name}, found nothing.".format(
+                loc_name=loc_name)
         await state.set_state(State.scanning)
         await state.update_data(job="scanningin progress", scanning="scanning in progress...")
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
@@ -298,13 +303,65 @@ async def scan_area(message, state):
 async def trigger_scan_event(message, state):
     state_data = await state.get_data()
     gps = state_data["gps_state"]
-    text_job = state_data["job"]
-    loc_features = await space_map.features(gps)
-    loc_name = await space_map.name(gps)
-    keyboard = await kb.keyboard_selector(state)
+    # text_job = state_data["job"]
+    # loc_features = await space_map.features(gps)
+    # loc_name = await space_map.name(gps)
+    if event_details["level"] > pl_level:
+        return False, "Your scanner is too small >)"
+    # keyboard = await kb.keyboard_selector(state)
     event_details = await space_map.event_details(gps)
-    drop = event_details["scanning_event"]
-    exp = drop["experience"]
-    await invent.add_pl_exp(message.from_user.id, )
-    await message.answer("Received:\n{bar_chart}Exploration DataP{exp}".format(exp=exp, bar_chart=bar_chart))
+    pl_level = await get_player_information(message.from_user.id, "level")
 
+    drop_text = []
+
+    only_materials = {key: value for key,
+                      value in event_details.items() if key.startswith("material_")}
+    print("only_materials", only_materials)
+    for mt in only_materials.values():
+        count = mt["count"]
+        mt_shortname = mt["mt_shortname"]
+        mt_shortname = f"\"{mt_shortname}\""
+        mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
+        text = f"Dropped {mt_name} (x{count})"  # with drop chance {droprate}."
+        await invent.add_pl_materials(message.from_user.id, mt_shortname[1:-1], count)
+        drop_text.append(text)
+
+    exp = event_details["experience"]
+    await invent.add_pl_exp(message.from_user.id, exp)
+    exp_text = "Received:\n{bar_chart}Exploration Data: {exp}".format(
+        exp=exp, bar_chart=bar_chart)
+    drop_text.append(exp_text)
+    return "\n".join(drop_text)
+
+
+async def trigger_minings_event(message, state):
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    # text_job = state_data["job"]
+    # loc_features = await space_map.features(gps)
+    # loc_name = await space_map.name(gps)
+    # keyboard = await kb.keyboard_selector(state)
+    event_details = await space_map.event_details(gps)
+    print("event_details", event_details)
+    drop_text = []
+    await energy_manager.use_one_energy(message.from_user.id)
+    await energy_manager.use_one_energy(message.from_user.id)
+
+    only_materials = {key: value for key,
+                      value in event_details.items() if key.startswith("material_")}
+    print("only_materials", only_materials)
+    for mt in only_materials.values():
+        count = mt["count"]
+        mt_shortname = mt["mt_shortname"]
+        mt_shortname = f"\"{mt_shortname}\""
+        mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
+        text = f"Dropped {mt_name} (x{count})"  # with drop chance {droprate}."
+        await invent.add_pl_materials(message.from_user.id, mt_shortname[1:-1], count)
+        drop_text.append(text)
+
+    exp = event_details["experience"]
+    await invent.add_pl_exp(message.from_user.id, exp)
+    exp_text = "Received:\n{bar_chart}Exploration Data: {exp}".format(
+        exp=exp, bar_chart=bar_chart)
+    drop_text.append(exp_text)
+    return "\n".join(drop_text)

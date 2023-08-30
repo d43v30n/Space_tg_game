@@ -88,10 +88,8 @@
       "event_details": {
          "level":2,
          "scans_required":2,
-         "chance":0.9,
-         "drop": {
-            "experience":100
-         }
+         "chance":0.2,
+         "experience":300
       }
    },
    "7": {
@@ -108,9 +106,11 @@
       "event_details": {
          "level":2,
          "scans_required":2,
-         "chance":0.9,
-         "drop": {
-            "experience":100
+         "chance":0.2,
+         "experience":300,
+         "material_1": {
+            "mt_shortname":"nanofractium_ore",
+            "count":1
          }
       }
    },

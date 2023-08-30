@@ -24,7 +24,7 @@ ADMIN_ID = getenv("ADMIN_ID")
 
 @router.message(State.admin, Command("test"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
-    await m.mine_here(message.from_user.id, 5)
+    await m.trigger_minings_event(message.from_user.id, state)
 
 
 @router.message(Command("admin"))
