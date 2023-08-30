@@ -250,7 +250,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
     await sleep(COOLDOWN)
     if drop_text == []:
         exp = 30
-        drop_text.append("You got no ore this time, maybe you should try to scan again?")
+        drop_text.append("You got no ore this time, maybe you should try somewhere else?")
         drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
         await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
