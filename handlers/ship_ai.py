@@ -126,10 +126,11 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
 
         else:
-            print("should not happen. unknown event in location")
+            print(
+                "should not happen. unknown event in location, event[0] = ", event[0])
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
 
     else:
         print("reached end of map")

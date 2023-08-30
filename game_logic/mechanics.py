@@ -306,11 +306,11 @@ async def trigger_scan_event(message, state):
     # text_job = state_data["job"]
     # loc_features = await space_map.features(gps)
     # loc_name = await space_map.name(gps)
-    if event_details["level"] > pl_level:
+    pl_level = await get_player_information(message.from_user.id, "level")
+    event_details = await space_map.event_details(gps)
+    if int(event_details["level"]) > pl_level[0]:
         return False, "Your scanner is too small >)"
     # keyboard = await kb.keyboard_selector(state)
-    event_details = await space_map.event_details(gps)
-    pl_level = await get_player_information(message.from_user.id, "level")
 
     drop_text = []
 
