@@ -39,7 +39,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     damage = None
     defence = None
     shields = None
-    await message.answer(f"Faction: {faction}\n\nShip Stats:\nHP: {current_health}/{max_health},\nDamage: {damage}\nDefence: {defence}\nShields: {shields}\nEnergy: {current_energy}/{max_energy}\n\nCredits: {player_credits}\nExploration Data: {experience}\nLevel: {level}", reply_markup=keyboard)
+    await message.answer(f"Faction: {faction}\n\nShip Stats:\nHP: {current_health}/{max_health},\nDamage: {damage}\nDefence: {defence}\nShields: {shields}\nEnergy: {current_energy}/{max_energy}\n\nCredits: {player_credits}\nExploration Data: {experience}\nShip AI Level : {level}", reply_markup=keyboard)
     # except:
     # await errors.unknown_input_handler(message, state)
 
