@@ -232,7 +232,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
             if flag:
                 await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
-                    f"You found {mt_name} (x{count}) with chance {chance} ")
+                    f"You found {mt_name} (x{count})") # with chance {chance} ")
                 exp = mt_drop_dict.get("price", 1) / 50
                 drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
 

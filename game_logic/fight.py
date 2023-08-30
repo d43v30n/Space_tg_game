@@ -154,7 +154,7 @@ async def get_fight_drop(user_id, en_shortname):
             for it_shortname, count in only_items.items():
                 it_shortname = f"\"{it_shortname}\""
                 it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
-                text = f"Dropped {it_name} (x{count}) with drop chance {droprate}."
+                text = f"Dropped {it_name} (x{count})"# with drop chance {droprate}."
                 await invent.add_pl_items(user_id, it_shortname[1:-1], count)
                 drop.append(text)
 
@@ -177,7 +177,7 @@ async def get_fight_drop(user_id, en_shortname):
             for mt_shortname, count in only_materials.items():
                 mt_shortname = f"\"{mt_shortname}\""
                 mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
-                text = f"Dropped {mt_name} (x{count}) with drop chance {droprate}."
+                text = f"Dropped {mt_name} (x{count})"# with drop chance {droprate}."
                 await invent.add_pl_materials(user_id, mt_shortname[1:-1], count)
                 drop.append(text)
     print("drop", drop)
