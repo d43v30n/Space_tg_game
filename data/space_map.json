@@ -33,7 +33,7 @@
       "name": "Mars",
       "type": "2",
       "features": [
-         "None"
+         "mining"
       ],
       "events_weights": {
          "None": 3,

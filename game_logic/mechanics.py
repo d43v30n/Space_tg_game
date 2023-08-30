@@ -210,14 +210,18 @@ async def show_materials(user_id) -> str:
     return text
 
 
-async def mine_here(user_id, gps: int) -> dict:
+async def mine_here(user_id, gps: int, message, state) -> dict:
     possible_ores = await db_parse_all_ores(gps)
+    state_data = await state.get_data()
+    text_job = state_data["job"]
     drop_text = []
     for ore in possible_ores:
         mt_name, mt_shortname, mt_drop = ore
         mt_drop_dict = eval(mt_drop)  # Convert mt_drop string to a dictionary
         count = mt_drop_dict.get("count", 1)
         chance = mt_drop_dict.get("chance", 1)
+        if not text_job.startswith("after scanning at"):
+            chance = chance / 10
         min_loc = mt_drop_dict.get("min_loc", 0)
         max_loc = mt_drop_dict.get("max_loc", 0)
 
@@ -227,9 +231,22 @@ async def mine_here(user_id, gps: int) -> dict:
                 await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
                     f"You found {mt_name} (x{count}) with chance {chance} ")
+        state_data = await state.get_data()
+
+    loc_name = await space_map.name(gps)
+    await state.set_state(State.mining)
+    await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
+    await energy_manager.use_one_energy(message.from_user.id)
+    keyboard = await kb.keyboard_selector(state)
+
+    await message.answer("Mining at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+
     await sleep(COOLDOWN)
     if drop_text == []:
-        drop_text.append("You found nothing.")
+        exp = 70
+        drop_text.append("You found no ore.")
+        drop_text.append("Exploration data gathered: {exp}.".format(exp=exp))
+        await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
 
 
@@ -245,19 +262,23 @@ async def scan_area(message, state):
     if current_energy >= 1:
         await energy_manager.use_one_energy(message.from_user.id)
         if "mining" in loc_features:
+            exp = 70
             result = "ore."
             jobtext = "after scanning at {loc_name}, found ore".format(loc_name=loc_name)
         elif text_job.endswith("and encountered mining_event"):
+            exp = 200
             result = "suspicious ground fractions."
             jobtext = "after scanning at {loc_name}, mining_event".format(loc_name=loc_name)
         else:
+            exp = 40
             result = "nothing."
             jobtext = "after scanning at {loc_name}, found nothing.".format(loc_name=loc_name)
         await state.set_state(State.scanning)
         await state.update_data(job="scanningin progress", scanning="scanning in progress...")
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
-        await message.answer("Found: {result}".format(result=result), reply_markup=keyboard)
+        await invent.add_pl_exp(message.from_user.id, exp)
+        await message.answer("Found: {result}\nExploration data gathered: {exp}".format(result=result, exp=exp), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)

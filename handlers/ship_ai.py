@@ -174,12 +174,8 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     if current_energy >= 1:
         if "mining" in loc_features and not text_job.startswith("after mining at") and "mined ore" not in text_job: # after scanning at {loc_name}, nothing found
-            await state.set_state(State.mining)
-            await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
-            await energy_manager.use_one_energy(message.from_user.id)
-            await message.answer("Mining at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
-            result = await m.mine_here(message.from_user.id, gps)
-            if not result.startswith("You found nothing"):
+            result = await m.mine_here(message.from_user.id, gps, message, state)
+            if not result.startswith("You found no ore."):
                 jobtext = "mined ore at {loc_name}".format(loc_name=loc_name)
             else:    
                 jobtext = "mined nothing at {loc_name}".format(loc_name=loc_name)
