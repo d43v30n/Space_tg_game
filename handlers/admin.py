@@ -22,7 +22,7 @@ router = Router()
 ADMIN_ID = getenv("ADMIN_ID")
 
 
-@router.message(State.admin, Command("test"))
+@router.message(State.admin, Command("get_image_id"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
     # await message.answer_photo("AgACAgIAAxkDAAI03WTvhfh9byTLKl1_AAF9C6nG4wO4HwACUskxG2EPgUs4-mQ4o3GyRQEAAwIAA3kAAzAE")
     file_ids = []
@@ -61,7 +61,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials\n/get_image_id", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
