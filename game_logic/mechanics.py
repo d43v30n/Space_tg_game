@@ -59,7 +59,7 @@ async def get_main_text_row(user_id):
     current_health, max_health, player_credits, experience, level, main_quest, side_quest, ship_type, abilities = information
 
     # Use .format() for string formatting with custom emojis
-    row1 = "{loc_name}\n".format(loc_name=loc_name)
+    row1 = "<i><b>{loc_name}\n</b></i>".format(loc_name=loc_name)
     row2 = "{gps_emj}{gps} {heart}{current_health}/{max_health} {energy_smiley}{current_energy}/{max_energy}".format(
         gps_emj=gps_emj, gps=gps, heart=heart, current_health=current_health, max_health=max_health, current_energy=current_energy, max_energy=max_energy, energy_smiley=energy_smiley
     )
@@ -284,7 +284,7 @@ async def scan_area(message, state):
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("Found: {result}\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp), reply_markup=keyboard)
+        await message.answer("<i>{rocket}Ship AI reporting.</i>\n\nScanners found {result}\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
