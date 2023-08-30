@@ -178,8 +178,8 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
     loc_features = await space_map.features(gps)
     current_energy = await m.get_current_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
-    if "mining" in loc_features and not text_job.startswith("after mining at"):
-        if current_energy >= 1:
+    if current_energy >= 1:
+        if "mining" in loc_features and not text_job.startswith("after mining at"):
             await state.set_state(State.mining)
             await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
             await energy_manager.use_one_energy(message.from_user.id)
@@ -192,12 +192,12 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
+        elif text_job.startswith("after scanning at") and text_job.endswith(""):
+            pass
         else:
-            await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
-    elif text_job.startswith("after scanning at") and text_job.endswith(""):
-        pass
+            await message.answer("Nothing to mine. Did scanners noticed something?", reply_markup=keyboard)
     else:
-        await message.answer("No ore around", reply_markup=keyboard)
+        await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
 
 
 @router.message(State.mining)
@@ -239,6 +239,16 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
         return
 
     if "mining" in loc_features and not text_job.startswith("scanning."):
-        await m.scan_area(message, state)
+        scan_result = await m.scan_area(message, state)
+        if scan_result:
+            jobtext = "after scanning at {loc_name}, found ore".format(
+                loc_name=loc_name)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
+        else:
+            jobtext = "after scanning at {loc_name}".format(
+                loc_name=loc_name)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
     else:
         await message.answer(f"Scanning {loc_name}, found nothing", reply_markup=keyboard)

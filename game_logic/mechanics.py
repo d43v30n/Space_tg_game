@@ -243,11 +243,17 @@ async def scan_area(message, state):
 
     if current_energy >= 1:
         await state.set_state(State.scanning)
-        await state.update_data(job="scanning, found ore, mining is possible", scanning="scanning in progress...")
+        await state.update_data(job="scanningin progress", scanning="scanning in progress...")
         await energy_manager.use_one_energy(message.from_user.id)
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
-        await message.answer("Found:\n".format(), reply_markup=keyboard)
+        if "mining" in loc_features:
+            result = "ore."
+        # elif True:
+        #     result = "ore"
+        else:
+            result = "nothing."
+        await message.answer("Found: {result}".format(result=result), reply_markup=keyboard)
         jobtext = "after scanning at {loc_name}".format(loc_name=loc_name)
         await state.clear()
         await state.set_state(State.gps_state)
@@ -270,3 +276,4 @@ async def trigger_scan_event(message, state):
     exp = drop["experience"]
     await invent.add_pl_exp(message.from_user.id, )
     await message.answer("Received:\nExperienceP{exp}".format(exp=exp))
+
