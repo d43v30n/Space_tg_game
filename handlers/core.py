@@ -3,6 +3,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.enums import ParseMode
+from random import randint
 
 from app import database as db
 from emojis import *
@@ -93,8 +94,11 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     # keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
     row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
     jobtext = state_data["job"]
-    if jobtext.endswith("found ore"):
-        found_ore_text = "Our scanners detected ore here! We can try to mine."
+    loc_features = await space_map.features(gps)
+    loc_name = await space_map.name(gps)
+    if "mining" in loc_features:
+        asteroid = loc_name.upper()[:3] + "-" + str(randint(10,99)) + "&"
+        found_ore_text = "Our scanners detected <b>ore</b> on some Asteroid <i>§{asteroid}</i> here! We can try scanning.".format(asteroid=asteroid)
     else:
         found_ore_text = ""
     await message.answer("{row1}{row2}\n<code>Ship AI:</code> \"We are currently free to go.\" \n\nAny further orders, cap?\n{found_ore_text}".format(row1=row1, row2=row2, found_ore_text=found_ore_text), reply_markup=kb.ship_ai_kb())
