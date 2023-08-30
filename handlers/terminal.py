@@ -17,35 +17,72 @@ router = Router()
 
 @router.message(F.text == "Ship info")
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    # try:
     state_data = await state.get_data()
     keyboard = await kb.keyboard_selector(state)
-    gps = state_data["gps_state"]
-    attributes = await m.get_player_information(message.from_user.id, "attributes")
-    faction = attributes[0].get("faction")
-    energy = await m.get_energy(message.from_user.id)
-    current_energy = energy[0]
-    max_energy = energy[1]
-    information = await m.get_player_information(message.from_user.id, "current_health", "max_health", "credits", "experience", "level", "main_quest", "side_quest", "ship_type", "abilities")
-    current_health = information[0]
-    max_health = information[1]
-    player_credits = information[2]
-    experience = information[3]
-    level = information[4]
-    main_quest = information[5]
-    side_quest = information[6]
-    ship_type = information[7]
-    abilities = information[8]
+    # gps = state_data["gps_state"]
+    # attributes = await m.get_player_information(message.from_user.id, "attributes")
+    # faction = attributes[0].get("faction")
+    # energy = await m.get_energy(message.from_user.id)
+    # current_energy = energy[0]
+    # max_energy = energy[1]
+    # information = await m.get_player_information(message.from_user.id, "current_health", "max_health", "credits", "experience", "level", "main_quest", "side_quest", "ship_type", "abilities")
+    # current_health = information[0]
+    # max_health = information[1]
+    # player_credits = information[2]
+    # experience = information[3]
+    # level = information[4]
+    # main_quest = information[5]
+    # side_quest = information[6]
+    # ship_type = information[7]
+    # abilities = information[8]
+    info = await m.get_player_information(message.from_user.id, "ship_slots")
+    shields = f"".center(11, "-")
+    wep_header = "|--------Weapons---------|"
+    shl_header = "|--------Shields---------|"
+    arm_header = "|---------Armor----------|"
+    sca_header = "|--------Scanner---------|"
+    emp_header = "|------------------------|"
+    headers = {"weapons":"|--Weapons--|", "shields":"|--Shields--|", "armor":"|---Armor---|", "scanner":"|--Scanner--|"}
     damage = None
     defence = None
-    shields = None
-    table = """|---Weapons--|---Armor---|--Shields--|
-|------------|-----------|-----------|
-|444444444444|44444444444|44444444444|
-|444444444444|44444444444|44444444444|"""
-    await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n".format(damage=damage, defence=defence, shields=shields), reply_markup=keyboard)
-    # except:
-    # await errors.unknown_input_handler(message, state)
+    weapons = []
+    shields = []
+    armor = []
+    scanners = []
+    table = []
+    print(info)
+    for slot_type, eq_item in info[0].items():
+        if slot_type.startswith("weapons"):
+            weapons.append("|" + eq_item + "|")
+        elif slot_type.startswith("shields"):
+            shields.append("|" + eq_item + "|")
+        elif slot_type.startswith("armor"):
+            armor.append("|" + eq_item + "|")
+        elif slot_type.startswith("scanners"):
+            scanners.append("|" + eq_item + "|")
+    table.append(wep_header)
+    for _ in weapons:
+        _.ljust(26, "-")
+        table.append(_)
+    table.append(shl_header)
+    for _ in shields:
+        _.ljust(26, "-")
+        table.append(_)
+    table.append(arm_header)
+    for _ in armor:
+        _.ljust(26, "-")
+        table.append(_)
+    table.append(sca_header)
+    for _ in scanners:
+        _.ljust(26, "-")
+        table.append(_)
+
+
+    armor = f"".center(11, "-")
+        
+
+
+    await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\n<code>{table}</code>".format(damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
 
 
 @router.message(F.text == "Guild")

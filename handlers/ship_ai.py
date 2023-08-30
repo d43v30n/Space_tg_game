@@ -97,12 +97,12 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         
         # event check
         if event[0] is None:
-            print("entered 1")
+            print("entered 1 None")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}.")
 
         elif event[0] == "enemies":
-            print("entered 2")
+            print("entered 2 enemies")
             keyboard = await kb.keyboard_selector(state)
             enemy_shorname = event[1]
             # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
@@ -113,15 +113,18 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
                 await message.answer(f"Figth result is : {fight_result[0]}.\n\nReceived:\n{fight_result[1]}", reply_markup=keyboard)
 
         elif event[0] == "mining_event":
-            print("entered 3")
+            print("entered 3 mining_event")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}")
+            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. MINING_EVENT_TRIGGERED".format(rocket=rocket), reply_markup=keyboard)
 
         elif event[0] == "scanning_event":
-            print("entered 4")
+            print("entered 4 scanning_event")
             keyboard = await kb.keyboard_selector(state)
             scans = event[1]["scans_required"]
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}_{scans}")
+            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED".format(rocket=rocket), reply_markup=keyboard)
+            await m.trigger_scan_event(message, state)
 
         else:
             print("should not happen. unknown event in location")
