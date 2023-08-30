@@ -61,38 +61,24 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 @ router.message(Command("help"))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    await message.answer("""<b>Welcome to Conquerors of the Void Bot - Your Galactic Journey Begins! 🚀</b>
+    await message.answer("""
+<b>Welcome to the Cosmic Adventure, brave captain! 🚀</b>
 
-<i>Embark on an Epic Space Exploration Adventure! 🌌</i>
+<i>Here's a quick guide to mastering the game mechanics and diving into the rich lore of our universe:</i>
 
-<b>Commander</b>, get ready to dive into the cosmos and experience the thrill of interstellar travel, resource management, and intense turn-based battles. In Conquerors of the Void, you'll navigate uncharted galaxies, discover alien civilizations, and test your strategic prowess in a mix of <b>RPG</b> and <i>survival</i> gameplay.
+<b>🏠 Ringworld Station:</b> Your home base. Dock and undock here. Repair your ship at the <code>🛸shipyard</code> and recharge your <code>🔋Energy</code>. Soon, you'll upgrade your ship, trade <code>🛢️Cargo</code>, and buy/sell <code>📦Inventory</code> on the market. You can even <code>🔄Jump Home</code> directly through your <code>🚀Ship AI</code> menu.
 
-<b>Getting Started:</b>
-To start your cosmic adventure, simply type <code>/start</code>. You'll receive a sturdy starship, a handful of resources, and a loyal AI to begin your journey.
+<b>▶️ Universe Exploration:</b> Embark on thrilling journeys by jumping forward. The universe map consists of GPS <code>🛰️ locations</code>. Expect diverse encounters during jumps. Beware! Deeper dives bring more perilous enemies.
 
-<b>Gameplay Basics:</b>
-- <b>Exploration:</b> Navigate through star systems by using your Ship AI. Unveil new planets, anomalies, and celestial wonders. Keep an eye on your ship's HP and Energy!
-- <b>Upgrades:</b> Enhance your starship, crew skills, and weaponry using resources you collect during your travels. Access the upgrade menu with  /upgrades.
-- <b>Trading:</b> Visit space stations to trade resources, buy equipment, and sell rare discoveries. Engage in commerce to bolster your resources and fund your adventure.
-- <b>Turn-Based Battles:</b> Encounter hostile space creatures and rival explorers.
-- <b>Strategy:</b> Every decision matters. Choose your path wisely, manage your resources efficiently, and strategize during battles to emerge victorious.
+<b>⚔️ Combat Mechanics:</b> Engage in battles. Ship HP ❤️ may drop low, but fear not! Repair at the <code>🛸shipyard</code>. Enemies drop credits, Exploration Data, and sometimes valuable materials (crafting coming soon!).
 
-<b>RPG Elements:</b>
-- <b>Crew Development:</b> Your crew members have distinct skills and backgrounds. Train them to improve their abilities and unlock new talents for a variety of strategic advantages.
-- <b>Character Progression:</b> As you explore and conquer challenges, your commander's skills will grow. Tailor your character's development to match your preferred playstyle.
-- <b>Alliances and Factions:</b> Form alliances with alien civilizations, gain their trust, and unlock unique quests, technologies, and storylines.
+<b>💻 Terminal Access:</b> Navigate your ship's info, <code>🛢️Cargo</code>, and <code>📦Inventory</code> in the <code>💻Terminal</code>. This menu's your go-to guide.
 
-<b>Survival Challenges:</b>
-- <b>Resource Management:</b> Keep an eye on your ship's energy, food supplies, and life support systems. Scarcity of resources adds a layer of survival challenge.
-- <b>Quests and Objectives:</b> Engage in story-driven quests that will test your decision-making abilities and determine the fate of your spacefaring journey.
+<b>🔋 Energy Management:</b> Your ship holds <code>🔋Energy</code>. Use it to scan locations or mine ore. Blind-mining's riskier; scan first for better results.
 
-<b>Join the Community:</b>
-Connect with fellow spacefarers, share tips, and participate in discussions in our official Conquerors of the Void Telegram group <a href='http://www.example.com/'>here</a>.
+<b>🚀 Ship AI & Exploration Data:</b> Your Ship AI helps you jump to Ringworld. It also gathers Exploration Data, leveling up for deeper space exploration (under development).
 
-<b>Get Help:</b>
-For a list of available commands, type <code>/commands</code>. If you need assistance at any point, type <code>/help</code> to display this message again.
-
-<i>May the stars guide you, Commander! Your legacy among the galaxies awaits. 🌌</i>
+<b>Get ready to conquer the cosmos, captain! Adventure, resources, and vengeance await. Safe travels! 🌌</b>
 
 """, reply_markup=kb.main_kb(0), parse_mode=ParseMode.HTML)
 
