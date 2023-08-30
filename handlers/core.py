@@ -35,7 +35,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
             "{void_emj}Void greets you, commander!\n\n@{u_id}, you find yourself in a precarious situation, but fear not, for your resourcefulness shall light the way.\nDon't hesitate to seek guidance with /help if you require more insights!\nYour trusty {rocket}Ship AI stands ready to assist you.".format(
                 u_id=message.from_user.username, void_emj=void_emj, rocket=rocket),
             reply_markup=kb.main_kb(0)
-)
+        )
 
         gps = await m.get_location(message.from_user.id)
         # lore messages for new player guidance
@@ -86,19 +86,20 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 @ router.message(State.job, F.text == "{emoji}Ship AI".format(emoji=rocket))
 async def ship_ai_menu(message: Message, state: FSMContext) -> None:
-    state_data=await state.get_data()
-    gps=state_data["gps_state"]
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
     if gps is None:
-        gps=await m.get_location(message.from_user.id)
-    
+        gps = await m.get_location(message.from_user.id)
+
     # keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
     row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
     jobtext = state_data["job"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
     if "mining" in loc_features:
-        asteroid = loc_name.upper()[:3] + "-" + str(randint(10,99)) + "&"
-        found_ore_text = "Our scanners detected <b>ore</b> on some Asteroid <i>§{asteroid}</i> here! We can try scanning.".format(asteroid=asteroid)
+        asteroid = loc_name.upper()[:3] + "-" + str(randint(10, 99)) + "&"
+        found_ore_text = "Our scanners detected <b>ore</b> on some Asteroid <i>§{asteroid}</i> here! We can try scanning.".format(
+            asteroid=asteroid)
     else:
         found_ore_text = ""
     await message.answer("{row1}{row2}\n<code>Ship AI:</code> \"We are currently free to go.\" \n\nAny further orders, cap?\n{found_ore_text}".format(row1=row1, row2=row2, found_ore_text=found_ore_text), reply_markup=kb.ship_ai_kb())
@@ -119,7 +120,7 @@ async def ship_ai_busy(message: Message, state: FSMContext) -> None:
 # Terminal should be always accessable
 @ router.message(F.text == "{emoji}Terminal".format(emoji=computer))
 async def terminal_menu(message: Message, state: FSMContext) -> None:
-    row1, row2, row3=await m.get_main_text_row(message.from_user.id)
+    row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
     try:
         await message.answer("{row1}{row2}\n{row3}".format(row1=row1, row2=row2, row3=row3), reply_markup=kb.terminal_kb())
     except:
@@ -128,13 +129,13 @@ async def terminal_menu(message: Message, state: FSMContext) -> None:
 
 @ router.message(F.text == "Back")
 async def back_button_handler(message: Message, state: FSMContext) -> None:
-    current_state=await state.get_state()
+    current_state = await state.get_state()
     if current_state == "State:confirmation":
         print("entered confirmation reset")
-        gps=await m.get_location(message.from_user.id)
-        energy=await m.get_energy(message.from_user.id)
-        keyboard=await kb.keyboard_selector(state)
-        job_text="Exiting confirmation"
+        gps = await m.get_location(message.from_user.id)
+        energy = await m.get_energy(message.from_user.id)
+        keyboard = await kb.keyboard_selector(state)
+        job_text = "Exiting confirmation"
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
@@ -143,11 +144,11 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
     else:
         try:
-            energy=await m.get_energy(message.from_user.id)
-            state_data=await state.get_data()
-            gps=state_data["gps_state"]
-            text=state_data["job"]
-            keyboard=await kb.keyboard_selector(state)
+            energy = await m.get_energy(message.from_user.id)
+            state_data = await state.get_data()
+            gps = state_data["gps_state"]
+            text = state_data["job"]
+            keyboard = await kb.keyboard_selector(state)
             if await is_busy(state_data):
                 await message.answer(f"You are {text}.", reply_markup=kb.main_kb(gps))
             else:
@@ -158,14 +159,15 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
 
 @ router.message(State.job, F.text == "Dock to Ringworld station")
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
-    state_data=await state.get_data()
-    gps=state_data["gps_state"]
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
     if gps == 0:
-        text_job=state_data["job"]
-        loc_name=await space_map.name(gps)
+        text_job = state_data["job"]
+        loc_name = await space_map.name(gps)
         await state.set_state(State.docked)
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
-        keyboard=await kb.keyboard_selector(state)
+        keyboard = await kb.keyboard_selector(state)
+        await message.answer_photo("AgACAgIAAxkDAAI03WTvhfh9byTLKl1_AAF9C6nG4wO4HwACUskxG2EPgUs4-mQ4o3GyRQEAAwIAA3kAAzAE")
         await message.answer(f"Yes, my beloved home. How long has it bee. {loc_name}, i Love YOU!\n\nYou approach this colossal space station and dock to it at international space port.\n\nWhile docked your ship will be charged for free!", reply_markup=keyboard)
         await energy_manager.restore_all_energy(message.from_user.id)
         # 1 docking timer
@@ -176,5 +178,5 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
 
 @ router.message(State.docked, F.text == "Dock to Ringworld station")
 async def jump_home_handler(message: Message, state: FSMContext) -> None:
-    keyboard=await kb.keyboard_selector(state)
+    keyboard = await kb.keyboard_selector(state)
     await message.answer(f"Already docked", reply_markup=keyboard)
