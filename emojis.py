@@ -26,3 +26,9 @@ ship_level_unicode = {
     '9': '\u0039\uFE0F\u20E3',  # 9️⃣
     '10': '\U0001F51F',             # 🔟
 }
+
+# Factions
+# 🌌 - Ringworld Jumpexplorers
+# 🏴‍☠️ - Space Pirates
+# 🔱 - Trident Sekta
+# 👥 - The Unknown 

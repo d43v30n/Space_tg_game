@@ -63,8 +63,8 @@ async def get_main_text_row(user_id):
     row2 = "{gps_emj}{gps} {heart}{current_health}/{max_health} {energy_smiley}{current_energy}/{max_energy}".format(
         gps_emj=gps_emj, gps=gps, heart=heart, current_health=current_health, max_health=max_health, current_energy=current_energy, max_energy=max_energy, energy_smiley=energy_smiley
     )
-    row3 = "Faction: {faction}\n\nShip Stats:\nHP: {current_health}/{max_health},\nmain_quest: {main_quest}\nside_quest: {side_quest}\n\n{money_bag}Credits: {player_credits}\n{bar_chart}Exploration Data: {experience}\nShip AI Level : {level}".format(
-        faction=faction, current_health=current_health, max_health=max_health, main_quest=main_quest, side_quest=side_quest, money_bag=money_bag,  player_credits=player_credits, bar_chart=bar_chart,
+    row3 = "Faction: {faction}\nmain_quest: {main_quest}\nside_quest: {side_quest}\n\n{money_bag}Credits: {player_credits}\n{bar_chart}Exploration Data: {experience}\nShip AI Level : {level}".format(
+        faction=faction, main_quest=main_quest, side_quest=side_quest, money_bag=money_bag,  player_credits=player_credits, bar_chart=bar_chart,
         experience=experience, level=level)
     return row1, row2, row3
 
