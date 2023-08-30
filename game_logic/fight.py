@@ -132,7 +132,7 @@ async def get_fight_drop(user_id, en_shortname):
     await invent.add_pl_credits(user_id, got_credits)
     # exp
     exp = en_drop.get("exp")
-    drop.append(f"Experience : {exp}")
+    drop.append(f"Exploration Data : {exp}")
     await invent.add_pl_exp(user_id, exp)
 
     # items
