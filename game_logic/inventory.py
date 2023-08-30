@@ -1,4 +1,4 @@
-from app.database import db_read_dict, db_write_dict_full, db_write_int, db_read_int
+from app.database import db_read_dict, db_write_dict_full, db_write_int, db_read_int, db_read_details, db_read_full_name
 
 
 async def add_pl_exp(user_id, exp):
@@ -66,3 +66,23 @@ async def add_pl_ores(user_id, mt_shortname, count):
         print("inside 2 IF in add_pl_ores", pl_ores)
     # new function to update value in dictionary
     await db_write_dict_full("players", user_id, "pl_materials", pl_ores)
+
+
+async def apply_item(user_id, item_id):
+    # get item quantity by user_id
+    # get details to item
+    # apply item with conditions
+    # reduce used quantity from user_id
+    item_data = db_read_details()
+    item_name = db_read_full_name
+
+
+async def sell_item():
+    # get item quantity by user_id
+    # get details to item
+    # reduce used quantity from user_id
+    ...
+
+
+async def sell_material():
+    ...

@@ -93,12 +93,13 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
             flag = id.split("_")[0][1:]
             id = int(id.split("_")[1])
             print(f"applying {flag} with id {id}")
+            await ()
         except:
             print("ERROR")
 
         state_data = await state.get_data()
         gps = state_data["gps_state"]
-        job_text = f"Applying {flag} with id {id}"
+        job_text = f"applying {flag} with id {id}"
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)

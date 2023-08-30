@@ -234,7 +234,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
                 drop_text.append(
                     f"You found {mt_name} (x{count}) with chance {chance} ")
                 exp = mt_drop_dict.get("price", 1) / 50
-                drop_text.append("Exploration Data gathered: {exp}.".format(exp=exp))
+                drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
 
                 
         state_data = await state.get_data()
@@ -251,7 +251,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
     if drop_text == []:
         exp = 30
         drop_text.append("You found no ore.")
-        drop_text.append("Exploration Data gathered: {exp}.".format(exp=exp))
+        drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(exp=exp, bar_chart=bar_chart))
         await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
 
@@ -284,7 +284,7 @@ async def scan_area(message, state):
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("Found: {result}\nExploration Data gathered: {exp}".format(result=result, exp=exp), reply_markup=keyboard)
+        await message.answer("Found: {result}\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
@@ -306,5 +306,5 @@ async def trigger_scan_event(message, state):
     drop = event_details["scanning_event"]
     exp = drop["experience"]
     await invent.add_pl_exp(message.from_user.id, )
-    await message.answer("Received:\nExploration DataP{exp}".format(exp=exp))
+    await message.answer("Received:\n{bar_chart}Exploration DataP{exp}".format(exp=exp, bar_chart=bar_chart))
 

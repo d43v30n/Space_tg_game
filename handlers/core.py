@@ -70,13 +70,13 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 <b>▶️ Universe Exploration:</b> The universe map consists of GPS <code>🛰️ locations</code>. Expect diverse encounters during jumps. Beware! Deeper dives bring more perilous enemies.
 
-<b>⚔️ Combat Mechanics:</b> Engage in battles while moving to new locations. Ship HP ❤️ may drop low, but fear not! Repair at the <code>🛸shipyard</code>. Enemies get stronger the further you are, but reward more 💰Credits, 📊Exploration Data, and sometimes valuable materials (crafting coming soon!).
+<b>⚔️ Combat Mechanics:</b> Engage in battles while moving to new locations. ❤️Ship HP may drop low, but fear not! Repair at the <code>🛸shipyard</code>. Enemies get stronger the further you are, but reward more 💰Credits, 📊Exploration Data, and sometimes valuable materials (crafting coming soon!).
 
 <b>💻 Terminal Access:</b> Navigate your ship's info, <code>🛢️Cargo</code>, and <code>📦Inventory</code> in the <code>💻Terminal</code>. This menu's your go-to guide.
 
 <b>🔋 Energy Management:</b> Your ship holds <code>🔋Energy</code>. Use it to scan locations or mine ore. Blind-mining's riskier; scan first for better results.
 
-<b>🚀 Ship AI & Exploration Data:</b> Gather Exploration Data to level up your Ship AI for deeper space exploration (under development).
+<b>🚀 Ship AI & Exploration Data:</b> Gather 📊Exploration Data to level up your 🚀Ship AI for deeper space exploration (under development).
 
 <b>Get ready to conquer the cosmos, captain! Safe travels! 🌌</b>
 
