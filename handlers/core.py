@@ -66,19 +66,19 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 <i>Here's a quick guide to mastering the game mechanics and diving into the rich lore of our universe:</i>
 
-<b>🏠 Ringworld Station:</b> Your home base. Dock and undock here. Repair your ship at the <code>🛸shipyard</code> and recharge your <code>🔋Energy</code>. Soon, you'll upgrade your ship, trade <code>🛢️Cargo</code>, and buy/sell <code>📦Inventory</code> on the market. You can even <code>🔄Jump Home</code> directly through your <code>🚀Ship AI</code> menu.
+<b>🏠 Ringworld Station:</b> Your home base. Dock for action here. Repair your ship at the <code>🛸shipyard</code> and recharge your <code>🔋Energy</code> for free. You can even <code>🔄Jump Home</code> directly through your <code>🚀Ship AI</code> menu. Soon, you'll be able to upgrade your ship, trade <code>🛢️Cargo</code>, and buy/sell <code>📦Inventory</code> on the market.
 
-<b>▶️ Universe Exploration:</b> Embark on thrilling journeys by jumping forward. The universe map consists of GPS <code>🛰️ locations</code>. Expect diverse encounters during jumps. Beware! Deeper dives bring more perilous enemies.
+<b>▶️ Universe Exploration:</b> The universe map consists of GPS <code>🛰️ locations</code>. Expect diverse encounters during jumps. Beware! Deeper dives bring more perilous enemies.
 
-<b>⚔️ Combat Mechanics:</b> Engage in battles. Ship HP ❤️ may drop low, but fear not! Repair at the <code>🛸shipyard</code>. Enemies drop credits, Exploration Data, and sometimes valuable materials (crafting coming soon!).
+<b>⚔️ Combat Mechanics:</b> Engage in battles while moving to new locations. Ship HP ❤️ may drop low, but fear not! Repair at the <code>🛸shipyard</code>. Enemies get stronger the further you are, but reward more 💰Credits, 📊Exploration Data, and sometimes valuable materials (crafting coming soon!).
 
 <b>💻 Terminal Access:</b> Navigate your ship's info, <code>🛢️Cargo</code>, and <code>📦Inventory</code> in the <code>💻Terminal</code>. This menu's your go-to guide.
 
 <b>🔋 Energy Management:</b> Your ship holds <code>🔋Energy</code>. Use it to scan locations or mine ore. Blind-mining's riskier; scan first for better results.
 
-<b>🚀 Ship AI & Exploration Data:</b> Your Ship AI helps you jump to Ringworld. It also gathers Exploration Data, leveling up for deeper space exploration (under development).
+<b>🚀 Ship AI & Exploration Data:</b> Gather Exploration Data to level up your Ship AI for deeper space exploration (under development).
 
-<b>Get ready to conquer the cosmos, captain! Adventure, resources, and vengeance await. Safe travels! 🌌</b>
+<b>Get ready to conquer the cosmos, captain! Safe travels! 🌌</b>
 
 """, reply_markup=kb.main_kb(0), parse_mode=ParseMode.HTML)
 

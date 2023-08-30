@@ -7,6 +7,7 @@ import game_logic.mechanics as m
 from game_logic.space_map import *
 from game_logic.states import State
 import keyboards.main_kb as kb
+from emojis import *
 
 
 async def init_fight(message: Message, enemy_id, state: State):
@@ -128,11 +129,11 @@ async def get_fight_drop(user_id, en_shortname):
 
     # credits
     got_credits = en_drop.get("credits")
-    drop.append(f"Credits: {got_credits}")
+    drop.append("{money_bag}Credits: {got_credits}".format(money_bag=money_bag, got_credits=got_credits))
     await invent.add_pl_credits(user_id, got_credits)
     # exp
     exp = en_drop.get("exp")
-    drop.append(f"Exploration Data : {exp}")
+    drop.append("{bar_chart}Exploration Data : {exp}".format(exp=exp, bar_chart=bar_chart))
     await invent.add_pl_exp(user_id, exp)
 
     # items

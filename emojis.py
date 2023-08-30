@@ -11,3 +11,5 @@ gps_emj = '\U0001F6F0'  # 🛰️
 heart = '\U00002764'  # ❤️
 energy_smiley = '\U0001F50B'  # 🔋
 void_emj = '\U0001F30C' # 🌌
+bar_chart = '\U0001F4CA'  # 📊
+money_bag = '\U0001F4B0'  # 💰
