@@ -87,7 +87,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         if not event:
             await state.update_data(job=f"just arrived to {loc_name}")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name} {gps}{gps_emj}</b>.".format(rocket=rocket, loc_name=loc_name, gps_emj=gps_emj, gps=gps), reply_markup=keyboard)
             return
         
         if "mining" in loc_features:
