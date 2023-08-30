@@ -4,6 +4,7 @@ import asyncio
 from os import getenv
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
 from app import database as db
 from handlers import admin, core, ship_ai, terminal, locations, errors
 from game_logic import fight as f
@@ -26,7 +27,7 @@ async def on_startup(bot: Bot) -> None:
 
 
 async def main():
-    bot = Bot(TOKEN)
+    bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
     dp = Dispatcher()
 
     dp.include_routers(admin.router)
