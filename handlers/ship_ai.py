@@ -44,6 +44,7 @@ async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None
     await state.update_data(gps_state=gps)
     await state.set_state(State.job)
     await state.update_data(job=f"after Home Jump")
+    await message.answer_photo("AgACAgIAAxkDAAI03WTvhfh9byTLKl1_AAF9C6nG4wO4HwACUskxG2EPgUs4-mQ4o3GyRQEAAwIAA3kAAzAE")
     await message.answer(f"Finally, Home!", reply_markup=kb.main_kb(gps))
 
 

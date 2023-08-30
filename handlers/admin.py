@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message, ReplyKeyboardRemove, FSInputFile
 
 from dotenv import load_dotenv
 from os import getenv
@@ -24,9 +24,16 @@ ADMIN_ID = getenv("ADMIN_ID")
 
 @router.message(State.admin, Command("test"))
 async def adm_test_handler(message: Message, state: FSMContext) -> None:
-    pl_level = await m.get_player_information(message.from_user.id, "level")
+    # await message.answer_photo("AgACAgIAAxkDAAI03WTvhfh9byTLKl1_AAF9C6nG4wO4HwACUskxG2EPgUs4-mQ4o3GyRQEAAwIAA3kAAzAE")
+    file_ids = []
+    image_from_pc = FSInputFile("images/ringworld.png")
+    result = await message.answer_photo(
+        image_from_pc,
+        caption="Изображение из файла на компьютере"
+    )
+    file_ids.append(result.photo[-1].file_id)
 
-    print(pl_level)
+    await message.answer("Отправленные файлы:\n"+"\n".join(file_ids))
 
 
 @router.message(Command("admin"))
@@ -86,3 +93,14 @@ async def adm_test_handler(message: Message, state: FSMContext) -> None:
         gps = i
         result = await db.db_parse_ore_drop_locations(gps)
         print(f"DROP at {gps} = ", result)
+
+
+@router.message(State.admin, F.image)
+async def echo_image_id(message: Message, state: FSMContext) -> None:
+    with open('images/ringworld.png', 'rb') as photo:
+        sent_photo = await message.reply_photo(photo, caption="Here's the photo!")
+
+        # Extract the file ID from the sent photo
+        file_id = sent_photo.photo[-1].file_id
+
+        await message.reply(f"File ID of the sent photo: {file_id}")
