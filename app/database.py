@@ -252,7 +252,7 @@ async def db_read_enemies_attributes(gps):
 
 async def db_read_details(table, value, column, search_col):  # custom db_access
     
-    value = cur_pl.execute(
+    value = cur_gm.execute(
         f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
     value = json.loads(value.fetchone()[0])
     return value
