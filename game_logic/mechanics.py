@@ -240,7 +240,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
                 await invent.add_pl_ores(user_id, mt_shortname[1:-1], count)
                 drop_text.append(
                     f"You found {mt_name} (x{count})")  # with chance {chance} ")
-                exp = mt_drop_dict.get("price", 1) / 50
+                exp = 50
                 drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(
                     exp=exp, bar_chart=bar_chart))
 
@@ -261,7 +261,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
             "You got no ore this time, maybe you should try somewhere else?\n")
         drop_text.append("{bar_chart}Exploration Data gathered: {exp}.".format(
             exp=exp, bar_chart=bar_chart))
-        await invent.add_pl_exp(message.from_user.id, exp)
+    await invent.add_pl_exp(message.from_user.id, exp)
     return "\n".join(drop_text)
 
 
