@@ -44,7 +44,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     arm_header = "|---------Armor----------|"
     sca_header = "|--------Scanner---------|"
     emp_header = "|------------------------|"
-    headers = {"weapon":"|--Weapons--|", "shield":"|--Shields--|", "armor":"|---Armor---|", "scanner":"|--Scanner--|"}
+    headers = {"weapon": "|--Weapons--|", "shield": "|--Shields--|",
+               "armor": "|---Armor---|", "scanner": "|--Scanner--|"}
     damage = None
     defence = None
     weapons = []
@@ -57,9 +58,10 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         if eq_item == "":
             eq_item = emp_header
             continue
+        print("eq_item", eq_item)
+        eq_item = f"\"{eq_item}\""
         eq_item_name = await db_read_full_name("items", eq_item, "it_name", "it_shortname")
-        # eq_item_name = f"\"{eq_item_name}\""
-        eq_item_name = "<b>" + eq_item_name[1:-1].center(24) + "</b>"
+        eq_item_name = "<b>" + eq_item_name[1:-1].center(24) + "</b>"  # [1:-1]
 
         if slot_type.startswith("weapon"):
             weapons.append("|" + eq_item_name + "|")
@@ -88,8 +90,6 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     table.append(emp_header)
 
     armor = f"".center(11, "-")
-        
-
 
     await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\nYou can unequip all items with /unequip_all_items\n<code>{table}</code>".format(damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
 
@@ -104,33 +104,35 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     except:
         await errors.unknown_input_handler(message, state)
 
+
 @router.message(State.docked, Command("unequip_all_items"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
     text = await invent.unequip_all_items(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     await message.answer(text, reply_markup=keyboard)
 
+
 @router.message(F.text == "{emoji}Cargo".format(emoji=barrel))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    #try:
+    # try:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
     keyboard = await kb.keyboard_selector(state)
     cargo = await m.show_materials(message.from_user.id)
     await message.answer(f"Here is your Cargo:\n{cargo}", reply_markup=keyboard)
-    #except:
+    # except:
     #    await errors.unknown_input_handler(message, state)
 
 
 @router.message(F.text == "{emoji}Inventory".format(emoji=paperbox))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
-    #try:
+    # try:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
     keyboard = await kb.keyboard_selector(state)
     inv = await m.show_items(message.from_user.id)
     await message.answer(f"Here is your Inventory:\n{inv}", reply_markup=keyboard)
-    #except:
+    # except:
     #    await errors.unknown_input_handler(message, state)
 
 
@@ -151,7 +153,6 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)
         out = await invent.apply_item(message.from_user.id, id, state)
         await message.answer(out, reply_markup=keyboard)
-
 
         # except:
         #     print("ERROR")
