@@ -44,7 +44,7 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
 @router.message(State.repairing)
 async def repairing_state_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
-    await message.answer("While your ship is under repair, you can only access {emoji}Terminal".format(emoji=computer), reply_markup=kb.main_kb(keyboard))
+    await message.answer("While your ship is under repair, you can only access {emoji}Terminal".format(emoji=computer), reply_markup=keyboard)
 
 
 @router.message(State.docked, F.text == "{emoji}Undock".format(emoji=undock_emoji))
@@ -95,4 +95,5 @@ async def repair_rw_handler(message: Message, state: FSMContext) -> None:
         await state.set_state(State.docked)
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
     else:
+        keyboard = await kb.keyboard_selector(state)
         await message.answer("Your Ship is already fully repaired", reply_markup=keyboard)

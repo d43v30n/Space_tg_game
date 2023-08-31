@@ -73,8 +73,8 @@ def ringworld_kb() -> ReplyKeyboardMarkup:
     kb.button(text="{emoji}Night Club".format(emoji=night_club_emoji)) # quests
     kb.button(text="{emoji}Trading market".format(emoji=trading_marker_emoji)) # sell ore
 
-    kb.button(text="{emoji}Undock".format(emoji=undock_emoji))
     kb.button(text="{emoji}Terminal".format(emoji=computer))
+    kb.button(text="{emoji}Undock".format(emoji=undock_emoji))
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
 
