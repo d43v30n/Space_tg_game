@@ -117,21 +117,25 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             print("entered 3 mining_event")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}")
-            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. MINING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. MINING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
 
         elif event[0] == "scanning_event":
             print("entered 4 scanning_event")
             keyboard = await kb.keyboard_selector(state)
             scans = event[1]["scans_required"]
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}_{scans}")
-            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
-
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+        elif event[0] == "encounter":
+            print("entered 5 encounter")
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
+            keyboard = await kb.keyboard_selector(state)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         else:
             print(
                 "should not happen. unknown event in location, event[0] = ", event[0])
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code>wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
 
     else:
         print("reached end of map")
