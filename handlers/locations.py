@@ -41,6 +41,12 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
     #     await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
 
 
+@router.message(State.repairing)
+async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
+    keyboard = await kb.keyboard_selector(state)
+    await message.answer("While your ship is under repair, you can only access {emoji}Terminal".format(emoji=computer), reply_markup=kb.main_kb(keyboard))
+
+
 @router.message(State.docked, F.text == "{emoji}Undock".format(emoji=undock_emoji))
 async def undock_rw_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
@@ -78,7 +84,7 @@ async def repair_rw_handler(message: Message, state: FSMContext) -> None:
         loc_name = await space_map.name(gps)
         repairing_text = "Parked at shipyard at {loc_name}".format(
             loc_name=loc_name)
-        await message.answer(f"You leaved your vessel for repair. Wait until it is ready, you will be able to only access your terminal during this procedure.", reply_markup=keyboard)
+        await message.answer("You leaved your vessel for repair. Wait until it is ready, you will be able to only access your {emoji}Terminal during this procedure.".format(emoji=computer), reply_markup=keyboard)
         await state.set_state(State.repairing)
         await state.update_data(job="started repairing at {loc_name}".format(loc_name=loc_name), docked="docked to {loc_name}".format(loc_name=loc_name), repairing=repairing_text)
         await m.restore_hp(message.from_user.id)
@@ -89,4 +95,4 @@ async def repair_rw_handler(message: Message, state: FSMContext) -> None:
         await state.set_state(State.docked)
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
     else:
-        await message.answer(f"Your Ship is already fully repaired", reply_markup=keyboard)
+        await message.answer("Your Ship is already fully repaired", reply_markup=keyboard)
