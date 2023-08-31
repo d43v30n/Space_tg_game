@@ -42,14 +42,18 @@ async def command_state_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(Command("reset"))
 async def command_reset_handler(message: Message, state: FSMContext) -> None:
-    gps = await m.get_location(message.from_user.id)
-    await message.answer(f"Resetting..", reply_markup=kb.main_kb())
-    jobtext = "after reset"
-    await state.clear()
-    await state.set_state(State.gps_state)
-    await state.update_data(gps_state=gps)
-    await state.set_state(State.job)
-    await state.update_data(job=jobtext)
+    current_state = await state.get_state()
+    if current_state != "State:repairing" or current_state != "State:travelling" or current_state != "State:fighting":
+        gps = await m.get_location(message.from_user.id)
+        await message.answer(f"Resetting..", reply_markup=kb.main_kb())
+        jobtext = "after reset"
+        await state.clear()
+        await state.set_state(State.gps_state)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        await state.update_data(job=jobtext)
+    else:
+        await message.answer("you can not /reset while {current_state}".format(current_state=current_state), reply_markup=kb.main_kb())
 
 
 @router.message(State.job)
