@@ -87,10 +87,13 @@ async def apply_item(user_id, i_id, state):
     current_state = await state.get_state()
     gps = await m.get_location(user_id)  # remake to state
     loc_features = await space_map.features(gps)
-    it_type = await db_read_full_name("items", i_id, "type", "i_id")
-    it_shortname, player_quantity = await get_item_quantity_from_inv(i_id, user_id)
+    try:
+        it_type = await db_read_full_name("items", i_id, "type", "i_id")
+        it_shortname, player_quantity = await get_item_quantity_from_inv(i_id, user_id)
+    except:
+        return "You do not have this item"
     # it_shortname = f"\"{it_shortname}\""
-    it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
+    it_name = await db_read_full_name("items", f"\"{it_shortname}\"", "it_name", "it_shortname")
 
     if player_quantity < 1:
         return "Your quantity is < 1"
@@ -148,7 +151,7 @@ async def equip_weapon(user_id, it_shortname, it_name):
     await add_pl_items(user_id, it_shortname, -1)  # -1 from inventory
     # write new slots to db
     await db_write_dict_full("players", user_id, "ship_slots", pl_ship_slots)
-    return "You equipped {it_name} to slot 1. other items changed slots to the right. Last item is in your Inventory".format(it_name=it_name)
+    return "You equipped {it_name} to slot 1. other items changed slots to the right. Your previous weapon form {slots_count} in {emoji}Inventory".format(it_name=it_name, emoji=paperbox, slots_count=slots_count)
 
 
 async def equip_item(user_id, it_shortname, it_name, it_type):
@@ -182,8 +185,11 @@ async def unequip_all_items(user_id):
 async def get_item_quantity_from_inv(i_id, user_id):
     it_shortname = await db_read_full_name("items", i_id, "it_shortname", "i_id")
     it_shortname = it_shortname[1:-1]
-    player_quantity = await db_read_dict("players", user_id, "pl_items")
-    player_quantity = player_quantity[it_shortname]
+    try:
+        player_quantity = await db_read_dict("players", user_id, "pl_items")
+        player_quantity = player_quantity[it_shortname]
+    except:
+        return "You do not have this item"
     return it_shortname, player_quantity
 
 
