@@ -106,8 +106,8 @@ async def restore_hp(user_id, count=0, with_cd=True):
             new_hp = max_hp
         else:
             new_hp = min(count+current_hp, max_hp)
-            await db_write_int("players", user_id, "current_health", new_hp)
-            return True
+    await db_write_int("players", user_id, "current_health", new_hp)
+    return True
 
 
 async def player_dead(user_id):
