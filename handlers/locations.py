@@ -41,7 +41,7 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
     #     await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
 
 
-@router.message(State.docked, F.text == "Undock")
+@router.message(State.docked, F.text == "{emoji}Undock".format(emoji=undock_emoji))
 async def undock_rw_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]

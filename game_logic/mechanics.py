@@ -139,8 +139,6 @@ async def rand_event(gps) -> str:
     # event = f"\"{choice(events)}\""
     events_list = [key for key in events.keys()]
     event_weights = [value for value in events.values()]
-    print("events_list" ,events_list)
-    print("event_weights" ,event_weights)
     event = choices(events_list, weights=event_weights)[0]
     print("event of choice is :", event)
 

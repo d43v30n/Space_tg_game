@@ -31,7 +31,7 @@ def main_kb(gps=None) -> ReplyKeyboardMarkup:  # for known locations
     core = core_kb(gps)
     kb.attach(core)
     if gps == 0:
-        kb.button(text="Dock to Ringworld station")
+        kb.button(text="{emoji}Dock".format(emoji=dock_emoji))
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
 
@@ -70,7 +70,10 @@ def at_location_kb(gps) -> ReplyKeyboardMarkup:
 def ringworld_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="{emoji}Shipyard".format(emoji=flying_saucer))
-    kb.button(text="Undock")
+    kb.button(text="{emoji}Night Club".format(emoji=night_club_emoji)) # quests
+    kb.button(text="{emoji}Trading market".format(emoji=trading_marker_emoji)) # sell ore
+
+    kb.button(text="{emoji}Undock".format(emoji=undock_emoji))
     kb.button(text="{emoji}Terminal".format(emoji=computer))
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)

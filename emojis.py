@@ -37,3 +37,7 @@ ship_level_unicode = {
 # Locations
 repair_emoji = '\U0001F527' # 🔧
 parts_trader_emoji = '\U0001F6E0'  # 🛠️
+night_club_emoji = '\U0001F378'  # 🍸
+trading_marker_emoji = '\U0001F4B1' # 💱
+undock_emoji = '\U00002934' # ⤴
+dock_emoji = '\U00002935' # ⤵
