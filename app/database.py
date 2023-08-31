@@ -273,7 +273,7 @@ async def db_read_full_name(table, value, column, search_col) -> str:
 
 async def db_parse_all_ores(gps):
     name = f"\"ore\""
-    cur_pl.execute(
+    cur_gm.execute(
         "SELECT mt_name, mt_shortname, mt_drop FROM materials WHERE type = ?", (name,))
     materials = cur_pl.fetchall()
     return materials
