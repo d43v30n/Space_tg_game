@@ -1,7 +1,7 @@
 from app.database import *
 from asyncio import sleep  # create_task, gather
 from game_logic import space_map
-from random import randint, choice
+from random import randint, choices
 from game_logic import energy_manager
 from game_logic.states import State
 import game_logic.inventory as invent
@@ -138,7 +138,10 @@ async def rand_event(gps) -> str:
     events = await space_map.events(gps)
     # event = f"\"{choice(events)}\""
     events_list = [key for key in events.keys()]
-    event = choice(events_list)
+    event_weights = [value for value in events.values()]
+    print("events_list" ,events_list)
+    print("event_weights" ,event_weights)
+    event = choices(events_list, weights=event_weights)[0]
     print("event of choice is :", event)
 
     if event == "enemies":
