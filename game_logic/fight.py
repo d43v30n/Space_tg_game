@@ -1,5 +1,5 @@
 from aiogram.types import Message
-from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_write_dict, db_write_dict_full, db_read_full_name
+from app.database import db_read_details, db_write_int, db_read_int, db_read_dict, db_read_full_name
 import asyncio
 from random import randint
 import game_logic.inventory as invent

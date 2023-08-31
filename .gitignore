@@ -1,6 +1,7 @@
 /.env
 /.venv
-/tg.db
+/game.db
+/players.db
 __pycache__/
 */__pycache__/
 *.pyc

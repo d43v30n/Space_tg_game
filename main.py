@@ -17,13 +17,11 @@ TOKEN = getenv("BOT_TOKEN")
 
 async def on_startup(bot: Bot) -> None:
     '''initialize db'''
-    await db.db_start()
+    await db.db_start_pl()
+    await db.db_start_gm()
 
-    # timer_task = asyncio.create_task(f.timer())
 
-    # await asyncio.gather(timer_task)
-
-    print('Бот успешно запущен!')
+    print('> BOT has been successfully started')
 
 
 async def main():
