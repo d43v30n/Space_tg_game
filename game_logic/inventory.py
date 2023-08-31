@@ -83,7 +83,6 @@ async def add_pl_ores(user_id, mt_shortname, count):
 
 async def apply_item(user_id, i_id, state):
     '''apply only 1 item at a time'''
-
     current_state = await state.get_state()
     gps = await m.get_location(user_id)  # remake to state
     loc_features = await space_map.features(gps)
@@ -168,18 +167,27 @@ async def equip_item(user_id, it_shortname, it_name, it_type):
     return "You equipped {it_name}. Find your previous {it_type} in {emoji}Inventory".format(it_name=it_name, it_type=it_type, emoji=paperbox)
 
 
-async def unequip_all_items(user_id):
-    pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
-    for key, value in pl_ship_slots.items():
-        if value == "":  # skip empty slots
-            continue
-        # value = f"\"{value}\""
-        await add_pl_items(user_id, value, 1)  # add 1 item to inventory
-        pl_ship_slots.update({key: ""})
-    print("FINAL ITEMS ARE:", pl_ship_slots)
-    # write new slots to db
-    await db_write_dict_full("players", user_id, "ship_slots", pl_ship_slots)
-    return "Unequipped all items."
+async def unequip_all_items(user_id, state):
+    current_state = await state.get_state()
+    gps = await m.get_location(user_id)  # remake to state
+    loc_features = await space_map.features(gps)
+
+    if current_state == "State:docked" and "shipyard" in loc_features:
+
+        pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
+        for key, value in pl_ship_slots.items():
+            if value == "":  # skip empty slots
+                continue
+            # value = f"\"{value}\""
+            await add_pl_items(user_id, value, 1)  # add 1 item to inventory
+            pl_ship_slots.update({key: ""})
+        print("FINAL ITEMS ARE:", pl_ship_slots)
+        # write new slots to db
+        await db_write_dict_full("players", user_id, "ship_slots", pl_ship_slots)
+        return "Unequipped all items."
+    else:
+        text = "Dock for a shipyard to do it for you..."
+    return text
 
 
 async def get_item_quantity_from_inv(i_id, user_id):

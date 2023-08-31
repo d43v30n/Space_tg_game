@@ -105,9 +105,9 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         await errors.unknown_input_handler(message, state)
 
 
-@router.message(State.docked, Command("unequip_all_items"))
+@router.message(Command("unequip_all_items"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    text = await invent.unequip_all_items(message.from_user.id)
+    text = await invent.unequip_all_items(message.from_user.id, state)
     keyboard = await kb.keyboard_selector(state)
     await message.answer(text, reply_markup=keyboard)
 
