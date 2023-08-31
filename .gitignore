@@ -2,7 +2,7 @@
 /.venv
 /game.db
 /players.db
-
+/images.py
 __pycache__/
 */__pycache__/
 *.pyc
