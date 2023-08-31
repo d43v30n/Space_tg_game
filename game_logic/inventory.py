@@ -73,28 +73,18 @@ async def add_pl_ores(user_id, mt_shortname, count):
 
 async def apply_item(user_id, i_id, state):
     '''apply only 1 item at a time'''
-    # get item quantity by user_id
-    # get details to item
-    # apply item with conditions
-    # reduce used quantity from user_id
 
     current_state = await state.get_state()
     gps = await m.get_location(user_id)  # remake to state
     loc_features = await space_map.features(gps)
     it_type = await db_read_full_name("items", i_id, "type", "i_id")
-    # it_shorname = await db_read_full_name("items", i_id, "it_shortname", "i_id")
-    # it_shorname = it_shorname[1:-1]
-
-    # player_quantity = await db_read_dict("players", user_id, "pl_items")
-    # player_quantity = player_quantity[it_shorname]
-
 
     it_shortname, player_quantity = await get_item_quantity_from_inv(i_id, user_id)
+    it_shortname = f"\"{it_shortname}\""
     it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
 
     if player_quantity < 1:
         return "Your quantity is < 1"
-    print("it_type", it_type)
     if "consumable" in it_type:
         healed_result = await m.restore_hp(user_id, 50) # hardcoded heal            # apply effect_choice function() here
         if healed_result:
@@ -104,9 +94,9 @@ async def apply_item(user_id, i_id, state):
             text = f"already at full hp"
     elif current_state == "State:docked" and "shipyard" in loc_features:
         # can use upgrades
-        if "weapons" in it_type:
+        if "weapon" in it_type:
             text = await equip_weapon(user_id, it_shortname, it_name)
-        elif "shields" in it_type:
+        elif "shield" in it_type:
             text = await equip_item(user_id, it_shortname, it_name, "shields")
         elif "armor" in it_type:
             text = await equip_item(user_id, it_shortname, it_name, "armor")
