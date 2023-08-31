@@ -191,12 +191,13 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
                 await message.answer("You can't mine as you have less than 2{energy_smiley}Energy".format(energy_smiley=energy_smiley), reply_markup=keyboard)
         elif "mining" in loc_features and not text_job.startswith("after mining at") and "mined ore" not in text_job:
             result = await m.mine_here(message.from_user.id, gps, message, state)
+            print("mining ore result", result)
             if not result.startswith("You found no ore."):
                 jobtext = "mined ore at {loc_name}".format(loc_name=loc_name)
             else:
                 jobtext = "mined nothing at {loc_name}".format(
                     loc_name=loc_name)
-            await message.answer("{result}".format(result=result), reply_markup=keyboard)
+            await message.answer("<i>{rocket}Ship AI reporting.</i>\n\n{result}".format(result=result), reply_markup=keyboard)
             await state.clear()
             await state.set_state(State.gps_state)
             await state.update_data(gps_state=gps)

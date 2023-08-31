@@ -215,6 +215,7 @@ async def show_materials(user_id) -> str:
 
 async def mine_here(user_id, gps: int, message, state) -> dict:
     possible_ores = await db_parse_all_ores(gps)
+    print("possible_ores are ",possible_ores)
     state_data = await state.get_data()
     text_job = state_data["job"]
     drop_text = []
