@@ -10,9 +10,16 @@ flying_saucer = '\U0001F6F8'  # 🛸
 gps_emj = '\U0001F6F0'  # 🛰️
 heart = '\U00002764'  # ❤️
 energy_smiley = '\U0001F50B'  # 🔋
-void_emj = '\U0001F30C' # 🌌
+void_emj = '\U0001F30C'  # 🌌
 bar_chart = '\U0001F4CA'  # 📊
 money_bag = '\U0001F4B0'  # 💰
+
+# ideas
+fuel_emoji = '\U000026FD'  # ⛽
+
+ener_shield = '\U0001F6E1'  # 🛡️
+swords_emoji = '\U00002694'  # ⚔️
+
 
 ship_level_unicode = {
     '1': '\u0031\uFE0F\u20E3',  # 1️⃣
@@ -31,13 +38,13 @@ ship_level_unicode = {
 # 🌌 - Ringworld Jumpexplorers
 # 🏴‍☠️ - Space Pirates
 # 🔱 - Trident Sekta
-# 👥 - The Unknown 
+# 👥 - The Unknown
 
 
 # Locations
-repair_emoji = '\U0001F527' # 🔧
+repair_emoji = '\U0001F527'  # 🔧
 parts_trader_emoji = '\U0001F6E0'  # 🛠️
 night_club_emoji = '\U0001F378'  # 🍸
-trading_marker_emoji = '\U0001F4B1' # 💱
-undock_emoji = '\U00002934' # ⤴
-dock_emoji = '\U00002935' # ⤵
+trading_marker_emoji = '\U0001F4B1'  # 💱
+undock_emoji = '\U00002934'  # ⤴
+dock_emoji = '\U00002935'  # ⤵

@@ -62,7 +62,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials\n/get_image_id", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials\n/get_image_id\n/test_fight", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
@@ -94,6 +94,11 @@ async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -
         gps = i
         result = await db.db_parse_ore_drop_locations(gps)
         print(f"DROP at {gps} = ", result)
+
+
+@router.message(State.admin, Command("test_fight"))
+async def echo_image_id(message: Message, state: FSMContext) -> None:
+    await fight.get_fight_drop(message.from_user.id, "\"zac_the_baddest\"")
 
 
 @router.message(State.admin, Command("test"))
