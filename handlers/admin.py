@@ -96,6 +96,7 @@ async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -
         print(f"DROP at {gps} = ", result)
 
 
-@router.message(Command("test"))
+@router.message(State.admin, Command("test"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    await invent.apply_item(message.from_user.id, "craft_beer")
+    await state.set_state(State.docked)
+    await invent.apply_item(message.from_user.id, 3, state)

@@ -94,12 +94,16 @@ async def get_player_information(user_id, *args: str) -> list:
     return items
 
 
-async def restore_hp(user_id):
+async def restore_hp(user_id, count=0):
     current_hp = await db_read_int("players", user_id, "current_health")
     max_hp = await db_read_int("players", user_id, "max_health")
+    if not count:
+        new_hp = max_hp
+    else:
+        new_hp = count+current_hp
     if current_hp < max_hp:
         await sleep(COOLDOWN_HEAL)
-        await db_write_int("players", user_id, "current_health", max_hp)
+        await db_write_int("players", user_id, "current_health", new_hp)
         return True
     else:
         return False

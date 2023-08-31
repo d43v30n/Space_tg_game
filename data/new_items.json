@@ -42,7 +42,7 @@
       "description":"good af",
       "type": "consumable",
       "effects": {
-         "firendly": "True"
+         "restore_hp": 50
       },
       "craft": {
          "id_1": 10,

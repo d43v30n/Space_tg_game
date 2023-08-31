@@ -6,7 +6,8 @@ from emojis import *
 
 from game_logic.states import State
 from game_logic import mechanics as m
-# from game_logic import enregy_manager as em
+from game_logic import space_map
+from game_logic import inventory as invent
 
 from handlers import errors
 
@@ -124,7 +125,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 async def item_selector_handler(message: Message, state: FSMContext) -> None:
     text = message.text
     current_state = await state.get_state()
-    if current_state != "State:job":
+    if current_state != "State:job" and current_state != "State:docked":
         keyboard = await kb.keyboard_selector(state)
         await message.answer(f"You can not do this right now", reply_markup=keyboard)
         return
@@ -134,7 +135,10 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
             flag = id.split("_")[0][1:]
             id = int(id.split("_")[1])
             print(f"applying {flag} with id {id}")
-            
+
+            await invent.apply_item(message.from_user.id, id, state)
+
+
         except:
             print("ERROR")
 
