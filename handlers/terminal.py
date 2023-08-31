@@ -1,4 +1,5 @@
 from aiogram import Router, F
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
@@ -77,13 +78,13 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     for _ in scanners:
         _.ljust(26, "-")
         table.append(_)
-
+    table.append(emp_header)
 
     armor = f"".center(11, "-")
         
 
 
-    await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\n<code>{table}</code>".format(damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
+    await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\nYou can unequip all items with /unequip_all_items\n<code>{table}</code>".format(damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
 
 
 @router.message(F.text == "Guild")
@@ -96,6 +97,11 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     except:
         await errors.unknown_input_handler(message, state)
 
+@router.message(State.docked, Command("unequip_all_items"))
+async def echo_image_id(message: Message, state: FSMContext) -> None:
+    text = await invent.unequip_all_items(message.from_user.id)
+    keyboard = await kb.keyboard_selector(state)
+    await message.answer(text, reply_markup=keyboard)
 
 @router.message(F.text == "{emoji}Cargo".format(emoji=barrel))
 async def command_start_handler(message: Message, state: FSMContext) -> None:
@@ -135,9 +141,9 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         flag = id.split("_")[0][1:]
         id = int(id.split("_")[1])
         print(f"applying {flag} with id {id}")
-
+        await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)
         out = await invent.apply_item(message.from_user.id, id, state)
-        await message.answer(f"Result of usage:\n{out}", reply_markup=keyboard)
+        await message.answer(out, reply_markup=keyboard)
 
 
         # except:

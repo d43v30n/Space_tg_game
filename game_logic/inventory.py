@@ -1,6 +1,7 @@
 from app.database import db_read_dict, db_write_dict_full, db_write_int, db_read_int, db_read_details, db_read_full_name
 from game_logic import space_map
 from game_logic import mechanics as m
+from emojis import *
 
 
 async def add_pl_exp(user_id, exp):
@@ -93,36 +94,75 @@ async def apply_item(user_id, i_id, state):
 
     if player_quantity < 1:
         return "Your quantity is < 1"
-    
-    if (current_state == "State:docked" or current_state == "State:job") and "shipyard" in loc_features:
-        # can use upgrades
-        if "consumable" in it_type:
+    print("it_type", it_type)
+    if "consumable" in it_type:
+        healed_result = await m.restore_hp(user_id, 50) # hardcoded heal            # apply effect_choice function() here
+        if healed_result:
             await add_pl_items(user_id, it_shortname, -1) # -1 from inventory
-            await m.restore_hp(user_id, 50) # hardcoded heal            # apply effect_choice function() here
             text = f"used 1 {it_name}, feeling goooood"
-        elif "weapons" in it_type:
-            # use if in shipyard / docked to station
-            pass
+        else:
+            text = f"already at full hp"
+    elif current_state == "State:docked" and "shipyard" in loc_features:
+        # can use upgrades
+        if "weapons" in it_type:
+            text = await equip_weapon(user_id, it_shortname, it_name)
         elif "shields" in it_type:
-            # use if in shipyard / docked to station
-            pass
+            text = await equip_item(user_id, it_shortname, it_name, "shields")
         elif "armor" in it_type:
-            # use if in shipyard / docked to station
-            pass
+            text = await equip_item(user_id, it_shortname, it_name, "armor")
         elif "scanner" in it_type:
-            # use if in shipyard / docked to station
-            pass
+            text = await equip_item(user_id, it_shortname, it_name, "scanner")
         elif "None" in it_type:
             # ERROR
             print("ERROR IN NONE TYPE OF applicable item")
+            text = "ERRORRRRRR"
             pass
         else:
             # EXCEPTION
             print("EXCEPTION TYPE OF applicable item")
     else:
         # can not use upgrades, go to shipyard
-        pass
+        text = "Dock for a shipyard to do it for you..."
     return text
+
+
+async def equip_weapon(user_id, it_shortname, it_name):
+    pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
+    pl_weapon_slots = {key:value for key, value in pl_ship_slots.items() if key.startswith("weapons_")} # {'weapons_1': 'rusty_machine_gun', 'weapons_2': ''}
+    print("pl_weapon_slots", pl_weapon_slots) 
+    slots_count = len(pl_weapon_slots)
+    
+    old_weapon = pl_weapon_slots.get("weapons_" + str(slots_count))
+    await add_pl_items(user_id, old_weapon, 1)
+
+    for i in reversed(range(1,slots_count)):
+        print(i)
+        pl_weapon_slots.update({"weapons_"+str(i+1) : pl_weapon_slots.get("weapons_"+str(i), "")})
+        print("pl_weapon_slots", pl_weapon_slots) 
+
+    pl_weapon_slots.update({"weapons_1":it_shortname})
+    pl_ship_slots.update(pl_weapon_slots)
+
+    await add_pl_items(user_id, it_shortname, -1) # -1 from inventory
+    await db_write_dict_full("players", user_id, "ship_slots", pl_ship_slots) # write new slots to db
+    return "You equipped {it_name} to slot 1. other items changed slots to the right. Last item is in your Inventory".format(it_name=it_name)
+
+
+async def equip_item(user_id, it_shortname, it_name, it_type):
+    pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
+    old_item = pl_ship_slots.get(it_type)
+    await add_pl_items(user_id, old_item, 1)
+    await add_pl_items(user_id, it_shortname, -1) # -1 from inventory
+    pl_ship_slots.update(it_shortname)
+    return "You equipped {it_name}. Find your previous {it_type} in {emoji}Inventory".format(it_name=it_name, it_type=it_type, emoji=paperbox)
+
+async def unequip_all_items(user_id):
+    pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
+    for key,value in pl_ship_slots.items():
+        await add_pl_items(user_id, value, 1) # add 1 item to inventory
+        pl_ship_slots.update({key:""})
+    return "Unequipped all items."
+
 
 
 async def get_item_quantity_from_inv(i_id, user_id):
