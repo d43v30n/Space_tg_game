@@ -10,6 +10,7 @@ from emojis import *
 from game_logic import energy_manager, mechanics as m
 from game_logic import space_map
 from game_logic.states import *
+from images import *
 
 from handlers import errors
 
@@ -167,7 +168,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
         await state.set_state(State.docked)
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
         keyboard = await kb.keyboard_selector(state)
-        await message.answer_photo("AgACAgIAAxkDAAI03WTvhfh9byTLKl1_AAF9C6nG4wO4HwACUskxG2EPgUs4-mQ4o3GyRQEAAwIAA3kAAzAE")
+        await message.answer_photo(ringworld_home)
         await message.answer(f"Yes, my beloved home. How long has it bee. {loc_name}, i Love YOU!\n\nYou approach this colossal space station and dock to it at international space port.\n\nWhile docked your ship will be charged for free!", reply_markup=keyboard)
         await energy_manager.restore_all_energy(message.from_user.id)
         # 1 docking timer
