@@ -75,6 +75,14 @@ def ringworld_kb() -> ReplyKeyboardMarkup:
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
 
+def ringworld_shipyard_kb() -> ReplyKeyboardMarkup:
+    kb = ReplyKeyboardBuilder()
+    kb.button(text="{emoji}Repair".format(emoji=repair_emoji))
+    kb.button(text="{emoji}Parts trader".format(emoji=parts_trader_emoji))
+    kb.button(text="Back to city")
+    kb.adjust(2)
+    return kb.as_markup(resize_keyboard=True)
+
 
 def admin_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()

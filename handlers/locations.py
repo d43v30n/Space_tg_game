@@ -28,7 +28,7 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
 
 
 @router.message(State.docked, F.text == "Undock")
-async def undock_handler(message: Message, state: FSMContext) -> None:
+async def undock_rw_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     gps = state_data["gps_state"]
     jobtext_str = f"Undocked in {await space_map.name(gps)}"
@@ -37,8 +37,20 @@ async def undock_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"You are undocked and free to go", reply_markup=keyboard)
 
 
+@router.message(State.docked, F.text == "Back to city")
+async def back_button_docked_handler(message: Message, state: FSMContext) -> None:
+    keyboard = await kb.keyboard_selector(state)
+    await message.answer("You are back to centeral city", reply_markup=keyboard)
+
+
 @router.message(State.docked, F.text == "{emoji}Shipyard".format(emoji=flying_saucer))
-async def jump_home_handler(message: Message, state: FSMContext) -> None:
+async def shipyard_rw_handler(message: Message, state: FSMContext) -> None:
+    await message.answer("You entered shipyard. Your ship stats are: ...", reply_markup=kb.ringworld_shipyard_kb())
+
+
+
+@router.message(State.docked, F.text == "{emoji}Repair".format(emoji=flying_saucer))
+async def repair_rw_handler(message: Message, state: FSMContext) -> None:
     max_health, current_health = await m.get_player_information(message.from_user.id, "max_health", "current_health")
     if current_health <= max_health:
         keyboard = await kb.keyboard_selector(state)

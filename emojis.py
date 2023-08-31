@@ -24,7 +24,7 @@ ship_level_unicode = {
     '7': '\u0037\uFE0F\u20E3',  # 7️⃣
     '8': '\u0038\uFE0F\u20E3',  # 8️⃣
     '9': '\u0039\uFE0F\u20E3',  # 9️⃣
-    '10': '\U0001F51F',             # 🔟
+    '10': '\U0001F51F',         # 🔟
 }
 
 # Factions
@@ -32,3 +32,8 @@ ship_level_unicode = {
 # 🏴‍☠️ - Space Pirates
 # 🔱 - Trident Sekta
 # 👥 - The Unknown 
+
+
+# Locations
+repair_emoji = '\U0001F527' # 🔧
+parts_trader_emoji = '\U0001F6E0'  # 🛠️
