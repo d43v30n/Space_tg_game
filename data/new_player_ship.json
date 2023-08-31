@@ -6,10 +6,10 @@
         "faction": "Ringworld Jumpexplorers"
     },
 	"ship_slots": {
-		"weapons_1":"rusty_machine_gun",
-		"weapons_2":"",
+		"weapon_1":"rusty_machine_gun",
+		"weapon_2":"",
 		"scanner":"scanner_from_granny",
-		"shields":"",
+		"shield":"",
 		"armor":"hull_armor_for_beginners"
 	},
 	"pl_items":{"craft_beer":1},

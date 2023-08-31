@@ -157,6 +157,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         await state.update_data(job=job_text)
+        await state.set_state(State.docked)
     else:
         print(f"wrong_command_exception: ", message.text)
         await errors.unknown_input_handler(message, state)

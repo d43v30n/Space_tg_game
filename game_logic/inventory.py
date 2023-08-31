@@ -19,10 +19,15 @@ async def add_pl_items(user_id, it_shortname, count):
     # print("before IF in add_pl_items", pl_items)
     if pl_items.get(it_shortname, False):  # if item is already in inventory
         count_old = pl_items.get(it_shortname)
+        new_count = count+count_old
+        if new_count <= 0:
+            del pl_items[it_shortname]
+            await db_write_dict_full("players", user_id, "pl_items", pl_items)
+            return
         pl_items.update({it_shortname: count+count_old})
         # print("inside 1 IF in add_pl_items", pl_items)
         print(
-            f"adding item {it_shortname}, player owned count =", count, " + ", count_old)
+            f"adding item {it_shortname}, player new count =", new_count)
     else:
         count_old = pl_items.get(it_shortname)
         pl_items.update({it_shortname: count})
@@ -38,6 +43,11 @@ async def add_pl_materials(user_id, mt_shortname, count):
     # print("before IF in add_pl_materials", pl_materials)
     if pl_materials.get(mt_shortname, False):  # if item is already in inventory
         count_old = pl_materials.get(mt_shortname)
+        new_count = count+count_old
+        if new_count <= 0:
+            del pl_materials[mt_shortname]
+            await db_write_dict_full("players", user_id, "pl_materials", pl_materials)
+            return
         pl_materials.update({mt_shortname: count+count_old})
         # print("inside 1 IF in add_pl_materials", pl_materials)
         print(
@@ -78,7 +88,6 @@ async def apply_item(user_id, i_id, state):
     gps = await m.get_location(user_id)  # remake to state
     loc_features = await space_map.features(gps)
     it_type = await db_read_full_name("items", i_id, "type", "i_id")
-
     it_shortname, player_quantity = await get_item_quantity_from_inv(i_id, user_id)
     it_shortname = f"\"{it_shortname}\""
     it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
@@ -97,7 +106,7 @@ async def apply_item(user_id, i_id, state):
         if "weapon" in it_type:
             text = await equip_weapon(user_id, it_shortname, it_name)
         elif "shield" in it_type:
-            text = await equip_item(user_id, it_shortname, it_name, "shields")
+            text = await equip_item(user_id, it_shortname, it_name, "shield")
         elif "armor" in it_type:
             text = await equip_item(user_id, it_shortname, it_name, "armor")
         elif "scanner" in it_type:
@@ -118,19 +127,19 @@ async def apply_item(user_id, i_id, state):
 
 async def equip_weapon(user_id, it_shortname, it_name):
     pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
-    pl_weapon_slots = {key:value for key, value in pl_ship_slots.items() if key.startswith("weapons_")} # {'weapons_1': 'rusty_machine_gun', 'weapons_2': ''}
+    pl_weapon_slots = {key:value for key, value in pl_ship_slots.items() if key.startswith("weapon_")} # {'weapon_1': 'rusty_machine_gun', 'weapon_2': ''}
     print("pl_weapon_slots", pl_weapon_slots) 
     slots_count = len(pl_weapon_slots)
     
-    old_weapon = pl_weapon_slots.get("weapons_" + str(slots_count))
+    old_weapon = pl_weapon_slots.get("weapon_" + str(slots_count))
     await add_pl_items(user_id, old_weapon, 1)
 
     for i in reversed(range(1,slots_count)):
         print(i)
-        pl_weapon_slots.update({"weapons_"+str(i+1) : pl_weapon_slots.get("weapons_"+str(i), "")})
+        pl_weapon_slots.update({"weapon_"+str(i+1) : pl_weapon_slots.get("weapon_"+str(i), "")})
         print("pl_weapon_slots", pl_weapon_slots) 
 
-    pl_weapon_slots.update({"weapons_1":it_shortname})
+    pl_weapon_slots.update({"weapon_1":it_shortname})
     pl_ship_slots.update(pl_weapon_slots)
 
     await add_pl_items(user_id, it_shortname, -1) # -1 from inventory
@@ -141,16 +150,26 @@ async def equip_weapon(user_id, it_shortname, it_name):
 async def equip_item(user_id, it_shortname, it_name, it_type):
     pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
     old_item = pl_ship_slots.get(it_type)
-    await add_pl_items(user_id, old_item, 1)
-    await add_pl_items(user_id, it_shortname, -1) # -1 from inventory
-    pl_ship_slots.update(it_shortname)
+    print("old_item", old_item)
+    print("new it_shortname", it_shortname)
+    if old_item != "": # skip empty slots
+        await add_pl_items(user_id, old_item[1:-1], 1)
+    await add_pl_items(user_id, it_shortname[1:-1], -1) # -1 from inventory
+    pl_ship_slots.update({it_type:it_shortname})
+    await db_write_dict_full("players", user_id, "ship_slots", pl_ship_slots) # write new slots to db
     return "You equipped {it_name}. Find your previous {it_type} in {emoji}Inventory".format(it_name=it_name, it_type=it_type, emoji=paperbox)
+
 
 async def unequip_all_items(user_id):
     pl_ship_slots = await db_read_dict("players", user_id, "ship_slots")
     for key,value in pl_ship_slots.items():
-        await add_pl_items(user_id, value, 1) # add 1 item to inventory
+        if value == "": # skip empty slots
+            continue
+        # value = f"\"{value}\""
+        await add_pl_items(user_id, value[1:-1], 1) # add 1 item to inventory
         pl_ship_slots.update({key:""})
+    print("FINAL ITEMS ARE:", pl_ship_slots)        
+    await db_write_dict_full("players", user_id, "ship_slots", pl_ship_slots) # write new slots to db
     return "Unequipped all items."
 
 
