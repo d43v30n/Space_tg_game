@@ -9,7 +9,7 @@ from game_logic.states import State
 from game_logic import mechanics as m
 from game_logic import space_map
 from game_logic import inventory as invent
-
+from app.database import db_read_full_name
 from handlers import errors
 
 import keyboards.main_kb as kb
@@ -44,7 +44,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     arm_header = "|---------Armor----------|"
     sca_header = "|--------Scanner---------|"
     emp_header = "|------------------------|"
-    headers = {"weapons":"|--Weapons--|", "shields":"|--Shields--|", "armor":"|---Armor---|", "scanner":"|--Scanner--|"}
+    headers = {"weapon":"|--Weapons--|", "shield":"|--Shields--|", "armor":"|---Armor---|", "scanner":"|--Scanner--|"}
     damage = None
     defence = None
     weapons = []
@@ -54,14 +54,21 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     table = []
     print(info)
     for slot_type, eq_item in info[0].items():
-        if slot_type.startswith("weapons"):
-            weapons.append("|" + eq_item + "|")
-        elif slot_type.startswith("shields"):
-            shields.append("|" + eq_item + "|")
+        if eq_item == "":
+            eq_item = emp_header
+            continue
+        eq_item_name = await db_read_full_name("items", eq_item, "it_name", "it_shortname")
+        # eq_item_name = f"\"{eq_item_name}\""
+        eq_item_name = "<b>" + eq_item_name[1:-1].center(24) + "</b>"
+
+        if slot_type.startswith("weapon"):
+            weapons.append("|" + eq_item_name + "|")
+        elif slot_type.startswith("shield"):
+            shields.append("|" + eq_item_name + "|")
         elif slot_type.startswith("armor"):
-            armor.append("|" + eq_item + "|")
-        elif slot_type.startswith("scanners"):
-            scanners.append("|" + eq_item + "|")
+            armor.append("|" + eq_item_name + "|")
+        elif slot_type.startswith("scanner"):
+            scanners.append("|" + eq_item_name + "|")
     table.append(wep_header)
     for _ in weapons:
         _.ljust(26, "-")
