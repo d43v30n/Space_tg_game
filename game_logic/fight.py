@@ -76,7 +76,7 @@ async def init_fight(message: Message, enemy_id, state: State):
 
 async def get_player_dmg(ship_slots) -> int:
     weapons = {key: value for key, value in ship_slots.items()
-               if key.startswith("weapons")}
+               if key.startswith("weapon_")}
     player_dmg = 0
     if not weapons is None:
         for weapon in weapons.values():
@@ -129,11 +129,13 @@ async def get_fight_drop(user_id, en_shortname):
 
     # credits
     got_credits = en_drop.get("credits")
-    drop.append("{money_bag}Credits: {got_credits}".format(money_bag=money_bag, got_credits=got_credits))
+    drop.append("{money_bag}Credits: {got_credits}".format(
+        money_bag=money_bag, got_credits=got_credits))
     await invent.add_pl_credits(user_id, got_credits)
     # exp
     exp = en_drop.get("exp")
-    drop.append("{bar_chart}Exploration Data : {exp}".format(exp=exp, bar_chart=bar_chart))
+    drop.append("{bar_chart}Exploration Data : {exp}".format(
+        exp=exp, bar_chart=bar_chart))
     await invent.add_pl_exp(user_id, exp)
 
     # items
@@ -154,7 +156,8 @@ async def get_fight_drop(user_id, en_shortname):
             for it_shortname, count in only_items.items():
                 it_shortname = f"\"{it_shortname}\""
                 it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
-                text = f"Dropped {it_name} (x{count})"# with drop chance {droprate}."
+                # with drop chance {droprate}."
+                text = f"Dropped {it_name} (x{count})"
                 await invent.add_pl_items(user_id, it_shortname[1:-1], count)
                 drop.append(text)
 
@@ -177,7 +180,8 @@ async def get_fight_drop(user_id, en_shortname):
             for mt_shortname, count in only_materials.items():
                 mt_shortname = f"\"{mt_shortname}\""
                 mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
-                text = f"Dropped {mt_name} (x{count})"# with drop chance {droprate}."
+                # with drop chance {droprate}."
+                text = f"Dropped {mt_name} (x{count})"
                 await invent.add_pl_materials(user_id, mt_shortname[1:-1], count)
                 drop.append(text)
     print("drop", drop)
