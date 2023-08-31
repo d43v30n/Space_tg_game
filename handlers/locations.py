@@ -42,7 +42,7 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
 
 
 @router.message(State.repairing)
-async def jump_home_confirm_handler(message: Message, state: FSMContext) -> None:
+async def repairing_state_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     await message.answer("While your ship is under repair, you can only access {emoji}Terminal".format(emoji=computer), reply_markup=kb.main_kb(keyboard))
 
