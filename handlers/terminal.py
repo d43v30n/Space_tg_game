@@ -5,7 +5,6 @@ from aiogram.types import Message
 
 from emojis import *
 
-from game_logic.states import State
 from game_logic import mechanics as m
 from game_logic import space_map
 from game_logic import inventory as invent
@@ -157,15 +156,6 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         # except:
         #     print("ERROR")
 
-        state_data = await state.get_data()
-        gps = state_data["gps_state"]
-        job_text = f"applying {flag} with id {id}"
-        await state.clear()
-        await state.set_state(State.gps_state)
-        await state.update_data(gps_state=gps)
-        await state.set_state(State.job)
-        await state.update_data(job=job_text)
-        await state.set_state(State.docked)
     else:
         print(f"wrong_command_exception: ", message.text)
         await errors.unknown_input_handler(message, state)
