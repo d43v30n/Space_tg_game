@@ -134,7 +134,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
             flag = id.split("_")[0][1:]
             id = int(id.split("_")[1])
             print(f"applying {flag} with id {id}")
-            await ()
+            
         except:
             print("ERROR")
 

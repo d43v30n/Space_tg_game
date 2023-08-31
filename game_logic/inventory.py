@@ -68,13 +68,15 @@ async def add_pl_ores(user_id, mt_shortname, count):
     await db_write_dict_full("players", user_id, "pl_materials", pl_ores)
 
 
-async def apply_item(user_id, item_id):
+async def apply_item(user_id, it_shortname):
     # get item quantity by user_id
     # get details to item
     # apply item with conditions
     # reduce used quantity from user_id
-    item_data = db_read_details()
-    item_name = db_read_full_name
+    item_type = await db_read_int("items", it_shortname, "type")
+    item_name = await db_read_full_name("items", it_shortname, "it_name", "it_name")
+    print("item_type", item_type)
+    print("item_name", item_name)
 
 
 async def sell_item():

@@ -9,6 +9,7 @@ from os import getenv
 from app import database as db
 from game_logic import energy_manager, space_map
 from game_logic import mechanics as m
+from game_logic import inventory as invent
 from game_logic.states import State
 from handlers import errors
 
@@ -88,19 +89,13 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
 
 
 @router.message(State.admin, Command("list_materials_drop"))
-async def adm_test_handler(message: Message, state: FSMContext) -> None:
+async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -> None:
     for i in range(18):
         gps = i
         result = await db.db_parse_ore_drop_locations(gps)
         print(f"DROP at {gps} = ", result)
 
 
-@router.message(State.admin, F.image)
+@router.message(Command("test"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    with open('images/ringworld.png', 'rb') as photo:
-        sent_photo = await message.reply_photo(photo, caption="Here's the photo!")
-
-        # Extract the file ID from the sent photo
-        file_id = sent_photo.photo[-1].file_id
-
-        await message.reply(f"File ID of the sent photo: {file_id}")
+    await invent.apply_item(message.from_user.id, "craft_beer")
