@@ -1,6 +1,8 @@
 from app.database import db_read_dict, db_write_dict_full, db_write_int, db_read_int, db_read_details, db_read_full_name
 from game_logic import space_map
 from game_logic import mechanics as m
+from game_logic.states import State
+
 from emojis import *
 
 
@@ -125,6 +127,15 @@ async def apply_item(user_id, i_id, state):
     else:
         # can not use upgrades, go to shipyard
         text = "Dock for a shipyard to do it for you..."
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    job_text = "applyied item with i_id={i_id}".format(i_id=i_id)
+    await state.clear()
+    await state.set_state(State.gps_state)
+    await state.update_data(gps_state=gps)
+    await state.set_state(State.job)
+    await state.update_data(job=job_text)
+    await state.set_state(State.docked)
     return text
 
 

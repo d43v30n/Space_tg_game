@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from os import getenv
 
 from app import database as db
-from game_logic import energy_manager, space_map
+from game_logic import energy_manager, space_map, fight
 from game_logic import mechanics as m
 from game_logic import inventory as invent
 from game_logic.states import State
@@ -98,5 +98,4 @@ async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -
 
 @router.message(State.admin, Command("test"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    await state.set_state(State.docked)
-    await invent.equip_weapon(message.from_user.id, "better_machine_gun", "Rusty machine gun")
+    await fight.get_fight_drop(message.from_user.id, "\"void_reaver\"")

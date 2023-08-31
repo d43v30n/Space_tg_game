@@ -23,7 +23,7 @@ async def init_fight(message: Message, enemy_id, state: State):
     ship_slots = {key: value for key, value in stats[4].items() if value != ""}
 
     player_dmg = await get_player_dmg(ship_slots)
-    player_shield = await get_player_shield(ship_slots)
+    player_shield = 0  # await get_player_shield(ship_slots)
     player_armor = await get_player_armor(ship_slots)
 
     # dmg calculation
@@ -32,7 +32,7 @@ async def init_fight(message: Message, enemy_id, state: State):
     en_hp = enemy_stats.get("health")
     en_dmg = enemy_stats.get("damage")
     en_arm = enemy_stats.get("armor")
-    en_shld = enemy_stats.get("shields")
+    en_shld = 0  # enemy_stats.get("shields")
 
     await message.answer(f"You are fighting against {en_name}.\nYor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
 

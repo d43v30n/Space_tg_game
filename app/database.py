@@ -10,28 +10,28 @@ async def db_start_pl():
 
     cur_pl = db_pl.cursor()
     cur_pl.execute("CREATE TABLE IF NOT EXISTS players("
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                "tg_id INTEGER, "
-                "tg_name TEXT, "
-                "location INTEGER, "
-                "max_health INTEGER, "
-                "current_health INTEGER, "
-                "current_energy INTEGER, "
-                "max_energy INTEGER, "
-                "pl_items TEXT, "
-                "pl_materials TEXT, "
-                "credits INTEGER, "
-                "experience INTEGER, "
-                "level INTEGER, "
-                "main_quest INTEGER, "
-                "side_quest TEXT, "
-                "tutorial_quest INTEGER, "
-                "cargo TEXT, "
-                # ship type is  dict with ship details (max weapon slots, max armor slots, max_hp etc.)
-                "ship_type TEXT, "
-                "ship_slots TEXT, "
-                "attributes TEXT, "
-                "abilities TEXT)")
+                   "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   "tg_id INTEGER, "
+                   "tg_name TEXT, "
+                   "location INTEGER, "
+                   "max_health INTEGER, "
+                   "current_health INTEGER, "
+                   "current_energy INTEGER, "
+                   "max_energy INTEGER, "
+                   "pl_items TEXT, "
+                   "pl_materials TEXT, "
+                   "credits INTEGER, "
+                   "experience INTEGER, "
+                   "level INTEGER, "
+                   "main_quest INTEGER, "
+                   "side_quest TEXT, "
+                   "tutorial_quest INTEGER, "
+                   "cargo TEXT, "
+                   # ship type is  dict with ship details (max weapon slots, max armor slots, max_hp etc.)
+                   "ship_type TEXT, "
+                   "ship_slots TEXT, "
+                   "attributes TEXT, "
+                   "abilities TEXT)")
     db_pl.commit()
 
 
@@ -41,35 +41,35 @@ async def db_start_gm():
 
     cur_gm = db_gm.cursor()
     cur_gm.execute("CREATE TABLE IF NOT EXISTS items("
-                "i_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                "it_name TEXT,"
-                "it_shortname TEXT,"
-                "desc TEXT, "
-                "type TEXT, "
-                "effects TEXT, "
-                "craft TEXT, "
-                "price INTEGER, "
-                "attributes TEXT)")
+                   "i_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   "it_name TEXT,"
+                   "it_shortname TEXT,"
+                   "desc TEXT, "
+                   "type TEXT, "
+                   "effects TEXT, "
+                   "craft TEXT, "
+                   "price INTEGER, "
+                   "attributes TEXT)")
     cur_gm.execute("CREATE TABLE IF NOT EXISTS enemies("
-                "en_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                "en_name TEXT,"
-                "en_shortname TEXT,"
-                "desc TEXT, "
-                "type TEXT, "
-                "attributes TEXT, "
-                "stats TEXT, "
-                "en_drop TEXT)")  # because name drop conflicts with db :)
+                   "en_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   "en_name TEXT,"
+                   "en_shortname TEXT,"
+                   "desc TEXT, "
+                   "type TEXT, "
+                   "attributes TEXT, "
+                   "stats TEXT, "
+                   "en_drop TEXT)")  # because name drop conflicts with db :)
     cur_gm.execute("CREATE TABLE IF NOT EXISTS materials("
-                "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                "mt_name TEXT, "
-                "mt_shortname TEXT, "
-                "type TEXT, "
-                "price INTEGER, "
-                "mt_drop TEXT)"),
-    db_gm.commit()    
+                   "mt_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   "mt_name TEXT, "
+                   "mt_shortname TEXT, "
+                   "type TEXT, "
+                   "price INTEGER, "
+                   "mt_drop TEXT)"),
+    db_gm.commit()
 
 
-async def cmd_start_db(user_id):  # initialize new player
+async def cmd_start_db(user_id, tg_name):  # initialize new player
     user = cur_pl.execute(
         "SELECT * FROM players WHERE tg_id = ?", (user_id,)).fetchone()
     if not user:
@@ -78,7 +78,7 @@ async def cmd_start_db(user_id):  # initialize new player
         pl_items = json_imports.player_pl_items()
         pl_materials = json_imports.player_pl_materials()
         cur_pl.execute(
-            "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, pl_items, 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, pl_materials))  # defaults are location=0 current_energy=0, max_energy=0
+            "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials, tg_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, pl_items, 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, pl_materials, tg_name))  # defaults are location=0 current_energy=0, max_energy=0
         db_pl.commit()
         await db_write_items_json()
         await db_write_enemies_json()
@@ -109,10 +109,10 @@ async def db_read_int(table, user_id, column):  # custom db_access
     '''
     if table == "players":
         value = cur_pl.execute(
-        f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
+            f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
     else:
         value = cur_gm.execute(
-        f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))        
+            f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
     return value.fetchone()[0]
 
 
@@ -129,7 +129,7 @@ async def db_read_dict(table, user_id, column):  # custom db_access
             f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
     else:
         value = cur_gm.execute(
-        f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
+            f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
     value = json.loads(value.fetchone()[0])
     return value
 
@@ -159,7 +159,7 @@ async def db_write_int(table, user_id, column, value) -> None:  # custom db_acce
 #         cur_gm.execute(
 #         f"UPDATE {table} SET {column} = ? WHERE tg_id = ?", (json_data, user_id))
 #         db_gm.commit()
-    
+
 
 # custom db_access
 async def db_write_dict_full(table: str, user_id: int, column: str, new_dict: dict) -> None:
@@ -171,7 +171,7 @@ async def db_write_dict_full(table: str, user_id: int, column: str, new_dict: di
         db_pl.commit()
     else:
         cur_gm.execute(
-        f"UPDATE {table} SET {column} = ? WHERE tg_id = ?", (json_data, user_id))
+            f"UPDATE {table} SET {column} = ? WHERE tg_id = ?", (json_data, user_id))
         db_gm.commit()
 
 
@@ -251,7 +251,7 @@ async def db_read_enemies_attributes(gps):
 
 
 async def db_read_details(table, value, column, search_col):  # custom db_access
-    
+
     value = cur_gm.execute(
         f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
     value = json.loads(value.fetchone()[0])
@@ -261,7 +261,7 @@ async def db_read_details(table, value, column, search_col):  # custom db_access
 async def db_read_full_name(table, value, column, search_col) -> str:
     try:
         value = cur_gm.execute(
-        f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
+            f"SELECT {column} FROM {table} WHERE {search_col} = ?", (value,))
         result = value.fetchone()
         if result:
             return result[0]
