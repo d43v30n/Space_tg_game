@@ -83,22 +83,23 @@ async def apply_item(user_id, i_id, state):
     it_type = await db_read_full_name("items", i_id, "type", "i_id")
     # it_shorname = await db_read_full_name("items", i_id, "it_shortname", "i_id")
     # it_shorname = it_shorname[1:-1]
-    # it_name = await db_read_full_name("items", i_id, "it_name", "i_id")
 
     # player_quantity = await db_read_dict("players", user_id, "pl_items")
     # player_quantity = player_quantity[it_shorname]
 
 
     it_shortname, player_quantity = await get_item_quantity_from_inv(i_id, user_id)
+    it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
 
     if player_quantity < 1:
         return "Your quantity is < 1"
     
     if (current_state == "State:docked" or current_state == "State:job") and "shipyard" in loc_features:
         # can use upgrades
-        if "consumable" == it_type[1:1]:
+        if "consumable" in it_type:
             await add_pl_items(user_id, it_shortname, -1) # -1 from inventory
             await m.restore_hp(user_id, 50) # hardcoded heal            # apply effect_choice function() here
+            text = f"used 1 {it_name}, feeling goooood"
         elif "weapons" in it_type:
             # use if in shipyard / docked to station
             pass
@@ -118,10 +119,10 @@ async def apply_item(user_id, i_id, state):
         else:
             # EXCEPTION
             print("EXCEPTION TYPE OF applicable item")
-
     else:
         # can not use upgrades, go to shipyard
         pass
+    return text
 
 
 async def get_item_quantity_from_inv(i_id, user_id):
