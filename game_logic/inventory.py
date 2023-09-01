@@ -15,7 +15,7 @@ async def change_pl_credits(user_id, delta_credits):
     old_credits = await db_read_int("players", user_id, "credits")
     new_credits = old_credits + delta_credits
     if new_credits < 0:
-        return False, "Not enough {money_bag}credits".format(money_bag=money_bag)
+        return False, "Not enough {money_bag}Credits".format(money_bag=money_bag)
     else:
         await db_write_int("players", user_id, "credits", new_credits)
         return True, "{money_bag}Credits: {delta_credits}".format(money_bag=money_bag, delta_credits=delta_credits)
