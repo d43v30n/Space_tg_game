@@ -22,6 +22,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
 
     info = await m.get_player_information(message.from_user.id, "ship_slots")
+    # print(info)
 
     wep_header = "Weapons"
     shl_header = "Shields"
@@ -35,9 +36,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     armor = []
     scanners = []
     table = []
-    print(info)
     for slot_type, eq_item in info[0].items():
-        print("eq_item", eq_item)
         if eq_item == "":
             eq_item_name = empty_slot
         else:
@@ -67,7 +66,8 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         table.append(_)
 
 
-    await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\nYou can unequip all items with /unequip_all_items\n<code>{table}</code>".format(damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
+    await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\n<code>{table}</code>\n\nYou can unequip all items with\n/unequip_all_items".format(
+        damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
 
 
 @router.message(F.text == "Guild")
