@@ -96,6 +96,12 @@ async def new_user_check(user_id) -> bool:
         return False
     else:
         return True
+    
+
+async def list_all_users() -> bool:
+    user = cur_pl.execute(
+        "SELECT tg_id, tg_name, experience, credits, pl_items, pl_materials FROM players").fetchall()
+    return user
 
 
 async def db_read_int(table, user_id, column):  # custom db_access

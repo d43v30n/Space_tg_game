@@ -62,7 +62,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n\nDatabase commands:\n/load_enemies\n/load_items\n/load_materials\n\nBalancing info:\n/list_materials_drop\n\n/get_image_id\n/test_fight\n\nUnder dev:\n/add_materials", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/list_all_users\n\nDatabase commands:\n/load_enemies\n/load_items\n/load_materials\n\nBalancing info:\n/list_materials_drop\n\n/get_image_id\n/test_fight\n\nUnder dev:\n/add_materials", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
@@ -86,6 +86,23 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
 @router.message(State.admin, Command("add_materials"))
 async def adm_load_materials_handler(message: Message, state: FSMContext) -> None:
     current_state = await state.get_state()
+
+
+@router.message(State.admin, Command("list_all_users"))
+async def adm_list_all_users_handler(message: Message, state: FSMContext) -> None:
+    users = await db.list_all_users()
+    user_list = []
+    for user in users:
+        tg_id, tg_name, experience, credits, pl_items, pl_materials = user
+        tg_id = str(tg_id)
+        experience = str(experience)
+        credits = str(credits)
+        tg_name = "@" +tg_name
+        user_text = [tg_id, tg_name, experience, credits, pl_items, pl_materials]
+        text = " ".join(user_text)
+        print(text)
+    await message.answer("\n".join(text), reply_markup=kb.admin_kb())    
+
 
 
 @router.message(State.admin, Command("list_materials_drop"))
