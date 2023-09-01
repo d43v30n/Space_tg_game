@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from app import database as db
-from handlers import admin, core, ship_ai, terminal, locations, errors
+from handlers import admin, settings, core, ship_ai, terminal, locations, errors
 from game_logic import fight as f
 
 # debug
@@ -30,6 +30,7 @@ async def main():
 
     dp.include_routers(admin.router)
     dp.include_routers(core.router)
+    dp.include_routers(settings.router)
     dp.include_routers(ship_ai.router)
     dp.include_routers(terminal.router)
     dp.include_routers(locations.router)
