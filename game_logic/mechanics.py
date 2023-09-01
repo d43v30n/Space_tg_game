@@ -11,8 +11,8 @@ from handlers import errors
 from emojis import *
 
 
-COOLDOWN = 10
-COOLDOWN_HEAL = 20
+COOLDOWN = 30
+COOLDOWN_HEAL = 55
 
 
 async def move_forward(user_id):

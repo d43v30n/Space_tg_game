@@ -13,6 +13,7 @@ async def db_start_pl():
                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                    "tg_id INTEGER, "
                    "tg_name TEXT, "
+                   "pl_nickname TEXT, "
                    "location INTEGER, "
                    "max_health INTEGER, "
                    "current_health INTEGER, "
@@ -78,7 +79,7 @@ async def cmd_start_db(user_id, tg_name):  # initialize new player
         pl_items = json_imports.player_pl_items()
         pl_materials = json_imports.player_pl_materials()
         cur_pl.execute(
-            "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials, tg_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, pl_items, 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, pl_materials, tg_name))  # defaults are location=0 current_energy=0, max_energy=0
+            "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials, tg_name, pl_nickname) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, pl_items, 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, pl_materials, tg_name, tg_name))  # defaults are location=0 current_energy=0, max_energy=0
         db_pl.commit()
         await db_write_items_json()
         await db_write_enemies_json()
@@ -96,6 +97,17 @@ async def new_user_check(user_id) -> bool:
         return False
     else:
         return True
+    
+
+async def list_all_users() -> bool:
+    users = cur_pl.execute(
+        "SELECT tg_id, tg_name, experience, credits, pl_items, pl_materials FROM players").fetchall()
+    return users
+
+async def list_all_enemies() -> bool:
+    enemies = cur_gm.execute(
+        "SELECT en_id, en_name, en_shortname, desc, type, attributes, stats,  en_drop FROM enemies").fetchall()
+    return enemies
 
 
 async def db_read_int(table, user_id, column, search_col=None):  # custom db_access

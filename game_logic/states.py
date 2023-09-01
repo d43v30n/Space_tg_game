@@ -5,19 +5,26 @@ class State(StatesGroup):
     # outdated:
     # busy = State()
     # idling = State()  # idle in space
+    admin = State()
+    adm_add_item = State()
 
-    job = State()
+    settings_menu = State()
+    settings_nickname = State()
+
     gps_state = State()
-    confirmation = State()
+    job = State()
     travelling = State()
     docked = State()
-    admin = State()
+
+    confirmation = State()
+
     fighting = State()
-    item_selector = State()
     repairing = State()
-    adm_add_item = State()
     scanning = State()
     mining = State()
+
+    item_selector = State()
+
 
     # under_attack = State()
     # running = State()

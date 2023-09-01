@@ -5,9 +5,12 @@ from emojis import *
 
 async def keyboard_selector(state, menu=None):
     state_data = await state.get_data()
+    state_name = await state.get_state()
+    if state_name == "State:settings_menu" or state_name == "State:settings_nickname":
+        keyboard = settings_kb()
+        return keyboard
     gps = state_data["gps_state"]
     job_name = state_data["job"]
-    state_name = await state.get_state()
     if gps == 0 and (state_name == "State:docked" or state_name == "State:repairing"):
         keyboard = ringworld_kb()
     elif job_name.endswith("and encountered mining_event") or job_name.endswith("and encountered scanning_event"):
@@ -105,5 +108,13 @@ def admin_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="/help")
     kb.button(text="/test")
+    kb.adjust(2)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def settings_kb() -> ReplyKeyboardMarkup:
+    kb = ReplyKeyboardBuilder()
+    kb.button(text="/change_nickname")
+    kb.button(text="/exit_settings")
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
