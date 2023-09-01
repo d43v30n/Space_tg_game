@@ -20,31 +20,14 @@ router = Router()
 async def command_start_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     keyboard = await kb.keyboard_selector(state)
-    # gps = state_data["gps_state"]
-    # attributes = await m.get_player_information(message.from_user.id, "attributes")
-    # faction = attributes[0].get("faction")
-    # energy = await m.get_energy(message.from_user.id)
-    # current_energy = energy[0]
-    # max_energy = energy[1]
-    # information = await m.get_player_information(message.from_user.id, "current_health", "max_health", "credits", "experience", "level", "main_quest", "side_quest", "ship_type", "abilities")
-    # current_health = information[0]
-    # max_health = information[1]
-    # player_credits = information[2]
-    # experience = information[3]
-    # level = information[4]
-    # main_quest = information[5]
-    # side_quest = information[6]
-    # ship_type = information[7]
-    # abilities = information[8]
+
     info = await m.get_player_information(message.from_user.id, "ship_slots")
-    shields = f"".center(11, "-")
-    wep_header = "|--------Weapons---------|"
-    shl_header = "|--------Shields---------|"
-    arm_header = "|---------Armor----------|"
-    sca_header = "|--------Scanner---------|"
-    emp_header = "|------------------------|"
-    headers = {"weapon": "|--Weapons--|", "shield": "|--Shields--|",
-               "armor": "|---Armor---|", "scanner": "|--Scanner--|"}
+
+    wep_header = "Weapons"
+    shl_header = "Shields"
+    arm_header = "Armor"
+    sca_header = "Scanner"
+    empty_slot = "[empty-slot]"
     damage = None
     defence = None
     weapons = []
@@ -54,41 +37,35 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     table = []
     print(info)
     for slot_type, eq_item in info[0].items():
-        if eq_item == "":
-            eq_item = emp_header
-            continue
         print("eq_item", eq_item)
-        eq_item = f"\"{eq_item}\""
-        eq_item_name = await db_read_full_name("items", eq_item, "it_name", "it_shortname")
-        eq_item_name = "<b>" + eq_item_name[1:-1].center(24) + "</b>"  # [1:-1]
+        if eq_item == "":
+            eq_item_name = empty_slot
+        else:
+            eq_item = f"\"{eq_item}\""
+            eq_item_name = await db_read_full_name("items", eq_item, "it_name", "it_shortname")
+        eq_item_name = "<b>" + eq_item_name[1:-1].ljust(26, " ") + "</b>"
 
         if slot_type.startswith("weapon"):
-            weapons.append("|" + eq_item_name + "|")
+            weapons.append("|> " + eq_item_name + "|")
         elif slot_type.startswith("shield"):
-            shields.append("|" + eq_item_name + "|")
+            shields.append("|> " + eq_item_name + "|")
         elif slot_type.startswith("armor"):
-            armor.append("|" + eq_item_name + "|")
+            armor.append("|> " + eq_item_name + "|")
         elif slot_type.startswith("scanner"):
-            scanners.append("|" + eq_item_name + "|")
-    table.append(wep_header)
+            scanners.append("|> " + eq_item_name + "|")
+    table.append("|" + wep_header.center(28, "=") + "|")
     for _ in weapons:
-        _.ljust(26, "-")
         table.append(_)
-    table.append(shl_header)
+    table.append("|" + shl_header.center(28, "=") + "|")
     for _ in shields:
-        _.ljust(26, "-")
         table.append(_)
-    table.append(arm_header)
+    table.append("|" + arm_header.center(28, "=") + "|")
     for _ in armor:
-        _.ljust(26, "-")
         table.append(_)
-    table.append(sca_header)
+    table.append("|" + sca_header.center(28, "=") + "|")
     for _ in scanners:
-        _.ljust(26, "-")
         table.append(_)
-    table.append(emp_header)
 
-    armor = f"".center(11, "-")
 
     await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\nYou can unequip all items with /unequip_all_items\n<code>{table}</code>".format(damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
 
