@@ -294,10 +294,8 @@ async def db_parse_all_ores(gps):
 
 async def db_parse_craftable_items(items_to_search) -> tuple:
     # input should be:  items_to_search = ["oil_barrel", "palladium_ore"]
-    print(items_to_search)
 
-    query_items = "SELECT * FROM items WHERE json_extract(craft, '$') IS NOT NULL;"
-    print(query_items)
+    query_items = "SELECT it_shortname, craft FROM items WHERE json_extract(craft, '$') IS NOT NULL;"
     cur_gm.execute(query_items)
     craftable_item_recepies = cur_gm.fetchall()
 

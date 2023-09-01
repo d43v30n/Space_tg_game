@@ -385,3 +385,43 @@ async def buy_item(user_id, item_id):
         return "Buying {it_name} with /id_{item_id} for {money_bag}{price}".format(it_name=it_name, item_id=item_id, price=price, money_bag=money_bag)
     else:
         return credits_ok[1]
+
+
+async def craftable_item_list(user_id):
+    pl_items, pl_materials = await get_player_information(user_id, "pl_items", "pl_materials")
+    search_list = []
+    pl_items = eval(pl_items)
+    pl_materials = eval(pl_materials)
+    search_list.append(pl_items)
+    search_list.append(pl_materials)
+    print(search_list)
+    can_craft_items = []
+
+    craftable_items = await db.db_parse_craftable_items(search_list)
+    for item in craftable_items:
+        craft_it_shortname, recepie = item
+        recepie = eval(recepie)
+        recepie.pop("credits", None)
+        # check if player has enough materials
+        for key, value in recepie.items():
+            if int(pl_items.get(key, 0)) >= value:
+                # craft_items_dict.update({key: value})
+                pass
+            elif int(pl_materials.get(key, 0)) >= value:
+                # craft_materials_dict.update({key: value})
+                pass
+            else:
+                return False, "You have not enough materials"
+        it_name = await db.db_read_full_name("items", item[0], "it_name", "it_shortname")
+        it_id = await db.db_read_full_name("items", item[0], "i_id", "it_shortname")
+        can_craft_items.append(it_name + " /craft_" + str(it_id))
+
+    if can_craft_items != []:
+        out = "\n".join(can_craft_items)
+        return "You can craft:\n{out}".format(out=out)
+    else:
+        return "You can not craft anything"
+
+
+async def craft_item(user_id, it_shortname):
+    ...

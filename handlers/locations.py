@@ -63,8 +63,8 @@ async def undock_rw_handler(message: Message, state: FSMContext) -> None:
 @router.message(State.docked, F.text == "{emoji}Parts trader".format(emoji=parts_trader_emoji))
 async def back_button_docked_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
-
-    await message.answer("You are talking to Parts trader:\n\n<i>\"Right now parts are out of stock, but you can bring yours for upgrade.\"</i>", reply_markup=kb.ringworld_shipyard_kb())
+    craftable_items = await m.craftable_item_list(message.from_user.id)
+    await message.answer("You are talking to {emoji}Parts trader:\n\n<i>\"Right now parts are out of stock, but you can bring yours for upgrade.\"</i>\n\n{craftable_items}".format(craftable_items=craftable_items, emoji=parts_trader_emoji), reply_markup=kb.ringworld_shipyard_kb())
 
 
 @router.message(State.docked, F.text == "Back to city")

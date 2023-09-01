@@ -7,7 +7,6 @@
       "effects": {
          "scan_power": 1
       },
-      "craft": "None",
       "price":100,
       "attributes": {
          "chance":0.35,
@@ -28,7 +27,6 @@
          "crit_chance": 0,
          "":""
       },
-      "craft": "None",
       "price":100,
       "attributes": {
          "chance":0.01,
@@ -44,12 +42,7 @@
       "effects": {
          "restore_hp": 50
       },
-      "craft": {
-         "id_1": 10,
-         "id_2": 100,
-         "id3": 1000
-      },
-      "price":10000,
+      "price":100,
       "attributes": {
          "chance":0.15,
          "min_loc":2,
@@ -65,7 +58,6 @@
          "armor": 10,
          "crit_reduction": 1
       },
-      "craft": "None",
       "price":0,
       "attributes": {
          "chance":0,
@@ -82,12 +74,75 @@
          "shield": 10,
          "crit_reduction": 1
       },
-      "craft": "None",
       "price":0,
       "attributes": {
          "chance":0,
          "min_loc": 2,
          "max_loc": 5
+      }
+   },
+   "6": {
+      "name": "Deadly machine gun",
+      "shortname":"deadly_machine_gun",
+      "description":"Still works...",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0,
+         "":""
+      },
+      "price":100,
+      "attributes": {
+         "chance":0.01,
+         "min_loc":2,
+         "max_loc":5
+      }
+   },
+   "7": {
+      "name": "Broken machine gun",
+      "shortname":"broken_machine_gun",
+      "description":"Still works...",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0,
+         "":""
+      },
+      "price":100,
+      "attributes": {
+         "chance":0.01,
+         "min_loc":2,
+         "max_loc":5
+      }
+   },
+   "8": {
+      "name": "Oiled machine gun",
+      "shortname":"oiled_machine_gun",
+      "description":"works better now",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 8,
+         "damage_max": 12,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "credits": 500
+      },
+      "price":100,
+      "attributes": {
+         "chance":0.01,
+         "min_loc":2,
+         "max_loc":5
       }
    }
 }
