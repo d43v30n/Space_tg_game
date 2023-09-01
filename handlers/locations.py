@@ -113,8 +113,11 @@ async def night_club_handler(message: Message, state: FSMContext) -> None:
 async def item_selector_handler(message: Message, state: FSMContext) -> None:
     text = message.text
     keyboard = await kb.keyboard_selector(state)
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    loc_features = await space_map.features(gps)
     current_state = await state.get_state()
-    if current_state != "State:job" and current_state != "State:docked":
+    if current_state != "State:docked" and loc_features:
         await message.answer(f"You can not do this right now", reply_markup=keyboard)
         return
     if text.startswith("/buy_"):
