@@ -68,6 +68,9 @@ async def db_start_gm():
                    "price INTEGER, "
                    "mt_drop TEXT)"),
     db_gm.commit()
+    await db_write_items_json()
+    await db_write_enemies_json()
+    await db_write_materials_json()
 
 
 async def cmd_start_db(user_id, tg_name):  # initialize new player
@@ -81,9 +84,6 @@ async def cmd_start_db(user_id, tg_name):  # initialize new player
         cur_pl.execute(
             "INSERT INTO players (tg_id, location, current_energy, max_energy, pl_items, credits, experience, level, main_quest, side_quest, tutorial_quest, cargo, ship_type, ship_slots, abilities, attributes, max_health, current_health, pl_materials, tg_name, pl_nickname) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (user_id, 0, 5, 5, pl_items, 100, 0, 1, 0, "None", 0, "{}", "starter_ship", ship_slots, json_imports.player_abilities(), json_imports.player_attributes(), 100, 100, pl_materials, tg_name, tg_name))  # defaults are location=0 current_energy=0, max_energy=0
         db_pl.commit()
-        await db_write_items_json()
-        await db_write_enemies_json()
-        await db_write_materials_json()
 
 
 async def new_user_check(user_id) -> bool:
@@ -97,12 +97,13 @@ async def new_user_check(user_id) -> bool:
         return False
     else:
         return True
-    
+
 
 async def list_all_users() -> bool:
     users = cur_pl.execute(
         "SELECT tg_id, tg_name, experience, credits, pl_items, pl_materials FROM players").fetchall()
     return users
+
 
 async def list_all_enemies() -> bool:
     enemies = cur_gm.execute(
@@ -289,3 +290,17 @@ async def db_parse_all_ores(gps):
         "SELECT mt_name, mt_shortname, mt_drop FROM materials WHERE type = ?", (name,))
     materials = cur_gm.fetchall()
     return materials
+
+
+async def db_parse_craftable_items(items_to_search) -> tuple:
+    # input should be:  items_to_search = ["oil_barrel", "palladium_ore"]
+    print(items_to_search)
+
+    query_items = "SELECT * FROM items WHERE json_extract(craft, '$') IS NOT NULL;"
+    print(query_items)
+    cur_gm.execute(query_items)
+    craftable_item_recepies = cur_gm.fetchall()
+
+    # for row in result:
+    #     print(row)
+    return craftable_item_recepies
