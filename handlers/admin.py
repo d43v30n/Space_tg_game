@@ -62,7 +62,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/load_enemies\n/load_items\n/load_materials\n/list_materials_drop\n/add_materials\n/get_image_id\n/test_fight", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n\nDatabase commands:\n/load_enemies\n/load_items\n/load_materials\n\nBalancing info:\n/list_materials_drop\n\n/get_image_id\n/test_fight\n\nUnder dev:\n/add_materials", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
@@ -90,10 +90,24 @@ async def adm_load_materials_handler(message: Message, state: FSMContext) -> Non
 
 @router.message(State.admin, Command("list_materials_drop"))
 async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -> None:
-    for i in range(18):
+    out = []
+    for i in range(18+1):
         gps = i
-        result = await db.db_parse_ore_drop_locations(gps)
-        print(f"DROP at {gps} = ", result)
+        ores_data = await db.db_parse_all_ores(gps)
+        for data in ores_data:
+            name = data[0]
+            data_dict = eval(data[2])
+            min_loc = int(data_dict.get("min_loc"))
+            max_loc = int(data_dict.get("max_loc"))
+            features = await space_map.features(i)
+            mining = False
+            if "mining" in features:
+                mining = True
+            if min_loc < i < max_loc:
+                # print(f"DROP at {gps}: Ore: {name},")
+                out.append(f"DROP at GPS{str(i).ljust(2)}[{mining}]: {name}")
+    await message.answer(f"Here is list of materials drop:", reply_markup=kb.admin_kb())
+    await message.answer("\n".join(out), reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("test_fight"))
