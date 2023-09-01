@@ -1,9 +1,12 @@
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
+
+from app import database as db
 from emojis import *
-from game_logic import space_map
+from game_logic import inventory as invent
 from game_logic import mechanics as m
+from game_logic import space_map
 from game_logic.states import State, is_busy
 
 from handlers import errors
@@ -93,7 +96,38 @@ async def repair_rw_handler(message: Message, state: FSMContext) -> None:
             loc_name=loc_name)
         await errors.reset_handler(message, state, gps=gps, jobtext=jobtext_str)
         await state.set_state(State.docked)
-        await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
+        await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to {loc_name}".format(loc_name=loc_name))
     else:
         keyboard = await kb.keyboard_selector(state)
         await message.answer("Your Ship is already fully repaired", reply_markup=keyboard)
+
+
+@router.message(State.docked, F.text == "{emoji}Night Club".format(emoji=night_club_emoji))
+async def night_club_handler(message: Message, state: FSMContext) -> None:
+    beer_id = await db.db_read_int("items", "\"craft_beer\"", "i_id", "it_shortname")
+    beer_price = await db.db_read_int("items", "\"craft_beer\"", "price", "it_shortname")
+    await message.answer("Hello, Cap! My name is Alicia, local barmen of the {emoji}Night Club.\n\nhere you can meet different people or have some really good craft beer.\n\n<code>to buy some stuff:</code>\n/buy_{beer_id} - {beer_price}{money_bag}".format(emoji=night_club_emoji, beer_id=beer_id, money_bag=money_bag, beer_price=beer_price), reply_markup=kb.night_club_kb())
+
+
+@router.message(F.text.startswith("/buy_"))
+async def item_selector_handler(message: Message, state: FSMContext) -> None:
+    text = message.text
+    keyboard = await kb.keyboard_selector(state)
+    current_state = await state.get_state()
+    if current_state != "State:job" and current_state != "State:docked":
+        await message.answer(f"You can not do this right now", reply_markup=keyboard)
+        return
+    if text.startswith("/buy_"):
+        # try:
+        id = str(message.text)
+        flag = id.split("_")[0][1:]
+        id = int(id.split("_")[1])
+        item_price = await db.db_read_int("items", id, "price", "i_id")
+
+        print(f"buying {flag} with id {id} for {item_price}")
+        # await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)
+        # out = await invent.apply_item(message.from_user.id, id, state)
+        # await message.answer(out, reply_markup=keyboard)
+    else:
+        print(f"wrong_command_exception: ", message.text)
+        await errors.unknown_input_handler(message, state)

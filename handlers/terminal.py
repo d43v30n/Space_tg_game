@@ -152,10 +152,6 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)
         out = await invent.apply_item(message.from_user.id, id, state)
         await message.answer(out, reply_markup=keyboard)
-
-        # except:
-        #     print("ERROR")
-
     else:
         print(f"wrong_command_exception: ", message.text)
         await errors.unknown_input_handler(message, state)

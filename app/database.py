@@ -98,7 +98,7 @@ async def new_user_check(user_id) -> bool:
         return True
 
 
-async def db_read_int(table, user_id, column):  # custom db_access
+async def db_read_int(table, user_id, column, search_col=None):  # custom db_access
     '''
     access db: read int from table
 
@@ -112,7 +112,7 @@ async def db_read_int(table, user_id, column):  # custom db_access
             f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
     else:
         value = cur_gm.execute(
-            f"SELECT {column} FROM {table} WHERE tg_id = ?", (user_id,))
+            f"SELECT {column} FROM {table} WHERE {search_col} = ?", (user_id,))
     return value.fetchone()[0]
 
 
