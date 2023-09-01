@@ -100,8 +100,8 @@ async def adm_list_all_users_handler(message: Message, state: FSMContext) -> Non
         tg_name = "@" +tg_name
         user_text = [tg_id, tg_name, experience, credits, pl_items, pl_materials]
         text = " ".join(user_text)
-        print(text)
-    await message.answer("\n".join(text), reply_markup=kb.admin_kb())    
+        user_list.append(text)
+    await message.answer("\n".join(user_list), reply_markup=kb.admin_kb())    
 
 
 
