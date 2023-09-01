@@ -55,13 +55,13 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     table.append("|" + wep_header.center(28, "=") + "|")
     for _ in weapons:
         table.append(_)
-    table.append("|" + shl_header.center(28, "=") + "|")
+    table.append("\n|" + shl_header.center(28, "=") + "|")
     for _ in shields:
         table.append(_)
-    table.append("|" + arm_header.center(28, "=") + "|")
+    table.append("\n|" + arm_header.center(28, "=") + "|")
     for _ in armor:
         table.append(_)
-    table.append("|" + sca_header.center(28, "=") + "|")
+    table.append("\n|" + sca_header.center(28, "=") + "|")
     for _ in scanners:
         table.append(_)
 
