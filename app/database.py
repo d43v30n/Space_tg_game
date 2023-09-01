@@ -100,9 +100,14 @@ async def new_user_check(user_id) -> bool:
     
 
 async def list_all_users() -> bool:
-    user = cur_pl.execute(
+    users = cur_pl.execute(
         "SELECT tg_id, tg_name, experience, credits, pl_items, pl_materials FROM players").fetchall()
-    return user
+    return users
+
+async def list_all_enemies() -> bool:
+    enemies = cur_gm.execute(
+        "SELECT en_id, en_name, en_shortname, desc, type, attributes, stats,  en_drop FROM enemies").fetchall()
+    return enemies
 
 
 async def db_read_int(table, user_id, column):  # custom db_access
