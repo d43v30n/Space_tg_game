@@ -11,9 +11,14 @@ async def add_pl_exp(user_id, exp):
     await db_write_int("players", user_id, "experience", old_exp + exp)
 
 
-async def add_pl_credits(user_id, got_credits):
+async def change_pl_credits(user_id, delta_credits):
     old_credits = await db_read_int("players", user_id, "credits")
-    await db_write_int("players", user_id, "credits", old_credits + got_credits)
+    new_credits = old_credits + delta_credits
+    if new_credits < 0:
+        return False, "Not enough {money_bag}credits".format(money_bag=money_bag)
+    else:
+        await db_write_int("players", user_id, "credits", new_credits)
+        return True, "{money_bag}Credits: {delta_credits}".format(money_bag=money_bag, delta_credits=delta_credits)
 
 
 async def add_pl_items(user_id, it_shortname, count):

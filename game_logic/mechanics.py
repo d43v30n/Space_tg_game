@@ -375,9 +375,13 @@ async def trigger_minings_event(message, state):
     return "\n".join(drop_text)
 
 
-async def buy_item(id):
-    price = await db.db_read_int("items", id, "price", "i_id")
-    it_shortname = await db.db_read_details("items", id, "it_shortname", "i_id")
-    it_name = await db.db_read_full_name("items", id, "it_name", "i_id")
-
-    return "Buying {it_name} with /id_{id} for {price}".format(it_name=it_name, id=id, price=price)
+async def buy_item(user_id, item_id):
+    price = await db.db_read_int("items", item_id, "price", "i_id")
+    it_shortname = await db.db_read_details("items", item_id, "it_shortname", "i_id")
+    it_name = await db.db_read_full_name("items", item_id, "it_name", "i_id")
+    credits_ok = await invent.change_pl_credits(user_id, -price)
+    if credits_ok[0]:
+        await invent.add_pl_items(user_id, item_id, 1)
+        return "Buying {it_name} with /id_{item_id} for {price}".format(it_name=it_name, item_id=item_id, price=price)
+    else:
+        return credits_ok
