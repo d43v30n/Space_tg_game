@@ -130,7 +130,7 @@ async def get_fight_drop(user_id, en_shortname):
     # credits
     got_credits = en_drop.get("credits")
     credits_output = await invent.change_pl_credits(user_id, got_credits)
-    drop.append(credits_output)
+    drop.append(credits_output[1])
     # exp
     exp = en_drop.get("exp")
     drop.append("{bar_chart}Exploration Data : {exp}".format(

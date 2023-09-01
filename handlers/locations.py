@@ -121,7 +121,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         id = str(message.text)
         flag = id.split("_")[0][1:]
         id = int(id.split("_")[1])
-        out = await m.buy_item(id)
+        out = await m.buy_item(message.from_user.id, id)
         await message.answer(out, reply_markup=keyboard)
 
         # await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)

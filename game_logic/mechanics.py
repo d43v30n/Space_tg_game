@@ -381,7 +381,7 @@ async def buy_item(user_id, item_id):
     it_name = await db.db_read_full_name("items", item_id, "it_name", "i_id")
     credits_ok = await invent.change_pl_credits(user_id, -price)
     if credits_ok[0]:
-        await invent.add_pl_items(user_id, item_id, 1)
+        await invent.add_pl_items(user_id, it_shortname, 1)
         return "Buying {it_name} with /id_{item_id} for {price}".format(it_name=it_name, item_id=item_id, price=price)
     else:
-        return credits_ok
+        return credits_ok[1]
