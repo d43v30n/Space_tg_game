@@ -97,12 +97,12 @@ async def adm_list_all_users_handler(message: Message, state: FSMContext) -> Non
         tg_id = str(tg_id)
         experience = str(experience)
         credits = str(credits)
-        tg_name = "@" +tg_name
-        user_text = [tg_id, tg_name, experience, credits, pl_items, pl_materials]
+        tg_name = "@" + tg_name
+        user_text = [tg_id, tg_name, experience,
+                     credits, pl_items, pl_materials]
         text = " ".join(user_text)
         user_list.append(text)
-    await message.answer("\n".join(user_list), reply_markup=kb.admin_kb())    
-
+    await message.answer("\n".join(user_list), reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("list_all_enemies"))
@@ -113,8 +113,8 @@ async def adm_list_all_enemies_handler(message: Message, state: FSMContext) -> N
         en_id, en_name, en_shortname, desc, type, attributes, stats,  en_drop = enemy
         text = str(en_id) + " " + en_name
         enemy_list.append(text)
-    await message.answer("\n".join(enemy_list), reply_markup=kb.admin_kb())    
-    
+    await message.answer("\n".join(enemy_list), reply_markup=kb.admin_kb())
+
 
 @router.message(State.admin, Command("list_materials_drop"))
 async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -> None:
@@ -145,4 +145,5 @@ async def echo_image_id(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("test"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    await fight.get_fight_drop(message.from_user.id, "\"void_reaver\"")
+    out = await m.craft_item(message.from_user.id)
+    print(out)
