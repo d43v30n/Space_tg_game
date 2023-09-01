@@ -2,6 +2,7 @@ from app.database import *
 from asyncio import sleep  # create_task, gather
 from game_logic import space_map
 from random import randint, choices
+from app import database as db
 from game_logic import energy_manager
 from game_logic.states import State
 import game_logic.inventory as invent
@@ -372,3 +373,11 @@ async def trigger_minings_event(message, state):
         exp=exp, bar_chart=bar_chart)
     drop_text.append(exp_text)
     return "\n".join(drop_text)
+
+
+async def buy_item(id):
+    price = await db.db_read_int("items", id, "price", "i_id")
+    it_shortname = await db.db_read_details("items", id, "it_shortname", "i_id")
+    it_name = await db.db_read_full_name("items", id, "it_name", "i_id")
+
+    return "Buying {it_name} with /id_{id} for {price}".format(it_name=it_name, id=id, price=price)

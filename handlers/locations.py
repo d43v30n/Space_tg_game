@@ -106,7 +106,7 @@ async def repair_rw_handler(message: Message, state: FSMContext) -> None:
 async def night_club_handler(message: Message, state: FSMContext) -> None:
     beer_id = await db.db_read_int("items", "\"craft_beer\"", "i_id", "it_shortname")
     beer_price = await db.db_read_int("items", "\"craft_beer\"", "price", "it_shortname")
-    await message.answer("Hello, Cap! My name is Alicia, local barmen of the {emoji}Night Club.\n\nhere you can meet different people or have some really good craft beer.\n\n<code>to buy some stuff:</code>\n/buy_{beer_id} - {beer_price}{money_bag}".format(emoji=night_club_emoji, beer_id=beer_id, money_bag=money_bag, beer_price=beer_price), reply_markup=kb.night_club_kb())
+    await message.answer("Hello, Cap! My name is Alicia, local bartender of the {emoji}Night Club here on the Ringworld.\n\nhere you can meet different people or have some really good craft beer.\n\n<code>to buy some stuff:</code>\n/buy_{beer_id} - {beer_price}{money_bag}".format(emoji=night_club_emoji, beer_id=beer_id, money_bag=money_bag, beer_price=beer_price), reply_markup=kb.night_club_kb())
 
 
 @router.message(F.text.startswith("/buy_"))
@@ -118,16 +118,26 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         await message.answer(f"You can not do this right now", reply_markup=keyboard)
         return
     if text.startswith("/buy_"):
-        # try:
         id = str(message.text)
         flag = id.split("_")[0][1:]
         id = int(id.split("_")[1])
-        item_price = await db.db_read_int("items", id, "price", "i_id")
+        out = await m.buy_item(id)
+        await message.answer(out, reply_markup=keyboard)
 
-        print(f"buying {flag} with id {id} for {item_price}")
         # await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)
         # out = await invent.apply_item(message.from_user.id, id, state)
         # await message.answer(out, reply_markup=keyboard)
     else:
         print(f"wrong_command_exception: ", message.text)
         await errors.unknown_input_handler(message, state)
+
+
+@router.message(F.text.startswith("/id_"))
+async def item_info_handler(message: Message, state: FSMContext) -> None:
+    id = str(message.text)
+    id = int(id.split("_")[1])
+    keyboard = await kb.keyboard_selector(state)
+    it_name = await db.db_read_details("items", id, "it_name", "i_id")
+    it_desc = await db.db_read_details("items", id, "desc", "i_id")
+    it_effects = await db.db_read_details("items", id, "effects", "i_id")
+    await message.answer(f"{it_name}\n{it_desc}\n{it_effects}", reply_markup=keyboard)
