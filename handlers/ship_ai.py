@@ -113,7 +113,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             await state.set_state(State.fighting_choice)
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}", fighting=f" event {event} spawning {enemy_shorname}")
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display:\n\n Enemies are engaging, your decision, cap?\nShip signature is detected as: <b>{enemy_faction}</b>.".format(rocket=rocket, enemy_faction=enemy_faction["faction"]), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\n\nEnemies are engaging! Your decision, cap?\n\nSignature match found, faction: <b>{enemy_faction}</b>.".format(rocket=rocket, enemy_faction=enemy_faction["faction"]), reply_markup=keyboard)
 
         elif event[0] == "mining_event":
             print("entered 3 mining_event")
