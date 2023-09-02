@@ -249,7 +249,7 @@ async def mine_here(user_id, gps: int, message, state) -> dict:
 
     loc_name = await space_map.name(gps)
     await state.set_state(State.mining)
-    await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining in progress...")
+    await state.update_data(job="mining in progress at {loc_name}".format(loc_name=loc_name), mining="mining at {loc_name}...".format(loc_name=loc_name))
     await energy_manager.use_one_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
 
@@ -293,7 +293,7 @@ async def scan_area(message, state):
             jobtext = "after scanning at {loc_name}, found nothing.".format(
                 loc_name=loc_name)
         await state.set_state(State.scanning)
-        await state.update_data(job="scanningin progress", scanning="scanning in progress...")
+        await state.update_data(job="scanning in progress", scanning="scanning at {loc_name}...".format(loc_name=loc_name))
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)

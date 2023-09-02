@@ -110,10 +110,14 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
 async def ship_ai_busy(message: Message, state: FSMContext) -> None:
     try:
         state_data = await state.get_data()
-        gps = state_data["gps_state"]
-        travelling = state_data["travelling"]
         keyboard = await kb.keyboard_selector(state, "{emoji}Ship AI".format(emoji=rocket))
-        await message.answer(f"Your Ship AI is busy ({travelling})", reply_markup=keyboard)
+        if "travelling" in state_data:
+            busy_job = state_data["travelling"]
+        elif "mining" in state_data:
+            busy_job = state_data["mining"]
+        elif "scanning" in state_data:
+            busy_job = state_data["scanning"]
+        await message.answer(f"Your Ship AI is busy ({busy_job})", reply_markup=keyboard)
     except:
         await errors.unknown_input_handler(message, state)
 
