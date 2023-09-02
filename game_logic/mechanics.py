@@ -11,7 +11,7 @@ from handlers import errors
 from emojis import *
 
 
-COOLDOWN = 00
+COOLDOWN = 45
 COOLDOWN_HEAL = 55
 
 
