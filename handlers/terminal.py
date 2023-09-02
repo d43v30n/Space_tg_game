@@ -65,7 +65,6 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     for _ in scanners:
         table.append(_)
 
-
     await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\n<code>{table}</code>\n\nYou can unequip all items with\n/unequip_all_items".format(
         damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
 

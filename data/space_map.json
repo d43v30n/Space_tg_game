@@ -4,6 +4,7 @@
       "type": "main",
       "features": [
          "shipyard",
+         "crafting",
          "consortium",
          "bazaar"
       ],

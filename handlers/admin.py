@@ -145,5 +145,5 @@ async def echo_image_id(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("test"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    out = await m.craftable_item_list(message.from_user.id)
-    print(out)
+    out = await invent.craft_item(message.from_user.id, 8)
+    print("out", out)

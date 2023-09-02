@@ -145,3 +145,25 @@ async def item_info_handler(message: Message, state: FSMContext) -> None:
     it_desc = await db.db_read_details("items", id, "desc", "i_id")
     it_effects = await db.db_read_details("items", id, "effects", "i_id")
     await message.answer(f"{it_name}\n{it_desc}\n{it_effects}", reply_markup=keyboard)
+
+
+@router.message(F.text.startswith("/craft_"))
+async def item_selector_handler(message: Message, state: FSMContext) -> None:
+    text = message.text
+
+    state_data = await state.get_data()
+    gps = state_data["gps_state"]
+    loc_features = await space_map.features(gps)
+    keyboard = await kb.keyboard_selector(state)
+    current_state = await state.get_state()
+
+    if current_state == "State:docked" and "crafting" in loc_features:
+        id = str(message.text)
+        id = int(id.split("_")[1])
+        print(f"crafting item with id {id}")
+        await message.answer(f"crafting item /craft_{id}".format(id=id), reply_markup=keyboard)
+        out = await invent.craft_item(message.from_user.id, id)
+        await message.answer(out[1], reply_markup=keyboard)
+    else:
+        print(f"wrong_command_exception: ", message.text)
+        await errors.unknown_input_handler(message, state)

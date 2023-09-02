@@ -95,7 +95,7 @@ def ringworld_shipyard_kb() -> ReplyKeyboardMarkup:
 
 def night_club_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="NPC1")
+    kb.button(text="Gossip Girl")  # whispers about richest player etc..
     kb.button(text="NPC2")
     kb.button(text="NPC3")
     kb.button(text="NPC1")
@@ -109,6 +109,15 @@ def admin_kb() -> ReplyKeyboardMarkup:
     kb.button(text="/help")
     kb.button(text="/test")
     kb.adjust(2)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def fight_kb() -> ReplyKeyboardMarkup:
+    kb = ReplyKeyboardBuilder()
+    kb.button(text="{}Engage enemy".format())
+    kb.button(text="{}Try to escape".format())
+    kb.button(text="{}Load super ammo".format())
+    kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
 
 

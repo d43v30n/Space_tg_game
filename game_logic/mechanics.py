@@ -394,7 +394,7 @@ async def craftable_item_list(user_id):
     pl_materials = eval(pl_materials)
     search_list.append(pl_items)
     search_list.append(pl_materials)
-    print(search_list)
+    print("search_list is ", search_list)
     can_craft_items = []
 
     craftable_items = await db.db_parse_craftable_items(search_list)
@@ -411,7 +411,7 @@ async def craftable_item_list(user_id):
                 # craft_materials_dict.update({key: value})
                 pass
             else:
-                return False, "You have not enough materials"
+                return "You have not enough materials"
         it_name = await db.db_read_full_name("items", item[0], "it_name", "it_shortname")
         it_id = await db.db_read_full_name("items", item[0], "i_id", "it_shortname")
         can_craft_items.append(it_name + " /craft_" + str(it_id))
@@ -421,7 +421,3 @@ async def craftable_item_list(user_id):
         return "You can craft:\n{out}".format(out=out)
     else:
         return "You can not craft anything"
-
-
-async def craft_item(user_id, it_shortname):
-    ...
