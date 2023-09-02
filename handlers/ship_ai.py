@@ -277,7 +277,7 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
         else:
-            jobtext = "after scanning at {loc_name}, nothing found".format(
+            jobtext = "after scanning at {loc_name}, scanners found nothing".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
