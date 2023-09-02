@@ -279,17 +279,17 @@ async def scan_area(message, state):
         await energy_manager.use_one_energy(message.from_user.id)
         if "mining" in loc_features:
             exp = 70
-            result = "ore."
+            result = "ore presence"
             jobtext = "after scanning at {loc_name}, found ore".format(
                 loc_name=loc_name)
         elif text_job.endswith("and encountered mining_event"):
             exp = 200
-            result = "suspicious ground fractions"
+            result = "suspicious ground fractions presence"
             jobtext = "after scanning at {loc_name}, mining_event".format(
                 loc_name=loc_name)
         else:
             exp = 40
-            result = "nothing."
+            result = "nothing"
             jobtext = "after scanning at {loc_name}, found nothing.".format(
                 loc_name=loc_name)
         await state.set_state(State.scanning)
@@ -297,7 +297,7 @@ async def scan_area(message, state):
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("<i>{rocket}Ship AI reporting.</i>\n\Scanning complete, <b>{result}</b> presence detected.\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
+        await message.answer("<i>{rocket}Ship AI reporting.</i>\nScanning complete, <b>{result}</b> detected.\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
