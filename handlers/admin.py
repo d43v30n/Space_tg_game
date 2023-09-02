@@ -111,7 +111,7 @@ async def adm_list_all_enemies_handler(message: Message, state: FSMContext) -> N
     enemy_list = []
     for enemy in enemies:
         en_id, en_name, en_shortname, desc, type, attributes, stats,  en_drop = enemy
-        text = str(en_id) + " " + en_name
+        text = str(en_id) + " " + en_name + " " + stats
         enemy_list.append(text)
     await message.answer("\n".join(enemy_list), reply_markup=kb.admin_kb())
 
@@ -131,7 +131,7 @@ async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -
             mining = False
             if "mining" in features:
                 mining = True
-            if min_loc < i < max_loc:
+            if min_loc <= i <= max_loc:
                 # print(f"DROP at {gps}: Ore: {name},")
                 out.append(f"DROP at GPS{str(i).ljust(2)}[{mining}]: {name}")
     await message.answer(f"Here is list of materials drop:", reply_markup=kb.admin_kb())
