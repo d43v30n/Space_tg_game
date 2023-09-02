@@ -84,7 +84,7 @@
       "events_weights": {
          "None": 3,
          "enemies":5,
-         "scanning_event":1
+         "scanning_event":5
       },
       "event_details": {
          "level":1,
@@ -102,7 +102,7 @@
       "events_weights": {
          "None": 3,
          "enemies":5,
-         "mining_event":1
+         "mining_event":5
       },
       "event_details": {
          "level":2,
