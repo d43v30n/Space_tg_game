@@ -105,12 +105,19 @@ async def apply_item(user_id, i_id, state):
         return "Your quantity is < 1"
     if "consumable" in it_type:
         # hardcoded heal            # apply effect_choice function() here
-        healed_result = await m.restore_hp(user_id, 20, with_cd=False)
-        if healed_result:
-            await add_pl_items(user_id, it_shortname, -1)  # -1 from inventory
-            text = f"used 1 {it_name}, feeling goooood"
-        else:
-            text = f"already at full hp"
+        it_effect = await db_read_full_name("items", f"\"{it_shortname}\"", "effects", "it_shortname")
+        it_effect = eval(it_effect)
+        print("it_effect", it_effect)
+        heal_amount = it_effect.get("restore_hp")
+        if "restore_hp" in it_effect:
+            print("--heal_amount", heal_amount)
+            healed_result = await m.restore_hp(user_id, heal_amount, with_cd=False)
+            if healed_result:
+                # -1 from inventory
+                await add_pl_items(user_id, it_shortname, -1)
+                text = f"used 1 {it_name}, feeling goooood"
+            else:
+                text = f"already at full hp"
     elif current_state == "State:docked" and "shipyard" in loc_features:
         # can use upgrades
         if "weapon" in it_type:
