@@ -139,6 +139,7 @@ async def apply_item(user_id, i_id, state):
     else:
         # can not use upgrades, go to shipyard
         text = "Dock for a shipyard to do it for you..."
+        return text
     state_data = await state.get_data()
     gps = state_data["gps_state"]
     job_text = "applyied item with i_id={i_id}".format(i_id=i_id)

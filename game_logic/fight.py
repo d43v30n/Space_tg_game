@@ -170,7 +170,7 @@ async def get_fight_drop(user_id, en_shortname):
     # {'mt_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
     for drop_only_materials in en_drop_materials.values():
         try:
-            droprate = drop_only_materials.get("droprate")
+            droprate = float(drop_only_materials.get("droprate"))
         except:
             droprate = 1  # defauld drop rate ist 100%
         if await m.roll_chance(droprate):

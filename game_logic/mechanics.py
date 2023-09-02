@@ -297,7 +297,7 @@ async def scan_area(message, state):
         await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
         await sleep(COOLDOWN)
         await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("<i>{rocket}Ship AI reporting.</i>\n\nAfter scanning i am concerned, that we should mine <b>{result}</b> here.\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
+        await message.answer("<i>{rocket}Ship AI reporting.</i>\n\Scanning complete, <b>{result}</b> presence detected.\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)

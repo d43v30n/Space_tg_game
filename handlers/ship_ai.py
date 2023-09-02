@@ -101,6 +101,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             print("entered 1 None")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}.")
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b> {gps_emj}{gps}.".format(rocket=rocket, loc_name=loc_name, gps_emj=gps_emj, gps=gps), reply_markup=keyboard)
 
         elif event[0] == "enemies":
             print("entered 2 enemies")
@@ -111,7 +112,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             # fight_result -> "win" of "loose" str
             fight_result = await fight.init_fight(message, enemy_shorname, state)
             if fight_result[0] == "win":
-                await message.answer(f"Figth result is : {fight_result[0]}.\n\nReceived:\n{fight_result[1]}", reply_markup=keyboard)
+                await message.answer(fight_result[1], reply_markup=keyboard)
 
         elif event[0] == "mining_event":
             print("entered 3 mining_event")

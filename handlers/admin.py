@@ -140,7 +140,7 @@ async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -
 
 @router.message(State.admin, Command("test_fight"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    await fight.get_fight_drop(message.from_user.id, "\"zac_the_baddest\"")
+    await fight.get_fight_drop(message.from_user.id, "\"ironclad_ivan\"")
 
 
 @router.message(State.admin, Command("test"))
