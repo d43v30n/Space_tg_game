@@ -30,7 +30,11 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     if current_state is None and is_new_user:
         print(
             f"New user registered: id={message.from_user.id}, username=@{message.from_user.username}")
-        await db.cmd_start_db(message.from_user.id, message.from_user.username)
+        username = message.from_user.username
+        if username is None:
+            print(type(username))
+            username = "None"
+        await db.cmd_start_db(message.from_user.id, username)
         # await message.answer("{void_emj}}Void greets you commander!\n\n@{message.from_user.username}, you are in trouble, but you should figure it out on your own.\nDont forget to /help if you need more information!\nTry to asking your 🚀Ship AI for help.", reply_markup=kb.main_kb(0))
         await message.answer(
             "{void_emj}Void greets you, commander!\n\n@{u_id}, you find yourself in a precarious situation, but fear not, for your resourcefulness shall light the way.\nDon't hesitate to seek guidance with /help if you require more insights!\nYour trusty {rocket}Ship AI stands ready to assist you.".format(
