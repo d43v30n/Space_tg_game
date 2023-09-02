@@ -8,6 +8,8 @@ async def keyboard_selector(state, menu=None):
     state_name = await state.get_state()
     if state_name == "State:settings_menu" or state_name == "State:settings_nickname":
         keyboard = settings_kb()
+    elif state_name == "State:fighting_choice":
+        keyboard = fight_kb()
         return keyboard
     gps = state_data["gps_state"]
     job_name = state_data["job"]
@@ -114,9 +116,9 @@ def admin_kb() -> ReplyKeyboardMarkup:
 
 def fight_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="{}Engage enemy".format())
-    kb.button(text="{}Try to escape".format())
-    kb.button(text="{}Load super ammo".format())
+    kb.button(text="{emoji}Engage enemy".format(emoji=swords_emoji))
+    kb.button(text="{emoji}Try to escape".format(emoji=running_emoji))
+    kb.button(text="{emoji}Load super ammo".format(emoji=buff_emoji))
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
 

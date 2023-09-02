@@ -132,10 +132,11 @@ async def apply_item(user_id, i_id, state):
             # ERROR
             print("ERROR IN NONE TYPE OF applicable item")
             text = "ERRORRRRRR"
-            pass
+            return
         else:
             # EXCEPTION
             print("EXCEPTION TYPE OF applicable item")
+            return
     else:
         # can not use upgrades, go to shipyard
         text = "Dock for a shipyard to do it for you..."

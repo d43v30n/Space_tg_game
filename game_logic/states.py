@@ -18,13 +18,13 @@ class State(StatesGroup):
 
     confirmation = State()
 
+    fighting_choice = State()
     fighting = State()
     repairing = State()
     scanning = State()
     mining = State()
 
     item_selector = State()
-
 
     # under_attack = State()
     # running = State()

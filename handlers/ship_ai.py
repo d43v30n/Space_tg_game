@@ -4,6 +4,7 @@ from aiogram.types import Message
 from game_logic import energy_manager, space_map, fight
 from game_logic import mechanics as m
 from game_logic.states import State
+from app.database import db_read_details
 from emojis import *
 
 from handlers import errors
@@ -88,7 +89,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         if not event:
             await state.update_data(job=f"just arrived to {loc_name}")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b> {gps_emj}{gps}.".format(rocket=rocket, loc_name=loc_name, gps_emj=gps_emj, gps=gps), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b> {gps_emj}{gps}.".format(rocket=rocket, loc_name=loc_name, gps_emj=gps_emj, gps=gps), reply_markup=keyboard)
             return
 
         if "mining" in loc_features:
@@ -101,42 +102,42 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             print("entered 1 None")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}.")
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b> {gps_emj}{gps}.".format(rocket=rocket, loc_name=loc_name, gps_emj=gps_emj, gps=gps), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b> {gps_emj}{gps}.".format(rocket=rocket, loc_name=loc_name, gps_emj=gps_emj, gps=gps), reply_markup=keyboard)
 
         elif event[0] == "enemies":
             print("entered 2 enemies")
-            keyboard = await kb.keyboard_selector(state)
             enemy_shorname = event[1]
-            # await message.answer(f"Triggered event {event}. Spawning {enemy_shorname}", reply_markup=keyboard)
-            await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}")
-            # fight_result -> "win" of "loose" str
-            fight_result = await fight.init_fight(message, enemy_shorname, state)
-            if fight_result[0] == "win":
-                await message.answer(fight_result[1], reply_markup=keyboard)
+            enemy_faction = await db_read_details(
+                "enemies", enemy_shorname, "attributes", "en_shortname")
+            print("enemy_faction", enemy_faction["faction"])
+            await state.set_state(State.fighting_choice)
+            keyboard = await kb.keyboard_selector(state)
+            await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}", fighting=f" event {event} spawning {enemy_shorname}")
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display:\n\n Enemies are engaging, your decision, cap?\nShip signature is detected as: <b>{enemy_faction}</b>.".format(rocket=rocket, enemy_faction=enemy_faction["faction"]), reply_markup=keyboard)
 
         elif event[0] == "mining_event":
             print("entered 3 mining_event")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}")
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. MINING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>. MINING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
 
         elif event[0] == "scanning_event":
             print("entered 4 scanning_event")
             keyboard = await kb.keyboard_selector(state)
             scans = event[1]["scans_required"]
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}_{scans}")
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         elif event[0] == "encounter":
             print("entered 5 encounter")
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         else:
             print(
                 "should not happen. unknown event in location, event[0] = ", event[0])
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep. On the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
 
     else:
         print("reached end of map")
@@ -149,6 +150,20 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(job=f"Reached map end, returning")
         keyboard = await kb.keyboard_selector(state)
         await message.answer(f"I was travelling too long, and lost my disres. I should rest now..", reply_markup=keyboard)
+
+
+@router.message(State.fighting_choice, F.text == "{emoji}Engage enemy".format(emoji=swords_emoji))
+async def fighting_chioce_handler(message: Message, state: FSMContext) -> None:
+    state_data = await state.get_data()
+    fighting_data = state_data["fighting"]
+    en_shortname = fighting_data.split(" ")[-1]
+    en_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
+    keyboard = await kb.keyboard_selector(state)
+    await message.answer(f"When you approach, you see that you will be fighting against {en_name}".format(en_name=en_name), reply_markup=keyboard)
+    fight_result = await fight.init_fight(message, en_shortname, state)
+    keyboard = await kb.keyboard_selector(state)
+    if fight_result[0] == "win":
+        await message.answer(fight_result[1], reply_markup=keyboard)
 
 
 # busy traveling forward or home

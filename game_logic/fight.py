@@ -10,11 +10,10 @@ import keyboards.main_kb as kb
 from emojis import *
 
 
-async def init_fight(message: Message, enemy_id, state: State):
+async def init_fight(message: Message, en_shorname, state: State):
     user_id = message.from_user.id
     state_data = await state.get_data()
     keyboard = await kb.keyboard_selector(state)
-    await state.set_state(State.fighting)
     stats = await m.get_player_information(user_id, "location", "max_health", "current_health", "level", "ship_slots")
     location = int(stats[0])  # to use in possible location debuffs
     max_health = int(stats[1])
@@ -29,8 +28,8 @@ async def init_fight(message: Message, enemy_id, state: State):
     row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
     win_text = "{row1}{row2}".format(row1=row1, row2=row2)
     # dmg calculation
-    enemy_stats = await get_enemy_fight_stats(enemy_id)
-    en_name = await db_read_details("enemies", enemy_id, "en_name", "en_shortname")
+    enemy_stats = await get_enemy_fight_stats(en_shorname)
+    en_name = await db_read_details("enemies", en_shorname, "en_name", "en_shortname")
     en_hp = enemy_stats.get("health")
     en_dmg = enemy_stats.get("damage")
     en_arm = enemy_stats.get("armor")
@@ -45,14 +44,14 @@ async def init_fight(message: Message, enemy_id, state: State):
         en_hp = max(0, en_hp - eff_player_dmg)
 
         if en_hp <= 0:  # player win
-            drop_text = await get_fight_drop(user_id, enemy_id)
-            win_text = win_text + "\nYou live to die another day..\nYour loot is:\n" + drop_text
+            drop_text = await get_fight_drop(user_id, en_shorname)
+            win_text = win_text + "\n\nYou live to die another day..\n\nYou looted:\n" + drop_text
             await state.clear()
             await state.set_state(State.gps_state)
             gps = await m.get_location(message.from_user.id)
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
-            await state.update_data(job=f"Won after fight with {enemy_id}")
+            await state.update_data(job=f"Won after fight with {en_shorname}")
             return "win", win_text
 
         # enemy hit player
@@ -67,7 +66,7 @@ async def init_fight(message: Message, enemy_id, state: State):
             gps = await m.get_location(message.from_user.id)
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
-            await state.update_data(job=f"Dead after fight with {enemy_id}")
+            await state.update_data(job=f"Dead after fight with {en_shorname}")
             loose_text = "You are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld".format(
                 en_hp=en_hp)
             return "loose", loose_text

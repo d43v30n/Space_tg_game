@@ -19,7 +19,8 @@ fuel_emoji = '\U000026FD'  # ⛽
 
 ener_shield = '\U0001F6E1'  # 🛡️
 swords_emoji = '\U00002694'  # ⚔️
-
+running_emoji = '\U0001F3C3'  # 🏃
+buff_emoji = '\U0001F52B'  # 🔫
 
 ship_level_unicode = {
     '1': '\u0031\uFE0F\u20E3',  # 1️⃣
