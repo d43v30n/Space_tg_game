@@ -105,7 +105,7 @@ async def apply_item(user_id, i_id, state):
         return "Your quantity is < 1"
     if "consumable" in it_type:
         # hardcoded heal            # apply effect_choice function() here
-        healed_result = await m.restore_hp(user_id, 50)
+        healed_result = await m.restore_hp(user_id, 20, with_cd=False)
         if healed_result:
             await add_pl_items(user_id, it_shortname, -1)  # -1 from inventory
             text = f"used 1 {it_name}, feeling goooood"
