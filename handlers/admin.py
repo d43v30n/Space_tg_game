@@ -145,5 +145,5 @@ async def echo_image_id(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("test"))
 async def echo_image_id(message: Message, state: FSMContext) -> None:
-    out = await invent.craft_item(message.from_user.id, 8)
+    out = await fight.engaging_enemy_choice(message.from_user.id, "\"elon_musk\"")
     print("out", out)

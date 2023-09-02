@@ -11,7 +11,7 @@ from handlers import errors
 from emojis import *
 
 
-COOLDOWN = 40
+COOLDOWN = 00
 COOLDOWN_HEAL = 55
 
 
@@ -421,7 +421,3 @@ async def craftable_item_list(user_id):
         return "You can craft:\n{out}".format(out=out)
     else:
         return "You can not craft anything"
-
-
-async def engaging_enemy_choice():
-    

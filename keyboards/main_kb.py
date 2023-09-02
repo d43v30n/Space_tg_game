@@ -117,8 +117,9 @@ def admin_kb() -> ReplyKeyboardMarkup:
 def fight_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="{emoji}Engage enemy".format(emoji=swords_emoji))
+    # if not no_escape:
     kb.button(text="{emoji}Try to escape".format(emoji=running_emoji))
-    kb.button(text="{emoji}Load super ammo".format(emoji=buff_emoji))
+    # kb.button(text="{emoji}Load super ammo".format(emoji=buff_emoji))
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
 

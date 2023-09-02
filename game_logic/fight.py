@@ -199,3 +199,13 @@ async def timer():
     print("awaiting timer")
     await asyncio.sleep(2)
     print("timer ended")
+
+
+async def engaging_enemy_choice(user_id, en_shortname):
+    em_dmg = await get_enemy_fight_stats(en_shortname)
+    em_dmg = em_dmg["damage"]
+    pl_health = await m.get_player_information(user_id, "max_health")
+    if pl_health[0] / em_dmg < 2:
+        return True
+    else:
+        return False

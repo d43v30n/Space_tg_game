@@ -111,6 +111,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
                 "enemies", enemy_shorname, "attributes", "en_shortname")
             print("enemy_faction", enemy_faction["faction"])
             await state.set_state(State.fighting_choice)
+            await state.update_data(fighting=f"new fight")
             keyboard = await kb.keyboard_selector(state)
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}", fighting=f" event {event} spawning {enemy_shorname}")
             await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\n\nEnemies are engaging! Your decision, cap?\n\nSignature match found, faction: <b>{enemy_faction}</b>.".format(rocket=rocket, enemy_faction=enemy_faction["faction"]), reply_markup=keyboard)
@@ -158,14 +159,38 @@ async def fighting_chioce_handler(message: Message, state: FSMContext) -> None:
     fighting_data = state_data["fighting"]
     en_shortname = fighting_data.split(" ")[-1]
     en_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
+    await state.set_state(State.fighting)
     keyboard = await kb.keyboard_selector(state)
-    await message.answer(f"When you approach, you see that you will be fighting against {en_name}".format(en_name=en_name), reply_markup=keyboard)
+    await message.answer(f"When you approach, you see that you are facing {en_name}. Space guns are shooting...".format(en_name=en_name), reply_markup=keyboard)
     fight_result = await fight.init_fight(message, en_shortname, state)
     row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
     win_text = "{row1}{row2}".format(row1=row1, row2=row2)
     keyboard = await kb.keyboard_selector(state)
     if fight_result[0] == "win":
         await message.answer(win_text + fight_result[1], reply_markup=keyboard)
+
+
+@router.message(State.fighting_choice, F.text == "{emoji}Try to escape".format(emoji=running_emoji))
+async def fleeing_handler(message: Message, state: FSMContext) -> None:
+    state_data = await state.get_data()
+    fighting_data = state_data["fighting"]
+    en_shortname = fighting_data.split(" ")[-1]
+    en_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
+    flee_available = await fight.engaging_enemy_choice(message.from_user.id, en_shortname)
+    flee_chance = await m.roll_chance(0.3)  # flee chance is hardcoded 20%
+    if flee_available and flee_chance:
+        await errors.reset_handler(message, state, jobtext="fleeing from enemy successfull")
+        keyboard = await kb.keyboard_selector(state)
+        await message.answer("You were lucky to get some cover in Asteroids belt and hide your ass.", reply_markup=keyboard)
+    else:
+        await state.set_state(State.fighting)
+        keyboard = await kb.keyboard_selector(state)
+        await message.answer("You were unlucky and now you can only FIGHT. Your enemy is {en_name}".format(en_name=en_name), reply_markup=keyboard)
+        fight_result = await fight.init_fight(message, en_shortname, state)
+        row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
+        win_text = "{row1}{row2}".format(row1=row1, row2=row2)
+        if fight_result[0] == "win":
+            await message.answer(win_text + fight_result[1], reply_markup=keyboard)
 
 
 # busy traveling forward or home
