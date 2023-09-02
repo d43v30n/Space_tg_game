@@ -6,7 +6,7 @@ from aiogram.types import Message
 from emojis import *
 
 from game_logic import mechanics as m
-from game_logic import space_map
+from game_logic import space_map, fight
 from game_logic import inventory as invent
 from app.database import db_read_full_name
 from handlers import errors
@@ -21,7 +21,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     state_data = await state.get_data()
     keyboard = await kb.keyboard_selector(state)
 
-    info = await m.get_player_information(message.from_user.id, "ship_slots")
+    ship_slots = await m.get_player_information(message.from_user.id, "ship_slots")
     # print(info)
 
     wep_header = "Weapons"
@@ -29,14 +29,14 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     arm_header = "Armor"
     sca_header = "Scanner"
     empty_slot = "[empty-slot]"
-    damage = None
-    defence = None
+    damage = await fight.get_player_dmg(ship_slots[0])
+    defence = await fight.get_player_armor(ship_slots[0])
     weapons = []
     shields = []
     armor = []
     scanners = []
     table = []
-    for slot_type, eq_item in info[0].items():
+    for slot_type, eq_item in ship_slots[0].items():
         if eq_item == "":
             eq_item_name = empty_slot
         else:
@@ -106,12 +106,12 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     keyboard = await kb.keyboard_selector(state)
     inv = await m.show_items(message.from_user.id)
-    await message.answer(f"Here is your Inventory:\n{inv}", reply_markup=keyboard)
+    await message.answer("Here is your Inventory:\n{inv}\nUse <code>/info_</code> with item ID to get more information about item".format(inv=inv), reply_markup=keyboard)
     # except:
     #    await errors.unknown_input_handler(message, state)
 
 
-@router.message(F.text.startswith("/item_"))
+@router.message(F.text.startswith("/use_"))
 async def item_selector_handler(message: Message, state: FSMContext) -> None:
     text = message.text
     keyboard = await kb.keyboard_selector(state)
@@ -119,7 +119,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
     if current_state != "State:job" and current_state != "State:docked":
         await message.answer(f"You can not do this right now", reply_markup=keyboard)
         return
-    if text.startswith("/item_"):
+    if text.startswith("/use_"):
         # try:
         id = str(message.text)
         flag = id.split("_")[0][1:]

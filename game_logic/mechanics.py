@@ -205,7 +205,7 @@ async def show_items(user_id) -> str:
         it_shortname = f"\"{it_shortname}\""
         it_name = await db_read_full_name("items", it_shortname, "it_name", "it_shortname")
         it_id = await db_read_full_name("items", it_shortname, "i_id", "it_shortname")
-        text += f"- {it_name} (x{count}) /item_{it_id}\n"
+        text += f"- {it_name} (x{count}) /use_{it_id}\n"
     return text
 
 
@@ -382,7 +382,7 @@ async def buy_item(user_id, item_id):
     credits_ok = await invent.change_pl_credits(user_id, -price)
     if credits_ok[0]:
         await invent.add_pl_items(user_id, it_shortname, 1)
-        return "Buying {it_name} with /id_{item_id} for {money_bag}{price}".format(it_name=it_name, item_id=item_id, price=price, money_bag=money_bag)
+        return "Buying {it_name} with /info_{item_id} for {money_bag}{price}".format(it_name=it_name, item_id=item_id, price=price, money_bag=money_bag)
     else:
         return credits_ok[1]
 

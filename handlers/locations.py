@@ -136,7 +136,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         await errors.unknown_input_handler(message, state)
 
 
-@router.message(F.text.startswith("/id_"))
+@router.message(F.text.startswith("/info_"))
 async def item_info_handler(message: Message, state: FSMContext) -> None:
     id = str(message.text)
     id = int(id.split("_")[1])
