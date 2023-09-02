@@ -26,6 +26,8 @@ async def init_fight(message: Message, enemy_id, state: State):
     player_shield = 0  # await get_player_shield(ship_slots)
     player_armor = await get_player_armor(ship_slots)
 
+    row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
+    win_text = "{row1}{row2}".format(row1=row1, row2=row2)
     # dmg calculation
     enemy_stats = await get_enemy_fight_stats(enemy_id)
     en_name = await db_read_details("enemies", enemy_id, "en_name", "en_shortname")
@@ -34,7 +36,7 @@ async def init_fight(message: Message, enemy_id, state: State):
     en_arm = enemy_stats.get("armor")
     en_shld = 0  # enemy_stats.get("shields")
 
-    await message.answer(f"You are fighting against {en_name}.\nYor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
+    # await message.answer("You are fighting against {en_name}.\nYor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
 
     while current_health > 0 and en_hp > 0:
         # player hit enemy
@@ -44,15 +46,14 @@ async def init_fight(message: Message, enemy_id, state: State):
 
         if en_hp <= 0:  # player win
             drop_text = await get_fight_drop(user_id, enemy_id)
-            print("en_hp = ", en_hp)
-            print("drop_text = ", drop_text)
+            win_text = win_text + "\nYou live to die another day..\nYour loot is:\n" + drop_text
             await state.clear()
             await state.set_state(State.gps_state)
             gps = await m.get_location(message.from_user.id)
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=f"Won after fight with {enemy_id}")
-            return ("win", drop_text)
+            return "win", win_text
 
         # enemy hit player
         eff_en_dmg = max(en_dmg - player_shield, 0)
@@ -64,11 +65,12 @@ async def init_fight(message: Message, enemy_id, state: State):
             await state.clear()
             await state.set_state(State.gps_state)
             gps = await m.get_location(message.from_user.id)
-            await message.answer(f"Yo are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld", reply_markup=kb.main_kb(gps))
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=f"Dead after fight with {enemy_id}")
-            return "loose"
+            loose_text = "You are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld".format(
+                en_hp=en_hp)
+            return "loose", loose_text
         await db_write_int("players", user_id, "current_health", current_health)
         # print("en_hp = ", en_hp)
         # print("current_health = ", current_health)
@@ -144,7 +146,7 @@ async def get_fight_drop(user_id, en_shortname):
     # {'it_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
     for drop_only_items in en_drop_items.values():
         try:
-            droprate = drop_only_items.get("droprate")
+            droprate = float(drop_only_items.get("droprate"))
         except:
             droprate = 1  # defauld drop rate ist 100%
         print("drop_only_items ", drop_only_items)
