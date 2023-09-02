@@ -339,7 +339,7 @@ async def trigger_scan_event(message, state):
     exp_text = "Received:\n{bar_chart}Exploration Data: {exp}".format(
         exp=exp, bar_chart=bar_chart)
     drop_text.append(exp_text)
-    return "\n".join(drop_text)
+    return True, "\n".join(drop_text)
 
 
 async def trigger_minings_event(message, state):
