@@ -116,8 +116,10 @@ async def apply_item(user_id, i_id, state):
                 # -1 from inventory
                 await add_pl_items(user_id, it_shortname, -1)
                 text = f"used 1 {it_name}, feeling goooood"
+                return
             else:
                 text = f"already at full hp"
+                return
     elif current_state == "State:docked" and "shipyard" in loc_features:
         # can use upgrades
         if "weapon" in it_type:
