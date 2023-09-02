@@ -105,7 +105,7 @@
          "mining_event":5
       },
       "event_details": {
-         "level":2,
+         "level":1,
          "scans_required":2,
          "chance":0.2,
          "experience":300,
