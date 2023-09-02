@@ -161,9 +161,11 @@ async def fighting_chioce_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     await message.answer(f"When you approach, you see that you will be fighting against {en_name}".format(en_name=en_name), reply_markup=keyboard)
     fight_result = await fight.init_fight(message, en_shortname, state)
+    row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
+    win_text = "{row1}{row2}".format(row1=row1, row2=row2)
     keyboard = await kb.keyboard_selector(state)
     if fight_result[0] == "win":
-        await message.answer(fight_result[1], reply_markup=keyboard)
+        await message.answer(win_text + fight_result[1], reply_markup=keyboard)
 
 
 # busy traveling forward or home
