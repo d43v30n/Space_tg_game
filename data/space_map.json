@@ -87,7 +87,7 @@
          "scanning_event":1
       },
       "event_details": {
-         "level":2,
+         "level":1,
          "scans_required":2,
          "chance":0.9,
          "experience":300
