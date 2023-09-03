@@ -109,7 +109,7 @@
             "droprate": 0.001,
             "shields_for_beginner": 1
          },
-         "it_name_2": {
+         "mt_name_2": {
             "droprate": 0.3,
             "oil_barrel": 1
          }
@@ -141,7 +141,7 @@
             "droprate": 0.02,
             "shields_for_beginner": 1
          },
-         "it_name_2":{
+         "mt_name_2":{
             "droprate": 0.2,
             "old_wires": 1
          }
