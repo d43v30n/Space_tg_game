@@ -113,7 +113,10 @@ async def restore_hp(user_id, count=0, with_cd=True):
 
 async def player_dead(user_id):
     await db_write_int("players", user_id, "current_health", 1)  # set 1 hp
-    await jump_home(user_id)
+    await sleep(15)
+    await db_write_int("players", user_id, "location", 0)
+    print("death timer 60 started")
+    print("death timer 60 ended")
 
 
 async def get_energy(user_id) -> tuple:
