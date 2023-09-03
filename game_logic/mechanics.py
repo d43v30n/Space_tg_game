@@ -284,33 +284,39 @@ async def scan_area(message, state):
 # scan event fork
 
         if text_job.endswith("scanning_event_5"):
+            await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_4".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
             return "You should try to scan once more!"
-        if text_job.endswith("scanning_event_4"):
 
+        if text_job.endswith("scanning_event_4"):
+            await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_3".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
             return "You should try to scan once more!"
-        if text_job.endswith("scanning_event_3"):
 
+        if text_job.endswith("scanning_event_3"):
+            await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_2".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
             return "You should try to scan once more!"
-        elif text_job.endswith("scanning_event_2"):
 
+        elif text_job.endswith("scanning_event_2"):
+            await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_1".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
             return "You should try to scan once more!"
+
         elif text_job.endswith("scanning_event_1"):
+            await sleep(COOLDOWN)
             jobtext = "after scanning at {loc_name}".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
@@ -330,7 +336,7 @@ async def scan_area(message, state):
                     loc_name=loc_name)
             elif text_job.endswith("and encountered mining_event"):
                 exp = 200
-                result = "suspicious ground fractions presence"
+                result = "Presence of suspicious ground fraction is detected. We should try our luck mining it now."
                 jobtext = "after scanning at {loc_name}, mining_event".format(
                     loc_name=loc_name)
             else:

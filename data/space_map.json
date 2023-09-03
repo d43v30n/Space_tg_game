@@ -83,7 +83,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
+         "enemies":3,
          "scanning_event":5
       },
       "scan_event_details": {
