@@ -101,6 +101,8 @@ async def get_player_shield(ship_slots) -> int:
     player_shield = 0
     if not shields is None:
         for shield in shields.values():
+            if shield == "":
+                continue
             it_shortname = f"\"{shield}\""
             it_effects = await db_read_details("items", it_shortname, "effects", "it_shortname")
             player_shield += int((it_effects.get("shield")))
@@ -114,6 +116,8 @@ async def get_player_armor(ship_slots) -> int:
     player_armor = 0
     if not armors is None:
         for armor in armors.values():
+            if armor == "":
+                continue
             it_shortname = f"\"{armor}\""
             it_effects = await db_read_details("items", it_shortname, "effects", "it_shortname")
             player_armor += int((it_effects.get("armor")))
