@@ -331,7 +331,7 @@ async def scan_area(message, state):
         else:
             if "mining" in loc_features:
                 exp = 70
-                result = "ore presence"
+                result = "Ore presence is detected. mining is possible. "
                 jobtext = "after scanning at {loc_name}, found ore".format(
                     loc_name=loc_name)
             elif text_job.endswith("and encountered mining_event"):
@@ -341,11 +341,11 @@ async def scan_area(message, state):
                     loc_name=loc_name)
             else:
                 exp = 40
-                result = "nothing"
+                result = "Found nothing."
                 jobtext = "after scanning at {loc_name}, found nothing.".format(
                     loc_name=loc_name)
             await state.set_state(State.scanning)
-            await state.update_data(job="scanning in progress", scanning="scanning at {loc_name}...".format(loc_name=loc_name))
+            await state.update_data(job=jobtext, scanning="scanning at {loc_name}...".format(loc_name=loc_name))
             await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
             await sleep(COOLDOWN)
             await invent.add_pl_exp(message.from_user.id, exp)
