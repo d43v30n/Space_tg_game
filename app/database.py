@@ -205,6 +205,10 @@ async def db_write_enemies_json():
             cur_gm.execute(
                 "INSERT INTO enemies (en_name, desc, stats, attributes, en_drop, en_shortname, type) VALUES (?, ?, ?, ?, ?, ?, ?)", (name, description, stats, attributes, drop, shortname, en_type))
             db_gm.commit()
+        else:
+            cur_gm.execute("UPDATE enemies SET en_name = ?, desc = ?, stats = ?, attributes = ?, en_drop = ?, type = ? WHERE en_shortname = ?",
+                           (name, description, stats, attributes, drop, en_type, shortname))
+            db_gm.commit()
 
 
 async def db_write_items_json():
@@ -225,6 +229,10 @@ async def db_write_items_json():
             cur_gm.execute(
                 "INSERT INTO items (it_name, desc, type, effects, craft, price, attributes, it_shortname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (name, description, item_type, effects, craft, price, attributes, shortname))
             db_gm.commit()
+        else:
+            cur_gm.execute("UPDATE items SET it_name = ?, desc = ?, type = ?, effects = ?, craft = ?, price = ?, attributes = ? WHERE it_shortname = ?",
+                           (name, description, item_type, effects, craft, price, attributes, shortname))
+            db_gm.commit()
 
 
 async def db_write_materials_json():
@@ -241,6 +249,10 @@ async def db_write_materials_json():
         if not item_exists:
             cur_gm.execute(
                 "INSERT INTO materials (mt_name, mt_shortname, type, price, mt_drop) VALUES (?, ?, ?, ?, ?)", (name, shortname, mat_type, price, drop))
+            db_gm.commit()
+        else:
+            cur_gm.execute("UPDATE materials SET mt_name = ?, type = ?, price = ?, mt_drop = ? WHERE mt_shortname = ?",
+                           (name, mat_type, price, drop, shortname))
             db_gm.commit()
 
 
