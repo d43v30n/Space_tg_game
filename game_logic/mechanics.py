@@ -95,14 +95,15 @@ async def get_player_information(user_id, *args: str) -> list:
     return items
 
 
-async def restore_hp(user_id, count=0, with_cd=True):
+async def restore_hp(user_id, count=0, with_cd=True, repair_speed=1):
     current_hp = await db_read_int("players", user_id, "current_health")
     max_hp = await db_read_int("players", user_id, "max_health")
+    diff = abs(current_hp - max_hp)
     if current_hp >= max_hp:
         return False
     else:
         if with_cd:
-            await sleep(COOLDOWN_HEAL)
+            await sleep(diff * repair_speed)
         if not count:
             new_hp = max_hp
         else:
