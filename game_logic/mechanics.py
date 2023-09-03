@@ -279,33 +279,80 @@ async def scan_area(message, state):
 
     if current_energy >= 1:
         await energy_manager.use_one_energy(message.from_user.id)
-        if "mining" in loc_features:
-            exp = 70
-            result = "ore presence"
-            jobtext = "after scanning at {loc_name}, found ore".format(
+
+
+# scan event fork
+
+        if text_job.endswith("scanning_event_5"):
+            jobtext = "just arrived to {loc_name} and encountered scanning_event_4".format(
                 loc_name=loc_name)
-        elif text_job.endswith("and encountered mining_event"):
-            exp = 200
-            result = "suspicious ground fractions presence"
-            jobtext = "after scanning at {loc_name}, mining_event".format(
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
+            return "You should try to scan once more!"
+        if text_job.endswith("scanning_event_4"):
+
+            jobtext = "just arrived to {loc_name} and encountered scanning_event_3".format(
                 loc_name=loc_name)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
+            return "You should try to scan once more!"
+        if text_job.endswith("scanning_event_3"):
+
+            jobtext = "just arrived to {loc_name} and encountered scanning_event_2".format(
+                loc_name=loc_name)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
+            return "You should try to scan once more!"
+        elif text_job.endswith("scanning_event_2"):
+
+            jobtext = "just arrived to {loc_name} and encountered scanning_event_1".format(
+                loc_name=loc_name)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
+            return "You should try to scan once more!"
+        elif text_job.endswith("scanning_event_1"):
+            jobtext = "after scanning at {loc_name}".format(
+                loc_name=loc_name)
+            await state.set_state(State.job)
+            await state.update_data(job=jobtext)
+
+            result = await trigger_scan_event(message, state)
+            # if result[0]:
+            #     await message.answer("Sucsessfully mined event.\n{text}".format(text=result[1]), reply_markup=keyboard)
+            # else:
+            #     await message.answer("Mining event unsecsessful.\n{text}".format(text=result[1]), reply_markup=keyboard)
+            result = result[1]
         else:
-            exp = 40
-            result = "nothing"
-            jobtext = "after scanning at {loc_name}, found nothing.".format(
-                loc_name=loc_name)
-        await state.set_state(State.scanning)
-        await state.update_data(job="scanning in progress", scanning="scanning at {loc_name}...".format(loc_name=loc_name))
-        await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
-        await sleep(COOLDOWN)
-        await invent.add_pl_exp(message.from_user.id, exp)
-        await message.answer("<i>{rocket}Ship AI reporting.</i>\nScanning complete, <b>{result}</b> detected.\n\n{bar_chart}Exploration Data gathered: {exp}".format(result=result, exp=exp, bar_chart=bar_chart, rocket=rocket), reply_markup=keyboard)
+            if "mining" in loc_features:
+                exp = 70
+                result = "ore presence"
+                jobtext = "after scanning at {loc_name}, found ore".format(
+                    loc_name=loc_name)
+            elif text_job.endswith("and encountered mining_event"):
+                exp = 200
+                result = "suspicious ground fractions presence"
+                jobtext = "after scanning at {loc_name}, mining_event".format(
+                    loc_name=loc_name)
+            else:
+                exp = 40
+                result = "nothing"
+                jobtext = "after scanning at {loc_name}, found nothing.".format(
+                    loc_name=loc_name)
+            await state.set_state(State.scanning)
+            await state.update_data(job="scanning in progress", scanning="scanning at {loc_name}...".format(loc_name=loc_name))
+            await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+            await sleep(COOLDOWN)
+            await invent.add_pl_exp(message.from_user.id, exp)
+
+
+# / scan event fork
         await state.clear()
         await state.set_state(State.gps_state)
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         await state.update_data(job=jobtext)
     else:
+        result = None
         await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
     return result
 
@@ -317,7 +364,7 @@ async def trigger_scan_event(message, state):
     # loc_features = await space_map.features(gps)
     # loc_name = await space_map.name(gps)
     pl_level = await get_player_information(message.from_user.id, "level")
-    event_details = await space_map.event_details(gps)
+    event_details = await space_map.scan_event_details(gps)
     if int(event_details["level"]) > pl_level[0]:
         return False, "Your scanner is too small >)"
     # keyboard = await kb.keyboard_selector(state)
@@ -351,7 +398,7 @@ async def trigger_minings_event(message, state):
     # loc_features = await space_map.features(gps)
     # loc_name = await space_map.name(gps)
     # keyboard = await kb.keyboard_selector(state)
-    event_details = await space_map.event_details(gps)
+    event_details = await space_map.mine_event_details(gps)
     print("event_details", event_details)
     drop_text = []
     await energy_manager.use_one_energy(message.from_user.id)
