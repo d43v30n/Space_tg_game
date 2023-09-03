@@ -33,7 +33,7 @@
       "description": "some descr",
       "type": "unknown",
       "stats": {
-         "health": 50,
+         "health": 35,
          "damage": 4,
          "armor": 5,
          "shields": 5
@@ -148,8 +148,8 @@
       }
    },
    "5": {
-      "name": "Zakie Badman",
-      "shortname": "zakie_badmaan",
+      "name": "Zakies older brother",
+      "shortname": "zakies_older-brother",
       "description": "some descr",
       "type": "unknown",
       "stats": {
@@ -199,7 +199,7 @@
          "credits": 100,
          "it_name_1": {
             "droprate": 0.02,
-            "shields_for_beginner": 1
+            "shields_for_beginner": 0
          }
       }
    },
@@ -226,11 +226,11 @@
          "exp": 20,
          "credits": 150,
          "it_name_1": {
-            "rusty_machine_gun": 1
+            "rusty_machine_gun": 0.2
          },
          "it_name_2": {
             "droprate": 0.02,
-            "shields_for_beginner": 1
+            "shields_for_beginner": 0.2
          }
       }
    },
@@ -257,7 +257,7 @@
          "exp": 25,
          "credits": 200,
          "it_name_1": {
-            "rusty_machine_gun": 1
+            "rusty_machine_gun": 0.15
          }
       }
    },
@@ -284,7 +284,7 @@
          "exp": 30,
          "credits": 250,
          "it_name_1": {
-            "rusty_machine_gun": 1
+            "rusty_machine_gun": 0.15
          }
       }
    },
@@ -322,7 +322,7 @@
       "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
       "type": "unknown",
       "stats": {
-         "health": 120,
+         "health": 135,
          "damage": 18,
          "armor": 7,
          "shields": 10
@@ -339,7 +339,7 @@
          "exp": 40,
          "credits": 300,
          "it_name_1": {
-            "rusty_machine_gun": 1
+            "rusty_machine_gun": 0.15
          }
       }
    },"13": {
@@ -365,7 +365,7 @@
          "exp": 40,
          "credits": 300,
          "it_name_1": {
-            "rusty_machine_gun": 1
+            "rusty_machine_gun": 0.15
          }
       }
    },
@@ -393,7 +393,7 @@
          "credits": 400,
          "it_name_1": {
             "droprate": 0.02,
-            "shields_for_beginner": 1
+            "shields_for_beginner": 0.15
          }
       }
    }
