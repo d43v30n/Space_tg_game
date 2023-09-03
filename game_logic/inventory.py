@@ -245,7 +245,6 @@ async def craft_item(user_id, i_id) -> bool:
     # it_shortname = it_shortname[1:-1]
 
     pl_items, pl_materials = await m.get_player_information(user_id, "pl_items", "pl_materials")
-    print("sdfdsf ", pl_items, pl_materials)
     pl_items = eval(pl_items)
     pl_materials = eval(pl_materials)
     old_credits = await db_read_int("players", user_id, "credits")
@@ -253,24 +252,25 @@ async def craft_item(user_id, i_id) -> bool:
     if recepie is None:
         return False, "This item is not craftable! Your cheating will be reported!!"
     for item, count in recepie.items():
-        # print(f"need {count} of {item}")
-        ingredient_name = await db_read_full_name("items", item, "it_shortname", "it_shortname")
+        print(f"need {count} of {item}")
+        # item = f"\"{item}\""
+
         if int(pl_items.get(item, 0)) >= count:
             await add_pl_items(user_id, item, -count)
+            ingredient_name = await db_read_full_name("items", f"\"{item}\"", "it_name", "it_shortname")
             igredients_str.append(f"{count}x of {ingredient_name}")
-            pass
         elif int(pl_materials.get(item, 0)) >= count:
+            ingredient_name = await db_read_full_name("materials", f"\"{item}\"", "mt_name", "mt_shortname")
             igredients_str.append(f"{count}x of {ingredient_name}")
             await add_pl_materials(user_id, item, -count)
             #     # craft_materials_dict.update({count: count})
-            pass
         elif item == "credits" and old_credits >= count:
             await change_pl_credits(user_id, -count)
             igredients_str.append("{emoji}Credits: -{count}".format(
                 emoji=money_bag, count=count))
         else:
             # print(
-            # f"{count} of {ingredient_name} is not enough. {pl_materials.get(item, 0)}/{pl_items.get(item, 0)} is needed")
+            #     f"{count} of {ingredient_name} is not enough. {pl_materials.get(item, 0)}/{pl_items.get(item, 0)} is needed")
             # max() is to filter 0 out
             return False, f"You need: {count} of {ingredient_name}\nYou have only {max(pl_materials.get(item, 0), pl_items.get(item, 0))}."
     await add_pl_items(user_id, it_shortname[1:-1], 1)
