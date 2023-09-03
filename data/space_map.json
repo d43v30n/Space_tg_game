@@ -119,7 +119,7 @@
       "name": "Velyka Bila Tserkva",
       "type": "5",
       "features": [
-         "None"
+         "mining"
       ],
       "events_weights": {
          "None": 3,
@@ -141,7 +141,7 @@
       "name": "Seraphis",
       "type": "5",
       "features": [
-         "None"
+         "mining"
       ],
       "events_weights": {
          "None": 3,
@@ -163,7 +163,7 @@
       "name": "Celestia",
       "type": "5",
       "features": [
-         "None"
+         "mining"
       ],
       "events_weights": {
          "None": 1,
