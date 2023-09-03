@@ -1,23 +1,23 @@
 {
-   "1": {
+   "0": {
       "name": "Scanner from my granny",
-      "shortname":"scanner_from_granny",
-      "description":"Old scanner, barely working",
+      "shortname": "scanner_from_granny",
+      "description": "Old scanner, barely working",
       "type": "scanner",
       "effects": {
          "scan_power": 1
       },
-      "price":100,
+      "price": 100,
       "attributes": {
-         "chance":0.35,
-         "min_loc":2,
-         "max_loc":5
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
       }
    },
-   "2": {
+   "1": {
       "name": "Rusty machine gun",
-      "shortname":"rusty_machine_gun",
-      "description":"Still works...",
+      "shortname": "rusty_machine_gun",
+      "description": "Still works...",
       "type": "weapon",
       "effects": {
          "range": 5,
@@ -25,106 +25,86 @@
          "damage_min": 5,
          "damage_max": 8,
          "crit_chance": 0,
-         "":""
+         "": ""
       },
-      "price":100,
+      "price": 100,
       "attributes": {
-         "chance":0.01,
-         "min_loc":2,
-         "max_loc":5
+         "chance": 0.01,
+         "min_loc": 2,
+         "max_loc": 5
       }
    },
-   "3": {
+   "2": {
       "name": "Craft beer",
-      "shortname":"craft_beer",
-      "description":"good af",
+      "shortname": "craft_beer",
+      "description": "good af",
       "type": "consumable",
       "effects": {
          "restore_hp": 50
       },
-      "price":100,
+      "price": 100,
       "attributes": {
-         "chance":0.15,
-         "min_loc":2,
-         "max_loc":10
+         "chance": 0.15,
+         "min_loc": 2,
+         "max_loc": 10
       }
    },
-   "4": {
+   "3": {
       "name": "Hull Armor for beginners",
-      "shortname":"hull_armor_for_beginners",
-      "description":"Comes with each beginner ship. Free of charge!",
+      "shortname": "hull_armor_for_beginners",
+      "description": "Comes with each beginner ship. Free of charge!",
       "type": "armor",
       "effects": {
          "armor": 10,
          "crit_reduction": 1
       },
-      "price":0,
+      "price": 0,
       "attributes": {
-         "chance":0,
+         "chance": 0,
          "min_loc": 2,
          "max_loc": 5
       }
    },
-   "5": {
+   "4": {
       "name": "Beginner shields",
-      "shortname":"shields_for_beginner",
-      "description":"Comes with each beginner ship. Free of charge!",
+      "shortname": "shields_for_beginner",
+      "description": "Comes with each beginner ship. Free of charge!",
       "type": "shield",
       "effects": {
          "shield": 10,
          "crit_reduction": 1
       },
-      "price":0,
+      "price": 0,
       "attributes": {
-         "chance":0,
+         "chance": 0,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "5": {
+      "name": "Handmade Cannon",
+      "shortname": "deadly_machine_gun",
+      "description": "Shoots big and loud",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 20,
+         "damage_max": 20,
+         "crit_chance": 0,
+         "": ""
+      },
+      "price": 100,
+      "attributes": {
+         "chance": 0.01,
          "min_loc": 2,
          "max_loc": 5
       }
    },
    "6": {
-      "name": "Deadly machine gun",
-      "shortname":"deadly_machine_gun",
-      "description":"Still works...",
-      "type": "weapon",
-      "effects": {
-         "range": 5,
-         "wp_type": "bullets",
-         "damage_min": 5,
-         "damage_max": 8,
-         "crit_chance": 0,
-         "":""
-      },
-      "price":100,
-      "attributes": {
-         "chance":0.01,
-         "min_loc":2,
-         "max_loc":5
-      }
-   },
-   "7": {
-      "name": "Broken machine gun",
-      "shortname":"broken_machine_gun",
-      "description":"Still works...",
-      "type": "weapon",
-      "effects": {
-         "range": 5,
-         "wp_type": "bullets",
-         "damage_min": 5,
-         "damage_max": 8,
-         "crit_chance": 0,
-         "":""
-      },
-      "price":100,
-      "attributes": {
-         "chance":0.01,
-         "min_loc":2,
-         "max_loc":5
-      }
-   },
-   "8": {
       "name": "Oiled machine gun",
-      "shortname":"oiled_machine_gun",
-      "description":"works better now",
+      "shortname": "oiled_machine_gun",
+      "description": "works better now",
       "type": "weapon",
       "effects": {
          "range": 5,
@@ -136,13 +116,34 @@
       "craft": {
          "oil_barrel": 1,
          "palladium_ore": 10,
-         "credits": 500
+         "rusty_machine_gun": 1,
+         "credits": 1000
       },
-      "price":100,
+      "price": 100,
       "attributes": {
-         "chance":0.01,
-         "min_loc":2,
-         "max_loc":5
+         "chance": 0.01,
+         "min_loc": 2,
+         "max_loc": 5
+      }
+   },
+   "7": {
+      "name": "Standard Spaceship Guns",
+      "shortname": "broken_machine_gun",
+      "description": "Very common around Ringworld",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0,
+         "": ""
+      },
+      "price": 100,
+      "attributes": {
+         "chance": 0.01,
+         "min_loc": 15,
+         "max_loc": 25
       }
    }
 }

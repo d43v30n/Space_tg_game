@@ -1,26 +1,26 @@
 {
    "0": {
-      "name": "Scrap Metal",
-      "shortname": "scrap_metal",
-      "type": "craft",
-      "price": 1,
-      "drop": {
-         "count":1,
-         "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
-      }
-   },
-   "1": {
       "name": "Oil Barrel",
       "shortname": "oil_barrel",
       "type": "garbage",
       "price": 0,
       "drop": {
-         "count":1,
+         "count": 1,
          "chance": 0.35,
          "min_loc": 1,
          "max_loc": 3
+      }
+   },
+   "1": {
+      "name": "Scrap Metal",
+      "shortname": "scrap_metal",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 2,
+         "max_loc": 5
       }
    },
    "2": {
@@ -29,142 +29,142 @@
       "type": "craft",
       "price": 1,
       "drop": {
-         "count":1,
+         "count": 1,
          "chance": 0.35,
          "min_loc": 2,
          "max_loc": 7
       }
    },
    "3": {
-      "name": "Steel Coil",
-      "shortname": "steel_coil",
-      "type": "craft",
-      "price": 1,
-      "drop": {
-         "count":1,
-         "chance": 0.35,
-         "min_loc": 5,
-         "max_loc": 8
-      }
-   },
-   "4": {
-      "name": "Nanoconductors",
-      "shortname": "nanoconductors",
-      "type": "craft",
-      "price": 1,
-      "drop": {
-         "count":1,
-         "chance": 0.35,
-         "min_loc": 9,
-         "max_loc": 12
-      }
-   },
-   "5": {
       "name": "Used Fuel Cell",
       "shortname": "used_fuel_cell",
       "type": "craft",
       "price": 1,
       "drop": {
-         "count":1,
+         "count": 1,
          "chance": 0.35,
          "min_loc": 2,
          "max_loc": 5
       }
    },
-   "6": {
+   "4": {
       "name": "Damaged Solar Panel",
       "shortname": "damaged_solar_panel",
       "type": "craft",
       "price": 1,
       "drop": {
-         "count":1,
+         "count": 1,
          "chance": 0.35,
          "min_loc": 2,
          "max_loc": 5
       }
    },
-   "7": {
-      "name": "Flask of Nanofluid",
-      "shortname": "flask_of_nanofluid",
-      "type": "craft",
-      "price": 1,
-      "drop": {
-         "count":1,
-         "chance": 0.35,
-         "min_loc": 13,
-         "max_loc": 15
-      }
-   },
-   "8": {
-      "name": "Zip-tied Carbon Nanotubes",
-      "shortname": "zip_tied_carbon_nanotubes",
-      "type": "craft",
-      "price": 1,
-      "drop": {
-         "count":1,
-         "chance": 0.35,
-         "min_loc": 16,
-         "max_loc": 18
-      }
-   },
-   "9": {
-      "name": "3D-Printing material",
-      "shortname": "3d_printing_material",
-      "type": "craft",
-      "price": 1,
-      "drop": {
-         "count":1,
-         "chance": 0.35,
-         "min_loc": 16,
-         "max_loc": 18
-      }
-   },
-   "10": {
+   "5": {
       "name": "Palladium Ore",
       "shortname": "palladium_ore",
       "type": "ore",
       "price": 1000,
       "drop": {
-         "count":1,
+         "count": 1,
          "chance": 0.3,
          "min_loc": 3,
          "max_loc": 6
       }
    },
-   "11": {
-      "name": "Gold Ore",
-      "shortname": "gold_ore",
-      "type": "ore",
-      "price": 3000,
-      "drop": {
-         "count":2,
-         "chance": 0.25,
-         "min_loc": 5,
-         "max_loc": 9
-      }
-   },
-   "12": {
-      "name": "Nanofractium Ore",
-      "shortname": "nanofractium_ore",
-      "type": "ore",
-      "price": 7000,
-      "drop": {
-         "count":2,
-         "chance": 0.2,
-         "min_loc": 7,
-         "max_loc": 13
-      }
-   },
-   "13": {
+   "6": {
       "name": "Platinum Ore",
       "shortname": "platinum_ore",
       "type": "ore",
       "price": 10000,
       "drop": {
-         "count":1,
+         "count": 1,
          "chance": 0.1,
          "min_loc": 4,
          "max_loc": 8
+      }
+   },
+   "7": {
+      "name": "Steel Coil",
+      "shortname": "steel_coil",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 5,
+         "max_loc": 8
+      }
+   },
+   "8": {
+      "name": "Gold Ore",
+      "shortname": "gold_ore",
+      "type": "ore",
+      "price": 3000,
+      "drop": {
+         "count": 2,
+         "chance": 0.25,
+         "min_loc": 5,
+         "max_loc": 9
+      }
+   },
+   "9": {
+      "name": "Nanofractium Ore",
+      "shortname": "nanofractium_ore",
+      "type": "ore",
+      "price": 7000,
+      "drop": {
+         "count": 2,
+         "chance": 0.2,
+         "min_loc": 7,
+         "max_loc": 13
+      }
+   },
+   "10": {
+      "name": "Nanoconductors",
+      "shortname": "nanoconductors",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 9,
+         "max_loc": 12
+      }
+   },
+   "11": {
+      "name": "Flask of Nanofluid",
+      "shortname": "flask_of_nanofluid",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 13,
+         "max_loc": 15
+      }
+   },
+   "12": {
+      "name": "Zip-tied Carbon Nanotubes",
+      "shortname": "zip_tied_carbon_nanotubes",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 16,
+         "max_loc": 18
+      }
+   },
+   "13": {
+      "name": "3D-Printing material",
+      "shortname": "3d_printing_material",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 16,
+         "max_loc": 18
       }
    }
 }
