@@ -127,7 +127,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             keyboard = await kb.keyboard_selector(state)
             scans = event[1]["scans_required"]
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}_{scans}")
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>. SCANNING_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>.\n\nOur scanners have detected some <b>unusal</b> behavior, we should investigate it! Use your scanner.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         elif event[0] == "encounter":
             print("entered 5 encounter")
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
@@ -288,48 +288,15 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
     loc_name = await space_map.name(gps)
     keyboard = await kb.keyboard_selector(state)
 
-    if text_job.endswith("scanning_event_5"):
-        await m.scan_area(message, state)
-        jobtext = "just arrived to {loc_name} and encountered scanning_event_4".format(
-            loc_name=loc_name)
-        await state.set_state(State.job)
-        await state.update_data(job=jobtext)
-        return
-    if text_job.endswith("scanning_event_4"):
-        await m.scan_area(message, state)
-        jobtext = "just arrived to {loc_name} and encountered scanning_event_3".format(
-            loc_name=loc_name)
-        await state.set_state(State.job)
-        await state.update_data(job=jobtext)
-        return
-    if text_job.endswith("scanning_event_3"):
-        await m.scan_area(message, state)
-        jobtext = "just arrived to {loc_name} and encountered scanning_event_2".format(
-            loc_name=loc_name)
-        await state.set_state(State.job)
-        await state.update_data(job=jobtext)
-        return
-    elif text_job.endswith("scanning_event_2"):
-        await m.scan_area(message, state)
-        jobtext = "just arrived to {loc_name} and encountered scanning_event_1".format(
-            loc_name=loc_name)
-        await state.set_state(State.job)
-        await state.update_data(job=jobtext)
-        return
-    elif text_job.endswith("scanning_event_1"):
-        jobtext = "after scanning at {loc_name}".format(
-            loc_name=loc_name)
-        await state.set_state(State.job)
-        await state.update_data(job=jobtext)
-        print("TRIGGER EVENT HERE")
-        result = await m.trigger_scan_event(message, state)
-        if result[0]:
-            await message.answer("Sucsessfully mined event.\n{text}".format(text=result[1]), reply_markup=keyboard)
-        else:
-            await message.answer("Mining event unsecsessful.\n{text}".format(text=result[1]), reply_markup=keyboard)
 
 # unscanned and unmined location that can be mined
-    if "mining" in loc_features and not text_job.startswith("after scanning at ") and not text_job.startswith("mined"):
+    if "encountered scanning_event_" in text_job:
+        result = await m.scan_area(message, state)
+        if result:
+            print("entered if not if ")
+            await message.answer("<i>{rocket}Ship AI reporting.</i>\nScanning complete, we have some <b>results</b>.\n\n{result}.".format(result=result, rocket=rocket), reply_markup=keyboard)
+
+    elif "mining" in loc_features and not text_job.startswith("after scanning at ") and not text_job.startswith("mined"):
         scan_result = await m.scan_area(message, state)
         if scan_result:
             jobtext = "after scanning at {loc_name}, found ore".format(
