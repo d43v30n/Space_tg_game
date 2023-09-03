@@ -163,7 +163,7 @@ async def rand_event(gps) -> str:
                 return "enemies", en_shortname
 
     elif event == "mining_event":
-        event_details = await space_map.event_details(gps)
+        event_details = await space_map.mine_event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
             print("mining_event ", event_details)
@@ -173,7 +173,7 @@ async def rand_event(gps) -> str:
             return None, None
 
     elif event == "scanning_event":
-        event_details = await space_map.event_details(gps)
+        event_details = await space_map.scan_event_details(gps)
         chance = event_details["chance"]
         # if level ok
         if await roll_chance(chance):
@@ -184,7 +184,7 @@ async def rand_event(gps) -> str:
             return "map_event", None
 
     elif event == "encounter":
-        event_details = await space_map.event_details(gps)
+        event_details = await space_map.encounter_event_details(gps)
         chance = event_details["chance"]
         if await roll_chance(chance):
             print("encounter ", event_details)
