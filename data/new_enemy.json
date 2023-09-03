@@ -343,7 +343,7 @@
          "credits": 300,
          "it_name_1": {
             "rusty_machine_gun": 1,
-         "droprate": 0.15
+            "droprate": 0.15
          }
       }
    },"13": {
@@ -368,9 +368,9 @@
       "drop": {
          "exp": 40,
          "credits": 300,
-         "droprate": 0.15
          "it_name_1": {
-            "rusty_machine_gun": 1
+            "rusty_machine_gun": 1,
+            "droprate": 0.15
          }
       }
    },
