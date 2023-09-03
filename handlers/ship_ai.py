@@ -132,7 +132,7 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             print("entered 5 encounter")
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b> ENCOUNTER_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         else:
             print(
                 "should not happen. unknown event in location, event[0] = ", event[0])
@@ -328,6 +328,7 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
         else:
             await message.answer("Mining event unsecsessful.\n{text}".format(text=result[1]), reply_markup=keyboard)
 
+# unscanned and unmined location that can be mined
     if "mining" in loc_features and not text_job.startswith("after scanning at ") and not text_job.startswith("mined"):
         scan_result = await m.scan_area(message, state)
         if scan_result:
