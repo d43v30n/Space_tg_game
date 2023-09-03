@@ -57,18 +57,12 @@ async def init_fight(message: Message, enemy_id, state: State):
         # enemy hit player
         eff_en_dmg = max(en_dmg - player_shield, 0)
         current_health = max(0, current_health - eff_en_dmg)
-
         if current_health <= 0:  # enemy win
-            jump_home_task = await m.player_dead(user_id)
-            keyboard = await kb.keyboard_selector(state)
-            await state.clear()
-            await state.set_state(State.gps_state)
-            gps = await m.get_location(message.from_user.id)
-            await state.update_data(gps_state=gps)
-            await state.set_state(State.job)
-            await state.update_data(job=f"Dead after fight with {enemy_id}")
-            loose_text = "You are dead now. Yor enemy had {en_hp}HP left.\nYour ship will be towed to Shipyard on Ringworld".format(
+            dead_text = "\nYou lost your glorious figt, cap. Yor enemy had {en_hp}HP left.\nYour ship will be floating in space indefinitely".format(
                 en_hp=en_hp)
+            await message.answer(dead_text, reply_markup=keyboard)
+            loose_text = "\n\nYour ship has been luckily picked up by some stragers. They dropped out from hauler nearly deat at Ringworld."
+            jump_home_task = await m.player_dead(user_id)
             return "loose", loose_text
         await db_write_int("players", user_id, "current_health", current_health)
         # print("en_hp = ", en_hp)
