@@ -226,11 +226,12 @@
          "exp": 20,
          "credits": 150,
          "it_name_1": {
-            "rusty_machine_gun": 0.2
+            "droprate": 0.15,
+            "rusty_machine_gun": 1
          },
          "it_name_2": {
             "droprate": 0.02,
-            "shields_for_beginner": 0.2
+            "shields_for_beginner": 1
          }
       }
    },
@@ -257,7 +258,8 @@
          "exp": 25,
          "credits": 200,
          "it_name_1": {
-            "rusty_machine_gun": 0.15
+            "droprate": 0.15,
+            "rusty_machine_gun": 1
          }
       }
    },
@@ -284,7 +286,8 @@
          "exp": 30,
          "credits": 250,
          "it_name_1": {
-            "rusty_machine_gun": 0.15
+            "rusty_machine_gun": 1,
+            "droprate": 0.15
          }
       }
    },
@@ -339,7 +342,8 @@
          "exp": 40,
          "credits": 300,
          "it_name_1": {
-            "rusty_machine_gun": 0.15
+            "rusty_machine_gun": 1,
+         "droprate": 0.15
          }
       }
    },"13": {
@@ -364,8 +368,9 @@
       "drop": {
          "exp": 40,
          "credits": 300,
+         "droprate": 0.15
          "it_name_1": {
-            "rusty_machine_gun": 0.15
+            "rusty_machine_gun": 1
          }
       }
    },
@@ -393,7 +398,7 @@
          "credits": 400,
          "it_name_1": {
             "droprate": 0.02,
-            "shields_for_beginner": 0.15
+            "shields_for_beginner": 1
          }
       }
    }
