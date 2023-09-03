@@ -127,12 +127,12 @@ async def travel_forward_handler(message: Message, state: FSMContext) -> None:
             keyboard = await kb.keyboard_selector(state)
             scans = event[1]["scans_required"]
             await state.update_data(job=f"just arrived to {loc_name}{mining_text} and encountered {event[0]}_{scans}")
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>.\n\nOur scanners have detected some <b>unusal</b> behavior, we should investigate it! Use your scanner.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>.\n\nOur scanners have detected some <b>anomalies</b>, we should investigate it! Use your scanner.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         elif event[0] == "encounter":
             print("entered 5 encounter")
             await state.update_data(job=f"just arrived to {loc_name}{mining_text}...")
             keyboard = await kb.keyboard_selector(state)
-            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b> ENCOUNTER_EVENT_TRIGGERED (in dev)".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
+            await message.answer("<code>{rocket}Ship AI</code> wakes you up from cryogenic sleep.\nOn the display: <b>{loc_name}</b>\n\nOur scanners have detected some unusal <b>soil</b> behavior at asteroids, we should investigate it! Use your scanner first.".format(rocket=rocket, loc_name=loc_name), reply_markup=keyboard)
         else:
             print(
                 "should not happen. unknown event in location, event[0] = ", event[0])
@@ -241,7 +241,7 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     if current_energy >= 1:
         # after scanning at {loc_name}, nothing found
-        if text_job.endswith("and encountered mining_event"):
+        if text_job.startswith("after scanning at") and text_job.endswith("mining_event"):
             if current_energy >= 2:
                 await message.answer("Yo begin to mine event roid. For this yo should have at least 2 energy".format(), reply_markup=keyboard)
                 result = await m.trigger_minings_event(message, state)
@@ -262,8 +262,6 @@ async def mining_handler(message: Message, state: FSMContext) -> None:
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
-        elif text_job.startswith("after scanning at") and text_job.endswith(""):
-            pass
         else:
             await message.answer("Nothing to mine. Did scanners noticed something?", reply_markup=keyboard)
     else:
@@ -295,7 +293,10 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
         if result:
             print("entered if not if ")
             await message.answer("<i>{rocket}Ship AI reporting.</i>\nScanning complete, we have some <b>results</b>.\n\n{result}.".format(result=result, rocket=rocket), reply_markup=keyboard)
-
+# unscanned mining event
+    elif text_job.endswith("and encountered mining_event"):
+        result = await m.scan_area(message, state)
+        await message.answer("<i>{rocket}Ship AI reporting.</i>\nScanning complete, we have some <b>results</b>.\n\n{result}.".format(result=result, rocket=rocket), reply_markup=keyboard)
     elif "mining" in loc_features and not text_job.startswith("after scanning at ") and not text_job.startswith("mined"):
         scan_result = await m.scan_area(message, state)
         if scan_result:
