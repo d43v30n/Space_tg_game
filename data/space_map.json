@@ -21,7 +21,7 @@
          "enemies":5, 
          "encounter":3
       },
-      "event_details":{
+      "encounter_event_details":{
          "level":1,
          "scans_required":2,
          "chance":0.999,
@@ -86,7 +86,7 @@
          "enemies":5,
          "scanning_event":5
       },
-      "event_details": {
+      "scan_event_details": {
          "level":1,
          "scans_required":2,
          "chance":0.9,
@@ -104,7 +104,7 @@
          "enemies":5,
          "mining_event":5
       },
-      "event_details": {
+      "mine_event_details": {
          "level":1,
          "scans_required":2,
          "chance":0.2,
@@ -148,7 +148,7 @@
          "enemies":5,
          "mining_event":10
       },
-      "event_details": {
+      "mine_event_details": {
          "level":1,
          "scans_required":2,
          "chance":0.2,
