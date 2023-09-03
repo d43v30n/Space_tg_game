@@ -164,10 +164,18 @@ async def fighting_chioce_handler(message: Message, state: FSMContext) -> None:
     await message.answer(f"When you approach, you see that you are facing {en_name}. Space guns are shooting...".format(en_name=en_name), reply_markup=keyboard)
     fight_result = await fight.init_fight(message, en_shortname, state)
     row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
-    win_text = "{row1}{row2}".format(row1=row1, row2=row2)
+    header_txt = "{row1}{row2}".format(row1=row1, row2=row2)
     keyboard = await kb.keyboard_selector(state)
     if fight_result[0] == "win":
-        await message.answer(win_text + fight_result[1], reply_markup=keyboard)
+        await message.answer(header_txt + fight_result[1], reply_markup=keyboard)
+    else:
+        await state.clear()
+        await state.set_state(State.gps_state)
+        gps = await m.get_location(message.from_user.id)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        await state.update_data(job=f"Dead after fighht with {en_shortname}")
+        await message.answer(header_txt + fight_result[1], reply_markup=keyboard)
 
 
 @router.message(State.fighting_choice, F.text == "{emoji}Try to escape".format(emoji=running_emoji))
@@ -188,9 +196,17 @@ async def fleeing_handler(message: Message, state: FSMContext) -> None:
         await message.answer("You were unlucky and now you can only FIGHT. Your enemy is {en_name}".format(en_name=en_name), reply_markup=keyboard)
         fight_result = await fight.init_fight(message, en_shortname, state)
         row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
-        win_text = "{row1}{row2}".format(row1=row1, row2=row2)
+        header_txt = "{row1}{row2}".format(row1=row1, row2=row2)
         if fight_result[0] == "win":
-            await message.answer(win_text + fight_result[1], reply_markup=keyboard)
+            await message.answer(header_txt + fight_result[1], reply_markup=keyboard)
+        else:
+            await state.clear()
+            await state.set_state(State.gps_state)
+            gps = await m.get_location(message.from_user.id)
+            await state.update_data(gps_state=gps)
+            await state.set_state(State.job)
+            await state.update_data(job=f"Dead after fight with {en_shortname}")
+            await message.answer(header_txt + fight_result[1], reply_markup=keyboard)
 
 
 # busy traveling forward or home
