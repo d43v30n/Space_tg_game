@@ -300,7 +300,7 @@ async def scanning_handler(message: Message, state: FSMContext) -> None:
     elif "mining" in loc_features and not text_job.startswith("after scanning at ") and not text_job.startswith("mined"):
         result = await m.scan_area(message, state)
         await message.answer("<i>{rocket}Ship AI reporting.</i>\nScanning complete, we have some <b>results</b>.\n\n{result}.".format(result=result, rocket=rocket), reply_markup=keyboard)
-        if scan_result:
+        if result:
             jobtext = "after scanning at {loc_name}, found ore".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
