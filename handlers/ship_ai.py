@@ -186,15 +186,15 @@ async def fleeing_handler(message: Message, state: FSMContext) -> None:
     en_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
     flee_available = await fight.engaging_enemy_choice(message.from_user.id, en_shortname)
     flee_chance = await m.roll_chance(0.3)  # flee chance is hardcoded 20%
+    keyboard = await kb.keyboard_selector(state)
     if flee_available and flee_chance:
         await errors.reset_handler(message, state, jobtext="fleeing from enemy successfull")
-        keyboard = await kb.keyboard_selector(state)
         await message.answer("You were lucky to get some cover in Asteroids belt and hide your ass.", reply_markup=keyboard)
     else:
         await state.set_state(State.fighting)
-        keyboard = await kb.keyboard_selector(state)
         await message.answer("You were unlucky and now you can only FIGHT. Your enemy is {en_name}".format(en_name=en_name), reply_markup=keyboard)
         fight_result = await fight.init_fight(message, en_shortname, state)
+        keyboard = await kb.keyboard_selector(state)
         row1, row2, row3 = await m.get_main_text_row(message.from_user.id)
         header_txt = "{row1}{row2}".format(row1=row1, row2=row2)
         if fight_result[0] == "win":
