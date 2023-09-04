@@ -101,8 +101,8 @@
       "type": "ore",
       "price": 3000,
       "drop": {
-         "count": 2,
-         "chance": 0.25,
+         "count": 1,
+         "chance": 0.08,
          "min_loc": 5,
          "max_loc": 9
       }
@@ -113,8 +113,8 @@
       "type": "ore",
       "price": 7000,
       "drop": {
-         "count": 2,
-         "chance": 0.2,
+         "count": 1,
+         "chance": 0.05,
          "min_loc": 7,
          "max_loc": 13
       }
