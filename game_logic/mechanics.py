@@ -361,6 +361,7 @@ async def scan_area(message, state):
     else:
         result = None
         await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+        return
     return result
 
 
