@@ -200,10 +200,10 @@ async def timer():
 
 
 async def engaging_enemy_choice(user_id, en_shortname):
-    em_dmg = await get_enemy_fight_stats(en_shortname)
-    em_dmg = em_dmg["damage"]
+    en_dmg = await get_enemy_fight_stats(en_shortname)
+    en_dmg = en_dmg["damage"]
     pl_health = await m.get_player_information(user_id, "max_health")
-    if pl_health[0] / em_dmg < 2:
+    if pl_health[0] / en_dmg < 2:
         return True
     else:
         return False
