@@ -101,7 +101,7 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     jobtext = state_data["job"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
-    if "mining" in loc_features and not "scanners found nothing" in jobtext:
+    if "mining" in loc_features and not "scanners found nothing" in jobtext and not "mined" in jobtext:
         asteroid = loc_name.upper()[:3] + "-" + str(randint(10, 99)) + "&"
         found_ore_text = "Our scanners detected <b>ore</b> on some Asteroid <i>§{asteroid}</i> here! We can try scanning.".format(
             asteroid=asteroid)
