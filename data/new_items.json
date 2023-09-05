@@ -59,8 +59,8 @@
       "price": 0
    },
    "5": {
-      "name": "Handmade Cannon",
-      "shortname": "handmade_cannon",
+      "name": "Handmade Machine Cannon",
+      "shortname": "handmade_machine_cannon",
       "description": "Shoots big and loud",
       "type": "weapon",
       "effects": {
@@ -71,12 +71,12 @@
          "crit_chance": 0
       },
       "craft": {
-         "oil_barrel": 1,
-         "palladium_ore": 10,
-         "rusty_machine_gun": 1,
+         "old_wires": 5,
+         "gold_ore": 10,
+         "oiled_machine_gun": 1,
          "credits": 1000
       },
-      "price": 100
+      "price": 10000
    },
    "6": {
       "name": "Oiled machine gun",

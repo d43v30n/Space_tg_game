@@ -5,8 +5,8 @@
       "description": "A low-level pirate known for scavenging scraps and avoiding direct conflict.",
       "type": "unknown",
       "stats": {
-         "health": 30,
-         "damage": 2,
+         "health": 300,
+         "damage": 1,
          "armor": 2,
          "shields": 1
       },
@@ -33,7 +33,7 @@
       "description": "some descr",
       "type": "unknown",
       "stats": {
-         "health": 35,
+         "health": 40,
          "damage": 4,
          "armor": 5,
          "shields": 5
@@ -65,7 +65,7 @@
       "description": "Armed with a worn-out blade, this pirate relies on sheer brute force.",
       "type": "unknown",
       "stats": {
-         "health": 40,
+         "health": 60,
          "damage": 5,
          "armor": 3,
          "shields": 0
@@ -153,8 +153,8 @@
       "description": "some descr",
       "type": "unknown",
       "stats": {
-         "health": 60,
-         "damage": 5,
+         "health": 120,
+         "damage": 15,
          "armor": 5,
          "shields": 5
       },
@@ -353,7 +353,7 @@
       "description": "A mysterious pirate who harnesses the power of the void to unleash devastating attacks.",
       "type": "unknown",
       "stats": {
-         "health": 90,
+         "health": 100,
          "damage": 18,
          "armor": 10,
          "shields": 12

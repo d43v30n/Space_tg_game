@@ -79,8 +79,8 @@
       "drop": {
          "count": 1,
          "chance": 0.1,
-         "min_loc": 4,
-         "max_loc": 8
+         "min_loc": 8,
+         "max_loc": 12
       }
    },
    "7": {
@@ -103,8 +103,8 @@
       "drop": {
          "count": 1,
          "chance": 0.08,
-         "min_loc": 5,
-         "max_loc": 9
+         "min_loc": 12,
+         "max_loc": 18
       }
    },
    "9": {
@@ -115,8 +115,8 @@
       "drop": {
          "count": 1,
          "chance": 0.05,
-         "min_loc": 7,
-         "max_loc": 13
+         "min_loc": 19,
+         "max_loc": 26
       }
    },
    "10": {
@@ -158,6 +158,18 @@
    "13": {
       "name": "3D-Printing material",
       "shortname": "3d_printing_material",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 16,
+         "max_loc": 18
+      }
+   },
+   "14": {
+      "name": "Carbon Nanotubes",
+      "shortname": "carbon_nanotubes",
       "type": "craft",
       "price": 1,
       "drop": {

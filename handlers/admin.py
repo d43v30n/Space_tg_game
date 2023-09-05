@@ -121,8 +121,8 @@ async def adm_list_all_weapons_handler(message: Message, state: FSMContext) -> N
     weapons_list = []
     for weapon in weapons:
         it_name, it_shortname, desc, craft, effects = weapon
-        # text = str(en_id) + " " + en_name + " " + stats
-        # weapons_list.append(text)
+        text = f"{it_name}\n{desc}\n{craft}\n{effects}\n"
+        weapons_list.append(text)
     await message.answer("\n".join(weapons_list), reply_markup=kb.admin_kb())    
 
 
