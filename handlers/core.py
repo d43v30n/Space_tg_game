@@ -150,7 +150,7 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         await state.update_data(job=job_text)
-        await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+        await message.answer("Your {emoji}Ship AI awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.".format(energy=energy, emoji=rocket), reply_markup=keyboard)
     else:
         try:
             energy = await m.get_energy(message.from_user.id)
@@ -161,7 +161,7 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
             if await is_busy(state_data):
                 await message.answer(f"You are {text}.", reply_markup=kb.main_kb(gps))
             else:
-                await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+                await message.answer("Your {emoji}Ship AI awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.".format(energy=energy, emoji=rocket), reply_markup=keyboard)
         except:
             await errors.unknown_input_handler(message, state)
 
