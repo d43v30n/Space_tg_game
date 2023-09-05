@@ -89,7 +89,7 @@
       "description": "A cunning pirate who uses her agility to strike quickly and retreat.",
       "type": "unknown",
       "stats": {
-         "health": 35,
+         "health": 40,
          "damage": 6,
          "armor": 1,
          "shields": 2
@@ -108,10 +108,6 @@
          "it_name_1": {
             "droprate": 0.001,
             "shields_for_beginner": 1
-         },
-         "mt_name_2": {
-            "droprate": 0.3,
-            "oil_barrel": 1
          }
       }
    },
@@ -153,8 +149,8 @@
       "description": "some descr",
       "type": "unknown",
       "stats": {
-         "health": 120,
-         "damage": 15,
+         "health": 60,
+         "damage": 10,
          "armor": 5,
          "shields": 5
       },
@@ -270,7 +266,7 @@
       "type": "unknown",
       "stats": {
          "health": 90,
-         "damage": 16,
+         "damage": 14,
          "armor": 5,
          "shields": 8
       },
@@ -287,35 +283,43 @@
          "credits": 250,
          "it_name_1": {
             "rusty_machine_gun": 1,
-            "droprate": 0.15
+            "droprate": 0.05
          }
       }
    },
    "10": {
-      "name": "Blackstar Corsair",
-      "shortname": "blackstar_corsair",
-      "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
+      "name": "Void Reaver",
+      "shortname": "void_reaver",
+      "description": "A mysterious pirate who harnesses the power of the void to unleash devastating attacks.",
       "type": "unknown",
       "stats": {
-         "health": 135,
+         "health": 100,
          "damage": 18,
-         "armor": 7,
-         "shields": 10
+         "armor": 10,
+         "shields": 12
       },
       "attributes": {
          "faction": "Space Pirates",
          "class": "boss",
          "race": "pirates",
-         "chance": 0.1,
+         "chance": 0.5,
          "min_loc": 9,
-         "max_loc": 11
+         "max_loc": 12
       },
       "drop": {
-         "exp": 40,
-         "credits": 300,
+         "exp": 50,
+         "credits": 400,
          "it_name_1": {
-            "rusty_machine_gun": 1,
-            "droprate": 0.15
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         },
+         "it_name_2": {
+            "droprate": 0.2,
+            "rusty_machine_gun": 1
+         },
+         "mt_name_2": {
+            "droprate": 0.3,
+            "oil_barrel": 1
          }
       }
    },
@@ -340,42 +344,10 @@
       },
       "drop": {
          "exp": 10,
-         "credits": 100,
-         "it_name_1": {
-            "droprate": 0.5,
-            "shields_for_beginner": 1
-         }
+         "credits": 100
       }
    },
    "12": {
-      "name": "Void Reaver",
-      "shortname": "void_reaver",
-      "description": "A mysterious pirate who harnesses the power of the void to unleash devastating attacks.",
-      "type": "unknown",
-      "stats": {
-         "health": 100,
-         "damage": 18,
-         "armor": 10,
-         "shields": 12
-      },
-      "attributes": {
-         "faction": "Space Pirates",
-         "class": "boss",
-         "race": "pirates",
-         "chance": 0.5,
-         "min_loc": 10,
-         "max_loc": 15
-      },
-      "drop": {
-         "exp": 50,
-         "credits": 400,
-         "it_name_1": {
-            "droprate": 0.02,
-            "shields_for_beginner": 1
-         }
-      }
-   },
-   "13": {
       "name": "One Handed Charlie",
       "shortname": "one_handed_charlie",
       "description": "Space pirate old fag",
@@ -400,6 +372,34 @@
          "it_name_1": {
             "rusty_machine_gun": 1,
             "droprate": 0.15
+         }
+      }
+   },
+   "13": {
+      "name": "Blackstar Corsair",
+      "shortname": "blackstar_corsair",
+      "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
+      "type": "unknown",
+      "stats": {
+         "health": 135,
+         "damage": 18,
+         "armor": 7,
+         "shields": 10
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.1,
+         "min_loc": 14,
+         "max_loc": 16
+      },
+      "drop": {
+         "exp": 40,
+         "credits": 300,
+         "it_name_1": {
+            "rusty_machine_gun": 1,
+            "droprate": 0.05
          }
       }
    },
