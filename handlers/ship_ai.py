@@ -185,7 +185,7 @@ async def fleeing_handler(message: Message, state: FSMContext) -> None:
     en_shortname = fighting_data.split(" ")[-1]
     en_name = await db_read_details("enemies", en_shortname, "en_name", "en_shortname")
     flee_available = await fight.engaging_enemy_choice(message.from_user.id, en_shortname)
-    flee_chance = await m.roll_chance(0.3)  # flee chance is hardcoded 20%
+    flee_chance = await m.roll_chance(0.4)  # flee chance is hardcoded 40%
     keyboard = await kb.keyboard_selector(state)
     if flee_available and flee_chance:
         await errors.reset_handler(message, state, jobtext="fleeing from enemy successfull")
