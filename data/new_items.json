@@ -32,7 +32,7 @@
       "description": "good af",
       "type": "consumable",
       "effects": {
-         "restore_hp": 50
+         "restore_hp": 20
       },
       "price": 100
    },
