@@ -296,6 +296,14 @@ async def db_read_full_name(table, value, column, search_col) -> str:
         return f"Error: {e}"
 
 
+async def db_parse_all_weapons():
+    name = f"\"weapon\""
+    cur_gm.execute(
+        "SELECT it_name, it_shortname, desc, craft, effects FROM items WHERE type = ?", (name,))
+    weapons = cur_gm.fetchall()
+    return weapons
+
+
 async def db_parse_all_ores(gps):
     name = f"\"ore\""
     cur_gm.execute(
