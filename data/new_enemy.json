@@ -141,7 +141,7 @@
             "droprate": 0.02,
             "shields_for_beginner": 1
          },
-         "mt_name_2":{
+         "mt_name_2": {
             "droprate": 0.2,
             "old_wires": 1
          }
@@ -292,34 +292,6 @@
       }
    },
    "10": {
-      "name": "Elon Musk",
-      "shortname": "elon_musk",
-      "description": "T0b! P!ZD@",
-      "type": "unknown",
-      "stats": {
-         "health": 1000,
-         "damage": 100,
-         "armor": 100,
-         "shields": 100
-      },
-      "attributes": {
-         "faction": "Space-X",
-         "class": "bam",
-         "race": "martianin",
-         "chance": 0.1,
-         "min_loc": 9,
-         "max_loc": 18
-      },
-      "drop": {
-         "exp": 10,
-         "credits": 100,
-         "it_name_1": {
-            "droprate": 0.5,
-            "shields_for_beginner": 1
-         }
-      }
-   },
-   "11": {
       "name": "Blackstar Corsair",
       "shortname": "blackstar_corsair",
       "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
@@ -346,31 +318,32 @@
             "droprate": 0.15
          }
       }
-   },"13": {
-      "name": "One Handed Charlie",
-      "shortname": "one_handed_charlie",
-      "description": "Space pirate old fag",
+   },
+   "11": {
+      "name": "Elon Musk",
+      "shortname": "elon_musk",
+      "description": "T0b! P!ZD@",
       "type": "unknown",
       "stats": {
-         "health": 120,
-         "damage": 18,
-         "armor": 7,
-         "shields": 10
+         "health": 1000,
+         "damage": 100,
+         "armor": 100,
+         "shields": 100
       },
       "attributes": {
-         "faction": "Space Pirates",
-         "class": "boss",
-         "race": "pirates",
+         "faction": "Space-X",
+         "class": "bam",
+         "race": "martianin",
          "chance": 0.1,
-         "min_loc": 12,
-         "max_loc": 18
+         "min_loc": 10,
+         "max_loc": 20
       },
       "drop": {
-         "exp": 40,
-         "credits": 300,
+         "exp": 10,
+         "credits": 100,
          "it_name_1": {
-            "rusty_machine_gun": 1,
-            "droprate": 0.15
+            "droprate": 0.5,
+            "shields_for_beginner": 1
          }
       }
    },
@@ -400,6 +373,130 @@
             "droprate": 0.02,
             "shields_for_beginner": 1
          }
+      }
+   },
+   "13": {
+      "name": "One Handed Charlie",
+      "shortname": "one_handed_charlie",
+      "description": "Space pirate old fag",
+      "type": "unknown",
+      "stats": {
+         "health": 120,
+         "damage": 18,
+         "armor": 7,
+         "shields": 10
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.1,
+         "min_loc": 12,
+         "max_loc": 18
+      },
+      "drop": {
+         "exp": 40,
+         "credits": 300,
+         "it_name_1": {
+            "rusty_machine_gun": 1,
+            "droprate": 0.15
+         }
+      }
+   },
+   "14": {
+      "name": "Plasma Marauder",
+      "shortname": "plasma_marauder",
+      "description": "A fearsome pirate captain wielding a deadly plasma blade.",
+      "type": "unknown",
+      "stats": {
+         "health": 160,
+         "damage": 22,
+         "armor": 8,
+         "shields": 12
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.15,
+         "min_loc": 14,
+         "max_loc": 20
+      },
+      "drop": {
+         "exp": 50,
+         "credits": 450
+      }
+   },
+   "15": {
+      "name": "Scourge of the Nebula",
+      "shortname": "scourge_of_the_nebula",
+      "description": "A cunning pirate captain known for ambushing unsuspecting travelers in nebulae.",
+      "type": "unknown",
+      "stats": {
+         "health": 140,
+         "damage": 20,
+         "armor": 9,
+         "shields": 11
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.12,
+         "min_loc": 16,
+         "max_loc": 22
+      },
+      "drop": {
+         "exp": 60,
+         "credits": 500
+      }
+   },
+   "16": {
+      "name": "Spectral Raider",
+      "shortname": "spectral_raider",
+      "description": "A ghostly pirate captain haunting the depths of space.",
+      "type": "unknown",
+      "stats": {
+         "health": 180,
+         "damage": 24,
+         "armor": 7,
+         "shields": 14
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.18,
+         "min_loc": 18,
+         "max_loc": 24
+      },
+      "drop": {
+         "exp": 70,
+         "credits": 550
+      }
+   },
+   "17": {
+      "name": "Rogue Engineer",
+      "shortname": "rogue_engineer",
+      "description": "A pirate who has repurposed advanced technology to wreak havoc in space.",
+      "type": "unknown",
+      "stats": {
+         "health": 150,
+         "damage": 21,
+         "armor": 10,
+         "shields": 13
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.13,
+         "min_loc": 20,
+         "max_loc": 26
+      },
+      "drop": {
+         "exp": 90,
+         "credits": 600
       }
    }
 }
