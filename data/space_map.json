@@ -250,13 +250,12 @@
    },
    "19": {
       "name": "Phantasmia",
-      "type": "5",
+      "type": "station",
       "features": [
-         "mining"
+         "shipyard"
       ],
       "events_weights": {
-         "None": 0,
-         "enemies":100
+         "None": 100
       }
    },
    "20": {
