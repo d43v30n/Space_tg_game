@@ -99,8 +99,8 @@
       "price": 100
    },
    "7": {
-      "name": "Graviton Cannon",
-      "shortname": "graviton_cannon",
+      "name": "Nebula Howitzer",
+      "shortname": "nebula_howitzer",
       "description": "description",
       "type": "weapon",
       "effects": {
@@ -159,13 +159,13 @@
       "price": 100
    },
    "10": {
-      "name": "NONE",
-      "shortname": "none",
+      "name": "Starburst Blaster",
+      "shortname": "starburst_blaster",
       "description": "description",
       "type": "weapon",
       "effects": {
          "range": 5,
-         "wp_type": "bullets",
+         "wp_type": "energy",
          "damage_min": 5,
          "damage_max": 8,
          "crit_chance": 0
@@ -179,8 +179,8 @@
       "price": 100
    },
    "11": {
-      "name": "NONE",
-      "shortname": "none",
+      "name": "Nova Strike Artillery",
+      "shortname": "nova_strike_artillery",
       "description": "description",
       "type": "weapon",
       "effects": {
@@ -199,8 +199,8 @@
       "price": 100
    },
    "12": {
-      "name": "NONE",
-      "shortname": "none",
+      "name": "Ion Storm Gatling",
+      "shortname": "ion_storm_gatling",
       "description": "description",
       "type": "weapon",
       "effects": {
@@ -219,8 +219,188 @@
       "price": 100
    },
    "13": {
-      "name": "NONE",
-      "shortname": "none",
+      "name": "Plasma Sabot Launcher",
+      "shortname": "plasma_sabot_launcher",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "energy",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "14": {
+      "name": "Singularity Driver",
+      "shortname": "singularity_driver",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "energy",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "15": {
+      "name": "Pulsar Repeater",
+      "shortname": "pulsar_repeater",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "energy",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "16": {
+      "name": "Photon Lance",
+      "shortname": "photon_lance",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "energy",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "17": {
+      "name": "Tachyon Burst Cannon",
+      "shortname": "tachyon_burst_cannon",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "18": {
+      "name": "Aether Railgun",
+      "shortname": "aether_railgun",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "energy",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "19": {
+      "name": "Fusion Fury Mortar",
+      "shortname": "fusion_fury_mortar",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "20": {
+      "name": "Tesla Coil Cannon",
+      "shortname": "tesla_coil_cannon",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "21": {
+      "name": "Hyperion Hailstorm",
+      "shortname": "hyperion_hailstorm",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "energy",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "22": {
+      "name": "Neutron Scattergun",
+      "shortname": "neutron_scattergun",
       "description": "description",
       "type": "weapon",
       "effects": {
