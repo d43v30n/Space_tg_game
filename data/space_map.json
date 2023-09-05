@@ -8,25 +8,27 @@
          "consortium",
          "bazaar"
       ],
-      "events_weights": {"None":100}
+      "events_weights": {
+         "None": 100
+      }
    },
    "1": {
       "name": "Orion",
       "type": "1",
       "features": {
-         "None":100
+         "None": 100
       },
       "events_weights": {
          "None": 3,
-         "enemies":5, 
-         "encounter":3
+         "enemies": 5,
+         "encounter": 3
       },
-      "encounter_event_details":{
-         "level":1,
-         "scans_required":2,
-         "chance":0.999,
+      "encounter_event_details": {
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.999,
          "drop": {
-            "experience":100
+            "experience": 100
          }
       }
    },
@@ -38,7 +40,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "3": {
@@ -49,7 +51,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "4": {
@@ -60,7 +62,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "5": {
@@ -71,7 +73,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "6": {
@@ -83,14 +85,14 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":3,
-         "scanning_event":5
+         "enemies": 3,
+         "scanning_event": 5
       },
       "scan_event_details": {
-         "level":1,
-         "scans_required":2,
-         "chance":0.9,
-         "experience":300
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.9,
+         "experience": 300
       }
    },
    "7": {
@@ -101,17 +103,17 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
-         "mining_event":5
+         "enemies": 5,
+         "mining_event": 5
       },
       "mine_event_details": {
-         "level":1,
-         "scans_required":2,
-         "chance":0.2,
-         "experience":300,
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.2,
+         "experience": 300,
          "material_1": {
-            "mt_shortname":"nanofractium_ore",
-            "count":1
+            "mt_shortname": "nanofractium_ore",
+            "count": 1
          }
       }
    },
@@ -123,7 +125,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "9": {
@@ -134,7 +136,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "10": {
@@ -145,17 +147,17 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
-         "mining_event":10
+         "enemies": 5,
+         "mining_event": 10
       },
       "mine_event_details": {
-         "level":1,
-         "scans_required":2,
-         "chance":0.2,
-         "experience":300,
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.2,
+         "experience": 300,
          "material_1": {
-            "mt_shortname":"palladium_ore",
-            "count":10
+            "mt_shortname": "palladium_ore",
+            "count": 10
          }
       }
    },
@@ -167,7 +169,7 @@
       ],
       "events_weights": {
          "None": 1,
-         "enemies":5
+         "enemies": 5
       }
    },
    "12": {
@@ -178,7 +180,7 @@
       ],
       "events_weights": {
          "None": 1,
-         "enemies":5
+         "enemies": 5
       }
    },
    "13": {
@@ -189,7 +191,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "14": {
@@ -200,8 +202,8 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
-         "mining_event":5
+         "enemies": 5,
+         "mining_event": 5
       }
    },
    "15": {
@@ -212,7 +214,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "16": {
@@ -223,7 +225,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "17": {
@@ -234,7 +236,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "18": {
@@ -245,7 +247,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "19": {
@@ -262,11 +264,11 @@
       "name": "Pinta",
       "type": "5",
       "features": [
-         "None"
+         "mining"
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "21": {
@@ -277,7 +279,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "22": {
@@ -288,7 +290,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "23": {
@@ -299,7 +301,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "24": {
@@ -310,7 +312,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "25": {
@@ -321,7 +323,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "26": {
@@ -332,7 +334,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "27": {
@@ -343,7 +345,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "28": {
@@ -354,7 +356,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "29": {
@@ -365,7 +367,18 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
+      }
+   },
+   "30": {
+      "name": "Mehna",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
       }
    },
    "31": {
@@ -376,7 +389,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "32": {
@@ -387,7 +400,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "33": {
@@ -398,7 +411,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "34": {
@@ -409,7 +422,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "35": {
@@ -420,7 +433,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "36": {
@@ -431,7 +444,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "37": {
@@ -442,7 +455,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "38": {
@@ -453,7 +466,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "39": {
@@ -464,7 +477,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "40": {
@@ -475,7 +488,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "41": {
@@ -486,7 +499,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "42": {
@@ -497,7 +510,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "43": {
@@ -508,7 +521,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "44": {
@@ -519,7 +532,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "45": {
@@ -530,7 +543,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    }
 }
