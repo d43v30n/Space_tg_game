@@ -62,7 +62,7 @@ async def adm_logout_handler(message: Message, state: FSMContext) -> None:
 
 @router.message(State.admin, Command("help"))
 async def adm_help_handler(message: Message, state: FSMContext) -> None:
-    await message.answer(f"/admin\n/logout\n/list_all_users\n\nDatabase commands:\n/load_enemies\n/load_items\n/load_materials\n\nBalancing info:\n/list_materials_drop\n/list_all_enemies\n\n/get_image_id\n/test_fight\n\nUnder dev:\n/add_materials", reply_markup=kb.admin_kb())
+    await message.answer(f"/admin\n/logout\n/list_all_users\n\nDatabase commands:\n/load_enemies\n/load_items\n/load_materials\n\nBalancing info:\n/list_materials_drop\n/list_all_enemies\n/list_all_weapons\n\n/get_image_id\n/test_fight\n\nUnder dev:\n/add_materials", reply_markup=kb.admin_kb())
 
 
 @router.message(State.admin, Command("load_enemies"))
@@ -115,11 +115,21 @@ async def adm_list_all_enemies_handler(message: Message, state: FSMContext) -> N
         enemy_list.append(text)
     await message.answer("\n".join(enemy_list), reply_markup=kb.admin_kb())
 
+@router.message(State.admin, Command("list_all_weapons"))
+async def adm_list_all_weapons_handler(message: Message, state: FSMContext) -> None:
+    weapons = await db.db_parse_all_weapons()
+    weapons_list = []
+    for weapon in weapons:
+        it_name, it_shortname, desc, craft, effects = weapon
+        # text = str(en_id) + " " + en_name + " " + stats
+        # weapons_list.append(text)
+    await message.answer("\n".join(weapons_list), reply_markup=kb.admin_kb())    
+
 
 @router.message(State.admin, Command("list_materials_drop"))
 async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -> None:
     out = []
-    for i in range(18+1):
+    for i in range(44+1):
         gps = i
         ores_data = await db.db_parse_all_ores(gps)
         for data in ores_data:
@@ -139,12 +149,21 @@ async def adm_list_materials_drop_handler(message: Message, state: FSMContext) -
 
 
 @router.message(State.admin, Command("test_fight"))
-async def echo_image_id(message: Message, state: FSMContext) -> None:
-    await fight.get_fight_drop(message.from_user.id, "\"ironclad_ivan\"")
+async def adm_test_fight(message: Message, state: FSMContext) -> None:
+    all_enemies = await db.list_all_enemies()
+    # enemy = f"\"ironclad_ivan\""
+    for single_enemy in all_enemies:
+        await m.restore_hp(message.from_user.id, count=0, with_cd=False)
+        enemy = single_enemy[2]
+        gps = await m.get_location(message.from_user.id)
+        await state.update_data(gps_state=gps)
+        await state.set_state(State.job)
+        await state.update_data(job=f"fighting with {enemy}")
+        await fight.init_fight(message, enemy, state, with_timer=False)
 
 
 @router.message(State.admin, Command("test"))
-async def echo_image_id(message: Message, state: FSMContext) -> None:
+async def adm_test(message: Message, state: FSMContext) -> None:
     out = await fight.engaging_enemy_choice(message.from_user.id, "\"elon_musk\"")
     if out:
         await message.answer("True", reply_markup=kb.admin_kb())
