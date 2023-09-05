@@ -9,9 +9,7 @@
       },
       "price": 100,
       "attributes": {
-         "chance": 0.35,
-         "min_loc": 2,
-         "max_loc": 5
+         "chance": 0.35
       }
    },
    "1": {
@@ -24,15 +22,9 @@
          "wp_type": "bullets",
          "damage_min": 5,
          "damage_max": 8,
-         "crit_chance": 0,
-         "": ""
+         "crit_chance": 0
       },
-      "price": 100,
-      "attributes": {
-         "chance": 0.01,
-         "min_loc": 2,
-         "max_loc": 5
-      }
+      "price": 100
    },
    "2": {
       "name": "Craft beer",
@@ -42,12 +34,7 @@
       "effects": {
          "restore_hp": 50
       },
-      "price": 100,
-      "attributes": {
-         "chance": 0.15,
-         "min_loc": 2,
-         "max_loc": 10
-      }
+      "price": 100
    },
    "3": {
       "name": "Hull Armor for beginners",
@@ -58,12 +45,7 @@
          "armor": 10,
          "crit_reduction": 1
       },
-      "price": 0,
-      "attributes": {
-         "chance": 0,
-         "min_loc": 2,
-         "max_loc": 5
-      }
+      "price": 0
    },
    "4": {
       "name": "Beginner shields",
@@ -74,16 +56,11 @@
          "shield": 10,
          "crit_reduction": 1
       },
-      "price": 0,
-      "attributes": {
-         "chance": 0,
-         "min_loc": 2,
-         "max_loc": 5
-      }
+      "price": 0
    },
    "5": {
       "name": "Handmade Cannon",
-      "shortname": "deadly_machine_gun",
+      "shortname": "handmade_cannon",
       "description": "Shoots big and loud",
       "type": "weapon",
       "effects": {
@@ -91,15 +68,15 @@
          "wp_type": "bullets",
          "damage_min": 20,
          "damage_max": 20,
-         "crit_chance": 0,
-         "": ""
+         "crit_chance": 0
       },
-      "price": 100,
-      "attributes": {
-         "chance": 0.01,
-         "min_loc": 2,
-         "max_loc": 5
-      }
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
    },
    "6": {
       "name": "Oiled machine gun",
@@ -119,31 +96,146 @@
          "rusty_machine_gun": 1,
          "credits": 1000
       },
-      "price": 100,
-      "attributes": {
-         "chance": 0.01,
-         "min_loc": 2,
-         "max_loc": 5
-      }
+      "price": 100
    },
    "7": {
-      "name": "Standard Spaceship Guns",
-      "shortname": "broken_machine_gun",
-      "description": "Very common around Ringworld",
+      "name": "Graviton Cannon",
+      "shortname": "graviton_cannon",
+      "description": "description",
       "type": "weapon",
       "effects": {
          "range": 5,
          "wp_type": "bullets",
          "damage_min": 5,
          "damage_max": 8,
-         "crit_chance": 0,
-         "": ""
+         "crit_chance": 0
       },
-      "price": 100,
-      "attributes": {
-         "chance": 0.01,
-         "min_loc": 15,
-         "max_loc": 25
-      }
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "8": {
+      "name": "Graviton Cannon",
+      "shortname": "graviton_cannon",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "9": {
+      "name": "Quantum Impeller",
+      "shortname": "quantum_impeller",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "10": {
+      "name": "NONE",
+      "shortname": "none",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "11": {
+      "name": "NONE",
+      "shortname": "none",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "12": {
+      "name": "NONE",
+      "shortname": "none",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
+   },
+   "13": {
+      "name": "NONE",
+      "shortname": "none",
+      "description": "description",
+      "type": "weapon",
+      "effects": {
+         "range": 5,
+         "wp_type": "bullets",
+         "damage_min": 5,
+         "damage_max": 8,
+         "crit_chance": 0
+      },
+      "craft": {
+         "oil_barrel": 1,
+         "palladium_ore": 10,
+         "rusty_machine_gun": 1,
+         "credits": 1000
+      },
+      "price": 100
    }
 }
