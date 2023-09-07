@@ -66,7 +66,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         table.append(_)
 
     await message.answer("Damage: {damage}\nDefence: {defence}\nShields: {shields}\n\n\n<code>{table}</code>\n\nYou can unequip all items with\n/unequip_all_items".format(
-        damage=damage, defence=defence, shields=shields, table="\n".join(table)), reply_markup=keyboard)
+        damage=damage, defence=defence, shields=shields, table="\n".join(table)))
 
 
 @router.message(F.text == "Guild")
@@ -75,7 +75,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
         state_data = await state.get_data()
         gps = state_data["gps_state"]
         keyboard = await kb.keyboard_selector(state)
-        await message.answer(f"Here is your Guild info", reply_markup=keyboard)
+        await message.answer(f"Here is your Guild info")
     except:
         await errors.unknown_input_handler(message, state)
 
@@ -84,7 +84,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 async def echo_image_id(message: Message, state: FSMContext) -> None:
     text = await invent.unequip_all_items(message.from_user.id, state)
     keyboard = await kb.keyboard_selector(state)
-    await message.answer(text, reply_markup=keyboard)
+    await message.answer(text)
 
 
 @router.message(F.text == "{emoji}Cargo".format(emoji=barrel))
@@ -94,7 +94,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     keyboard = await kb.keyboard_selector(state)
     cargo = await m.show_materials(message.from_user.id)
-    await message.answer(f"Here is your Cargo:\n{cargo}", reply_markup=keyboard)
+    await message.answer(f"Here is your Cargo:\n{cargo}")
     # except:
     #    await errors.unknown_input_handler(message, state)
 
@@ -106,7 +106,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
     gps = state_data["gps_state"]
     keyboard = await kb.keyboard_selector(state)
     inv = await m.show_items(message.from_user.id)
-    await message.answer("Here is your Inventory:\n{inv}\nUse <code>/info_</code> with item ID to get more information about item".format(inv=inv), reply_markup=keyboard)
+    await message.answer("Here is your Inventory:\n{inv}\nUse <code>/info_</code> with item ID to get more information about item".format(inv=inv))
     # except:
     #    await errors.unknown_input_handler(message, state)
 
@@ -117,7 +117,7 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
     keyboard = await kb.keyboard_selector(state)
     current_state = await state.get_state()
     if current_state != "State:job" and current_state != "State:docked":
-        await message.answer(f"You can not do this right now", reply_markup=keyboard)
+        await message.answer(f"You can not do this right now")
         return
     if text.startswith("/use_"):
         # try:
@@ -125,9 +125,9 @@ async def item_selector_handler(message: Message, state: FSMContext) -> None:
         flag = id.split("_")[0][1:]
         id = int(id.split("_")[1])
         print(f"applying {flag} with id {id}")
-        await message.answer(f"Using {text} 1x".format(text=text), reply_markup=keyboard)
+        await message.answer(f"Using {text} 1x".format(text=text))
         out = await invent.apply_item(message.from_user.id, id, state)
-        await message.answer(out, reply_markup=keyboard)
+        await message.answer(out)
     else:
         print(f"wrong_command_exception: ", message.text)
         await errors.unknown_input_handler(message, state)
