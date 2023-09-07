@@ -74,7 +74,7 @@ async def unknown_input_handler(message: Message, state: FSMContext) -> None:
     print("unknown_input_handler; state is:", current_state)
     current_state = await state.get_state()
     if current_state is None:
-        await message.answer(f"Unknown error, try /start to debug", reply_markup=ReplyKeyboardRemove())
+        await message.answer(f"Server has been updated, /start to login again", reply_markup=ReplyKeyboardRemove())
     else:
         # , reply_markup=ReplyKeyboardRemove())
         await message.answer(f"Unknown error.")
