@@ -66,7 +66,7 @@
       "price": 3000,
       "drop": {
          "count": 1,
-         "chance": 0.08,
+         "chance": 0.15,
          "min_loc": 3,
          "max_loc": 5
       }
@@ -90,7 +90,7 @@
       "price": 10000,
       "drop": {
          "count": 1,
-         "chance": 0.1,
+         "chance": 0.2,
          "min_loc": 6,
          "max_loc": 11
       }
@@ -114,7 +114,7 @@
       "price": 1000,
       "drop": {
          "count": 1,
-         "chance": 0.3,
+         "chance": 0.1,
          "min_loc": 12,
          "max_loc": 18
       }
