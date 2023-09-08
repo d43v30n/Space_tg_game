@@ -91,7 +91,7 @@
       "scan_event_details": {
          "level": 1,
          "scans_required": 2,
-         "chance": 0.9,
+         "chance": 0.2,
          "experience": 300
       }
    },
