@@ -72,7 +72,7 @@
       },
       "craft": {
          "old_wires": 5,
-         "gold_ore": 10,
+         "platinum_ore": 10,
          "oiled_machine_gun": 1,
          "credits": 1000
       },
@@ -92,7 +92,7 @@
       },
       "craft": {
          "oil_barrel": 1,
-         "palladium_ore": 10,
+         "gold_ore": 10,
          "rusty_machine_gun": 1,
          "credits": 1000
       },

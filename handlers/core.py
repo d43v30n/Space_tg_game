@@ -86,6 +86,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 <b>Get ready to conquer the cosmos, captain! Safe travels! 🌌</b>
 
+<b>Please find full official guide <a href="https://political-fear-0b1.notion.site/Newcomer-guide-a03d3dc573fe404798a7a50ca4d74fd3?pvs=4">HERE</a></b>
 """, reply_markup=kb.main_kb(0), parse_mode=ParseMode.HTML)
 
 
