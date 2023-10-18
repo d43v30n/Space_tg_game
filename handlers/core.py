@@ -178,7 +178,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
         keyboard = await kb.keyboard_selector(state)
         await message.answer_photo(ringworld_home)
-        await message.answer(f"Yes, my beloved home. How long has it bee. {loc_name}, i Love YOU!\n\nYou approach this colossal space station and dock to it at international space port.\n\nWhile docked your ship will be charged for free!", reply_markup=keyboard)
+        await message.answer(f"Yes, my cherished home. It's been quite a while, {loc_name}. I hold great affection for YOU!\n\nAs you approach this immense space station and securely dock at the international spaceport, please note that your ship will be recharged at no additional cost!", reply_markup=keyboard)
         await energy_manager.restore_all_energy(message.from_user.id)
         # 1 docking timer
         # 2 essage docked with plenty of station information
