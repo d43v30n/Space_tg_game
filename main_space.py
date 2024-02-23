@@ -12,7 +12,8 @@ from game_logic import fight as f
 # debug
 
 load_dotenv()
-TOKEN = getenv("BOT_TOKEN")from aiogram.types import ReplyKeyboardMarkup
+TOKEN = getenv("BOT_TOKEN")
+from aiogram.types import ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from emojis import *
 
