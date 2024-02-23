@@ -6,8 +6,8 @@ game_dir="./Space_tg_game"
 # Change directory to the game directory
 cd "$game_dir"
 
-# Find the PID of the running "python3 main.py" process
-pid=$(ps x | grep "python3 main.py" | grep -v grep | awk '{print $1}')
+# Find the PID of the running "python3 main_space.py" process
+pid=$(ps x | grep "python3 main_space.py" | grep -v grep | awk '{print $1}')
 
 if [ -z "$pid" ]; then
     echo "No process found."
@@ -26,7 +26,7 @@ fi
 # Perform a git pull to update the code
 git pull
 
-# Start "nohup python3 main.py &"
-nohup python3 main.py &
+# Start "nohup python3 main_space.py &"
+nohup python3 main_space.py &
 
-echo "Started python3 main.py in the background."
+echo "Started python3 main_space.py in the background."
