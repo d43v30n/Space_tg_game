@@ -86,6 +86,7 @@ async def command_start_handler(message: Message, state: FSMContext) -> None:
 
 <b>Get ready to conquer the cosmos, captain! Safe travels! 🌌</b>
 
+<b>Please find full official guide <a href="https://political-fear-0b1.notion.site/Newcomer-guide-a03d3dc573fe404798a7a50ca4d74fd3?pvs=4">HERE</a></b>
 """, reply_markup=kb.main_kb(0), parse_mode=ParseMode.HTML)
 
 
@@ -101,7 +102,7 @@ async def ship_ai_menu(message: Message, state: FSMContext) -> None:
     jobtext = state_data["job"]
     loc_features = await space_map.features(gps)
     loc_name = await space_map.name(gps)
-    if "mining" in loc_features and not "scanners found nothing" in jobtext:
+    if "mining" in loc_features and not "scanners found nothing" in jobtext and not "mined" in jobtext:
         asteroid = loc_name.upper()[:3] + "-" + str(randint(10, 99)) + "&"
         found_ore_text = "Our scanners detected <b>ore</b> on some Asteroid <i>§{asteroid}</i> here! We can try scanning.".format(
             asteroid=asteroid)
@@ -150,7 +151,7 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(gps_state=gps)
         await state.set_state(State.job)
         await state.update_data(job=job_text)
-        await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+        await message.answer("Your {emoji}Ship AI awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.".format(energy=energy, emoji=rocket), reply_markup=keyboard)
     else:
         try:
             energy = await m.get_energy(message.from_user.id)
@@ -161,7 +162,7 @@ async def back_button_handler(message: Message, state: FSMContext) -> None:
             if await is_busy(state_data):
                 await message.answer(f"You are {text}.", reply_markup=kb.main_kb(gps))
             else:
-                await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+                await message.answer("Your {emoji}Ship AI awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.".format(energy=energy, emoji=rocket), reply_markup=keyboard)
         except:
             await errors.unknown_input_handler(message, state)
 
@@ -177,7 +178,7 @@ async def jump_home_handler(message: Message, state: FSMContext) -> None:
         await state.update_data(job="docked to {loc_name}".format(loc_name=loc_name), docked="to Ringworld station")
         keyboard = await kb.keyboard_selector(state)
         await message.answer_photo(ringworld_home)
-        await message.answer(f"Yes, my beloved home. How long has it bee. {loc_name}, i Love YOU!\n\nYou approach this colossal space station and dock to it at international space port.\n\nWhile docked your ship will be charged for free!", reply_markup=keyboard)
+        await message.answer(f"Yes, my cherished home. It's been quite a while, {loc_name}. I hold great affection for YOU!\n\nAs you approach this immense space station and securely dock at the international spaceport, please note that your ship will be recharged at no additional cost!", reply_markup=keyboard)
         await energy_manager.restore_all_energy(message.from_user.id)
         # 1 docking timer
         # 2 essage docked with plenty of station information

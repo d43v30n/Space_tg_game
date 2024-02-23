@@ -60,30 +60,18 @@
       }
    },
    "5": {
-      "name": "Palladium Ore",
-      "shortname": "palladium_ore",
+      "name": "Gold Ore",
+      "shortname": "gold_ore",
       "type": "ore",
-      "price": 1000,
+      "price": 3000,
       "drop": {
          "count": 1,
-         "chance": 0.3,
+         "chance": 0.15,
          "min_loc": 3,
-         "max_loc": 6
+         "max_loc": 5
       }
    },
    "6": {
-      "name": "Platinum Ore",
-      "shortname": "platinum_ore",
-      "type": "ore",
-      "price": 10000,
-      "drop": {
-         "count": 1,
-         "chance": 0.1,
-         "min_loc": 4,
-         "max_loc": 8
-      }
-   },
-   "7": {
       "name": "Steel Coil",
       "shortname": "steel_coil",
       "type": "craft",
@@ -95,31 +83,19 @@
          "max_loc": 8
       }
    },
-   "8": {
-      "name": "Gold Ore",
-      "shortname": "gold_ore",
+   "7": {
+      "name": "Platinum Ore",
+      "shortname": "platinum_ore",
       "type": "ore",
-      "price": 3000,
+      "price": 10000,
       "drop": {
-         "count": 2,
-         "chance": 0.25,
-         "min_loc": 5,
-         "max_loc": 9
-      }
-   },
-   "9": {
-      "name": "Nanofractium Ore",
-      "shortname": "nanofractium_ore",
-      "type": "ore",
-      "price": 7000,
-      "drop": {
-         "count": 2,
+         "count": 1,
          "chance": 0.2,
-         "min_loc": 7,
-         "max_loc": 13
+         "min_loc": 6,
+         "max_loc": 11
       }
    },
-   "10": {
+   "8": {
       "name": "Nanoconductors",
       "shortname": "nanoconductors",
       "type": "craft",
@@ -131,7 +107,19 @@
          "max_loc": 12
       }
    },
-   "11": {
+   "9": {
+      "name": "Palladium Ore",
+      "shortname": "palladium_ore",
+      "type": "ore",
+      "price": 1000,
+      "drop": {
+         "count": 1,
+         "chance": 0.1,
+         "min_loc": 12,
+         "max_loc": 18
+      }
+   },
+   "10": {
       "name": "Flask of Nanofluid",
       "shortname": "flask_of_nanofluid",
       "type": "craft",
@@ -143,7 +131,7 @@
          "max_loc": 15
       }
    },
-   "12": {
+   "11": {
       "name": "Zip-tied Carbon Nanotubes",
       "shortname": "zip_tied_carbon_nanotubes",
       "type": "craft",
@@ -155,7 +143,7 @@
          "max_loc": 18
       }
    },
-   "13": {
+   "12": {
       "name": "3D-Printing material",
       "shortname": "3d_printing_material",
       "type": "craft",
@@ -165,6 +153,30 @@
          "chance": 0.35,
          "min_loc": 16,
          "max_loc": 18
+      }
+   },
+   "13": {
+      "name": "Carbon Nanotubes",
+      "shortname": "carbon_nanotubes",
+      "type": "craft",
+      "price": 1,
+      "drop": {
+         "count": 1,
+         "chance": 0.35,
+         "min_loc": 16,
+         "max_loc": 18
+      }
+   },
+   "14": {
+      "name": "Nanofractium Ore",
+      "shortname": "nanofractium_ore",
+      "type": "ore",
+      "price": 7000,
+      "drop": {
+         "count": 1,
+         "chance": 0.05,
+         "min_loc": 19,
+         "max_loc": 26
       }
    }
 }

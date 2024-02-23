@@ -15,7 +15,7 @@ async def keyboard_selector(state, menu=None):
     job_name = state_data["job"]
     if gps == 0 and (state_name == "State:docked" or state_name == "State:repairing"):
         keyboard = ringworld_kb()
-    elif job_name.endswith("and encountered mining_event") or job_name.endswith("and encountered scanning_event"):
+    elif job_name.endswith("and encountered encounter"):
         keyboard = at_location_kb(gps)
     elif menu == "{emoji}Ship AI".format(emoji=rocket):
         keyboard = ship_ai_kb()

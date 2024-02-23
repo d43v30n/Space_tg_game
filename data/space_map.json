@@ -8,37 +8,39 @@
          "consortium",
          "bazaar"
       ],
-      "events_weights": {"None":100}
+      "events_weights": {
+         "None": 100
+      }
    },
    "1": {
       "name": "Orion",
       "type": "1",
       "features": {
-         "None":100
+         "None": 100
       },
       "events_weights": {
          "None": 3,
-         "enemies":5, 
-         "encounter":3
+         "enemies": 5,
+         "encounter": 3
       },
-      "encounter_event_details":{
-         "level":1,
-         "scans_required":2,
-         "chance":0.999,
+      "encounter_event_details": {
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.999,
          "drop": {
-            "experience":100
+            "experience": 100
          }
       }
    },
    "2": {
-      "name": "Mars",
+      "name": "Cosmeera",
       "type": "2",
       "features": [
          "mining"
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "3": {
@@ -49,7 +51,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "4": {
@@ -60,22 +62,22 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "5": {
-      "name": "Void-404",
+      "name": "Androma",
       "type": "5",
       "features": [
          "mining"
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "6": {
-      "name": "Zapravka, STO",
+      "name": "Elysia",
       "type": "5",
       "features": [
          "drop",
@@ -83,14 +85,14 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":3,
-         "scanning_event":5
+         "enemies": 3,
+         "scanning_event": 5
       },
       "scan_event_details": {
-         "level":1,
-         "scans_required":2,
-         "chance":0.9,
-         "experience":300
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.2,
+         "experience": 300
       }
    },
    "7": {
@@ -101,61 +103,61 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
-         "mining_event":5
+         "enemies": 5,
+         "mining_event": 5
       },
       "mine_event_details": {
-         "level":1,
-         "scans_required":2,
-         "chance":0.2,
-         "experience":300,
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.2,
+         "experience": 300,
          "material_1": {
-            "mt_shortname":"nanofractium_ore",
-            "count":1
+            "mt_shortname": "nanofractium_ore",
+            "count": 1
          }
       }
    },
    "8": {
-      "name": "Velyka Bila Tserkva",
+      "name": "Pulsara",
       "type": "5",
       "features": [
          "mining"
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "9": {
-      "name": "Dune",
+      "name": "Aurora",
       "type": "5",
       "features": [
-         "None"
+         "mining"
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "10": {
       "name": "Seraphis",
       "type": "5",
       "features": [
-         "mining"
+         "None"
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
-         "mining_event":10
+         "enemies": 5,
+         "mining_event": 10
       },
       "mine_event_details": {
-         "level":1,
-         "scans_required":2,
-         "chance":0.2,
-         "experience":300,
+         "level": 1,
+         "scans_required": 2,
+         "chance": 0.2,
+         "experience": 300,
          "material_1": {
-            "mt_shortname":"palladium_ore",
-            "count":10
+            "mt_shortname": "palladium_ore",
+            "count": 10
          }
       }
    },
@@ -167,7 +169,7 @@
       ],
       "events_weights": {
          "None": 1,
-         "enemies":5
+         "enemies": 5
       }
    },
    "12": {
@@ -178,7 +180,7 @@
       ],
       "events_weights": {
          "None": 1,
-         "enemies":5
+         "enemies": 5
       }
    },
    "13": {
@@ -189,7 +191,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "14": {
@@ -200,8 +202,8 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5,
-         "mining_event":5
+         "enemies": 5,
+         "mining_event": 5
       }
    },
    "15": {
@@ -212,7 +214,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "16": {
@@ -223,7 +225,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "17": {
@@ -234,7 +236,7 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "18": {
@@ -245,18 +247,303 @@
       ],
       "events_weights": {
          "None": 3,
-         "enemies":5
+         "enemies": 5
       }
    },
    "19": {
       "name": "Phantasmia",
+      "type": "station",
+      "features": [
+         "shipyard"
+      ],
+      "events_weights": {
+         "None": 100
+      }
+   },
+   "20": {
+      "name": "Pinta",
       "type": "5",
       "features": [
          "mining"
       ],
       "events_weights": {
-         "None": 0,
-         "enemies":100
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "21": {
+      "name": "Nostra",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "22": {
+      "name": "Stella",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "23": {
+      "name": "Lyra",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "24": {
+      "name": "Aethra",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "25": {
+      "name": "Delphi",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "26": {
+      "name": "Helios",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "27": {
+      "name": "Quanta",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "28": {
+      "name": "Calypsa",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "29": {
+      "name": "Tauri",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "30": {
+      "name": "Mehna",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "31": {
+      "name": "Seraph",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "32": {
+      "name": "Sylva",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "33": {
+      "name": "Nyx",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "34": {
+      "name": "Aegis",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "35": {
+      "name": "Perseis",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "36": {
+      "name": "Eos",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "37": {
+      "name": "Alcyone",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "38": {
+      "name": "Hespera",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "39": {
+      "name": "Nemora",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "40": {
+      "name": "Vega",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "41": {
+      "name": "Draco",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "42": {
+      "name": "Zenon",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "43": {
+      "name": "Ursa",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "44": {
+      "name": "Serpen",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
+      }
+   },
+   "45": {
+      "name": "Terra",
+      "type": "5",
+      "features": [
+         "None"
+      ],
+      "events_weights": {
+         "None": 3,
+         "enemies": 5
       }
    }
 }

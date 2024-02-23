@@ -10,7 +10,7 @@ import keyboards.main_kb as kb
 from emojis import *
 
 
-async def init_fight(message: Message, enemy_id, state: State):
+async def init_fight(message: Message, enemy_id, state: State, with_timer=True):
     user_id = message.from_user.id
     state_data = await state.get_data()
     keyboard = await kb.keyboard_selector(state)
@@ -33,7 +33,7 @@ async def init_fight(message: Message, enemy_id, state: State):
     en_dmg = enemy_stats.get("damage")
     en_arm = enemy_stats.get("armor")
     en_shld = 0  # enemy_stats.get("shields")
-
+    print(f"\nFIGHT BEGIN with {en_name}\npl_hp={current_health}, pl_dmg={player_dmg}\nen_hp={en_hp}, en_dmg={en_dmg}")
     # await message.answer("You are fighting against {en_name}.\nYor enemy has HP:{en_hp}, DMG:{en_dmg}", reply_markup=keyboard)
     rounds_counter = 0
     while current_health > 0 and en_hp > 0:
@@ -42,7 +42,8 @@ async def init_fight(message: Message, enemy_id, state: State):
         print("looping..")
         eff_player_dmg = max(player_dmg - en_shld, 0)
         en_hp = max(0, en_hp - eff_player_dmg)
-        await timer()
+        if with_timer:
+            await timer()
         if en_hp <= 0:  # player win
             drop_text = await get_fight_drop(user_id, enemy_id)
             win_text = "\n\nYou live to die another day..\n\nYou looted:\n" + drop_text
@@ -52,6 +53,7 @@ async def init_fight(message: Message, enemy_id, state: State):
             await state.update_data(gps_state=gps)
             await state.set_state(State.job)
             await state.update_data(job=f"Won after fight with {enemy_id}")
+            print("player won with left hp:", current_health)
             return "win", win_text, rounds_counter
 
         # enemy hit player
@@ -62,11 +64,12 @@ async def init_fight(message: Message, enemy_id, state: State):
                 en_hp=en_hp)
             await message.answer(dead_text, reply_markup=keyboard)
             loose_text = "\n\nYour ship has been luckily picked up by some stragers. They dropped out from hauler nearly deat at Ringworld."
-            jump_home_task = await m.player_dead(user_id)
+            # jump_home_task = await m.player_dead(user_id)
+            print("player lost with enemy left hp:", en_hp)
             return "loose", loose_text
         await db_write_int("players", user_id, "current_health", current_health)
-        # print("en_hp = ", en_hp)
-        # print("current_health = ", current_health)
+        print("Round : ", rounds_counter)
+        print("pl_hp = ", current_health, "en_hp = ", en_hp)
 
 
 async def get_player_dmg(ship_slots) -> int:
@@ -143,16 +146,16 @@ async def get_fight_drop(user_id, en_shortname):
     # items
     en_drop_items = {key: value for key, value in en_drop.items() if key.startswith(
         "it_name_")}
-    print("en_drop_items", en_drop_items)
+    # print("en_drop_items", en_drop_items)
     # {'it_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
     for drop_only_items in en_drop_items.values():
         try:
             droprate = float(drop_only_items.get("droprate"))
         except:
             droprate = 1  # defauld drop rate ist 100%
-        print("drop_only_items ", drop_only_items)
+        # print("drop_only_items ", drop_only_items)
         if await m.roll_chance(droprate):
-            print("droprate ", droprate)
+            # print("droprate ", droprate)
             only_items = {key: value for key,
                           value in drop_only_items.items() if key != "droprate"}
             for it_shortname, count in only_items.items():
@@ -167,7 +170,7 @@ async def get_fight_drop(user_id, en_shortname):
     old_materials = await db_read_int("players", user_id, "pl_materials")
     en_drop_materials = {key: value for key, value in en_drop.items() if key.startswith(
         "mt_name_")}
-    print("en_drop_materials", en_drop_materials)
+    # print("en_drop_materials", en_drop_materials)
     # {'mt_name_1': {'droprate': 0.5, 'scrap_metal': 1}}
     for drop_only_materials in en_drop_materials.values():
         try:
@@ -175,10 +178,10 @@ async def get_fight_drop(user_id, en_shortname):
         except:
             droprate = 1  # defauld drop rate ist 100%
         if await m.roll_chance(droprate):
-            print("droprate ", droprate)
+            # print("droprate ", droprate)
             only_materials = {key: value for key,
                               value in drop_only_materials.items() if key != "droprate"}
-            print("only_materials ", only_materials)
+            # print("only_materials ", only_materials)
             for mt_shortname, count in only_materials.items():
                 mt_shortname = f"\"{mt_shortname}\""
                 mt_name = await db_read_full_name("materials", mt_shortname, "mt_name", "mt_shortname")
@@ -186,9 +189,9 @@ async def get_fight_drop(user_id, en_shortname):
                 text = f"Dropped {mt_name} (x{count})"
                 await invent.add_pl_materials(user_id, mt_shortname[1:-1], count)
                 drop.append(text)
-    print("drop", drop)
+    # print("drop", drop)
 
-    print(old_materials)
+    # print(old_materials)
 
     return "\n".join(drop)
 
@@ -200,10 +203,10 @@ async def timer():
 
 
 async def engaging_enemy_choice(user_id, en_shortname):
-    em_dmg = await get_enemy_fight_stats(en_shortname)
-    em_dmg = em_dmg["damage"]
+    en_dmg = await get_enemy_fight_stats(en_shortname)
+    en_dmg = en_dmg["damage"]
     pl_health = await m.get_player_information(user_id, "max_health")
-    if pl_health[0] / em_dmg < 2:
+    if pl_health[0] / en_dmg < 2:
         return True
     else:
         return False

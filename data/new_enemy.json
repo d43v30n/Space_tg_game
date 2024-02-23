@@ -5,8 +5,8 @@
       "description": "A low-level pirate known for scavenging scraps and avoiding direct conflict.",
       "type": "unknown",
       "stats": {
-         "health": 30,
-         "damage": 2,
+         "health": 300,
+         "damage": 1,
          "armor": 2,
          "shields": 1
       },
@@ -33,7 +33,7 @@
       "description": "some descr",
       "type": "unknown",
       "stats": {
-         "health": 35,
+         "health": 40,
          "damage": 4,
          "armor": 5,
          "shields": 5
@@ -65,7 +65,7 @@
       "description": "Armed with a worn-out blade, this pirate relies on sheer brute force.",
       "type": "unknown",
       "stats": {
-         "health": 40,
+         "health": 60,
          "damage": 5,
          "armor": 3,
          "shields": 0
@@ -89,7 +89,7 @@
       "description": "A cunning pirate who uses her agility to strike quickly and retreat.",
       "type": "unknown",
       "stats": {
-         "health": 35,
+         "health": 40,
          "damage": 6,
          "armor": 1,
          "shields": 2
@@ -108,10 +108,6 @@
          "it_name_1": {
             "droprate": 0.001,
             "shields_for_beginner": 1
-         },
-         "it_name_2": {
-            "droprate": 0.3,
-            "oil_barrel": 1
          }
       }
    },
@@ -141,7 +137,7 @@
             "droprate": 0.02,
             "shields_for_beginner": 1
          },
-         "it_name_2":{
+         "mt_name_2": {
             "droprate": 0.2,
             "old_wires": 1
          }
@@ -154,7 +150,7 @@
       "type": "unknown",
       "stats": {
          "health": 60,
-         "damage": 5,
+         "damage": 10,
          "armor": 5,
          "shields": 5
       },
@@ -270,7 +266,7 @@
       "type": "unknown",
       "stats": {
          "health": 90,
-         "damage": 16,
+         "damage": 14,
          "armor": 5,
          "shields": 8
       },
@@ -287,11 +283,47 @@
          "credits": 250,
          "it_name_1": {
             "rusty_machine_gun": 1,
-            "droprate": 0.15
+            "droprate": 0.05
          }
       }
    },
    "10": {
+      "name": "Void Reaver",
+      "shortname": "void_reaver",
+      "description": "A mysterious pirate who harnesses the power of the void to unleash devastating attacks.",
+      "type": "unknown",
+      "stats": {
+         "health": 100,
+         "damage": 18,
+         "armor": 10,
+         "shields": 12
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.5,
+         "min_loc": 9,
+         "max_loc": 12
+      },
+      "drop": {
+         "exp": 50,
+         "credits": 400,
+         "it_name_1": {
+            "droprate": 0.02,
+            "shields_for_beginner": 1
+         },
+         "it_name_2": {
+            "droprate": 0.2,
+            "rusty_machine_gun": 1
+         },
+         "mt_name_2": {
+            "droprate": 0.3,
+            "oil_barrel": 1
+         }
+      }
+   },
+   "11": {
       "name": "Elon Musk",
       "shortname": "elon_musk",
       "description": "T0b! P!ZD@",
@@ -307,46 +339,15 @@
          "class": "bam",
          "race": "martianin",
          "chance": 0.1,
-         "min_loc": 9,
-         "max_loc": 18
+         "min_loc": 10,
+         "max_loc": 20
       },
       "drop": {
          "exp": 10,
-         "credits": 100,
-         "it_name_1": {
-            "droprate": 0.5,
-            "shields_for_beginner": 1
-         }
+         "credits": 100
       }
    },
-   "11": {
-      "name": "Blackstar Corsair",
-      "shortname": "blackstar_corsair",
-      "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
-      "type": "unknown",
-      "stats": {
-         "health": 135,
-         "damage": 18,
-         "armor": 7,
-         "shields": 10
-      },
-      "attributes": {
-         "faction": "Space Pirates",
-         "class": "boss",
-         "race": "pirates",
-         "chance": 0.1,
-         "min_loc": 9,
-         "max_loc": 11
-      },
-      "drop": {
-         "exp": 40,
-         "credits": 300,
-         "it_name_1": {
-            "rusty_machine_gun": 1,
-            "droprate": 0.15
-         }
-      }
-   },"13": {
+   "12": {
       "name": "One Handed Charlie",
       "shortname": "one_handed_charlie",
       "description": "Space pirate old fag",
@@ -374,32 +375,128 @@
          }
       }
    },
-   "12": {
-      "name": "Void Reaver",
-      "shortname": "void_reaver",
-      "description": "A mysterious pirate who harnesses the power of the void to unleash devastating attacks.",
+   "13": {
+      "name": "Blackstar Corsair",
+      "shortname": "blackstar_corsair",
+      "description": "A charismatic pirate leader who commands a fleet of deadly raiders.",
       "type": "unknown",
       "stats": {
-         "health": 90,
+         "health": 135,
          "damage": 18,
-         "armor": 10,
+         "armor": 7,
+         "shields": 10
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.1,
+         "min_loc": 14,
+         "max_loc": 16
+      },
+      "drop": {
+         "exp": 40,
+         "credits": 300,
+         "it_name_1": {
+            "rusty_machine_gun": 1,
+            "droprate": 0.05
+         }
+      }
+   },
+   "14": {
+      "name": "Plasma Marauder",
+      "shortname": "plasma_marauder",
+      "description": "A fearsome pirate captain wielding a deadly plasma blade.",
+      "type": "unknown",
+      "stats": {
+         "health": 160,
+         "damage": 22,
+         "armor": 8,
          "shields": 12
       },
       "attributes": {
          "faction": "Space Pirates",
          "class": "boss",
          "race": "pirates",
-         "chance": 0.5,
-         "min_loc": 10,
-         "max_loc": 15
+         "chance": 0.15,
+         "min_loc": 14,
+         "max_loc": 20
       },
       "drop": {
          "exp": 50,
-         "credits": 400,
-         "it_name_1": {
-            "droprate": 0.02,
-            "shields_for_beginner": 1
-         }
+         "credits": 450
+      }
+   },
+   "15": {
+      "name": "Scourge of the Nebula",
+      "shortname": "scourge_of_the_nebula",
+      "description": "A cunning pirate captain known for ambushing unsuspecting travelers in nebulae.",
+      "type": "unknown",
+      "stats": {
+         "health": 140,
+         "damage": 20,
+         "armor": 9,
+         "shields": 11
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.12,
+         "min_loc": 16,
+         "max_loc": 22
+      },
+      "drop": {
+         "exp": 60,
+         "credits": 500
+      }
+   },
+   "16": {
+      "name": "Spectral Raider",
+      "shortname": "spectral_raider",
+      "description": "A ghostly pirate captain haunting the depths of space.",
+      "type": "unknown",
+      "stats": {
+         "health": 180,
+         "damage": 24,
+         "armor": 7,
+         "shields": 14
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.18,
+         "min_loc": 18,
+         "max_loc": 24
+      },
+      "drop": {
+         "exp": 70,
+         "credits": 550
+      }
+   },
+   "17": {
+      "name": "Rogue Engineer",
+      "shortname": "rogue_engineer",
+      "description": "A pirate who has repurposed advanced technology to wreak havoc in space.",
+      "type": "unknown",
+      "stats": {
+         "health": 150,
+         "damage": 21,
+         "armor": 10,
+         "shields": 13
+      },
+      "attributes": {
+         "faction": "Space Pirates",
+         "class": "boss",
+         "race": "pirates",
+         "chance": 0.13,
+         "min_loc": 20,
+         "max_loc": 26
+      },
+      "drop": {
+         "exp": 90,
+         "credits": 600
       }
    }
 }

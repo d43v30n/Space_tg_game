@@ -280,11 +280,14 @@ async def scan_area(message, state):
     if current_energy >= 1:
         await energy_manager.use_one_energy(message.from_user.id)
 
+        await state.set_state(State.scanning)
+        await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
+        await sleep(COOLDOWN)
 
 # scan event fork
 
         if text_job.endswith("scanning_event_5"):
-            await sleep(COOLDOWN)
+            # await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_4".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
@@ -292,7 +295,7 @@ async def scan_area(message, state):
             return "You should try to scan once more!"
 
         if text_job.endswith("scanning_event_4"):
-            await sleep(COOLDOWN)
+            # await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_3".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
@@ -300,7 +303,7 @@ async def scan_area(message, state):
             return "You should try to scan once more!"
 
         if text_job.endswith("scanning_event_3"):
-            await sleep(COOLDOWN)
+            # await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_2".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
@@ -308,7 +311,7 @@ async def scan_area(message, state):
             return "You should try to scan once more!"
 
         elif text_job.endswith("scanning_event_2"):
-            await sleep(COOLDOWN)
+            # await sleep(COOLDOWN)
             jobtext = "just arrived to {loc_name} and encountered scanning_event_1".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
@@ -316,13 +319,14 @@ async def scan_area(message, state):
             return "You should try to scan once more!"
 
         elif text_job.endswith("scanning_event_1"):
-            await sleep(COOLDOWN)
+            # await sleep(COOLDOWN)
             jobtext = "after scanning at {loc_name}".format(
                 loc_name=loc_name)
             await state.set_state(State.job)
             await state.update_data(job=jobtext)
 
             result = await trigger_scan_event(message, state)
+            exp = result[2]
             # if result[0]:
             #     await message.answer("Sucsessfully mined event.\n{text}".format(text=result[1]), reply_markup=keyboard)
             # else:
@@ -331,7 +335,7 @@ async def scan_area(message, state):
         else:
             if "mining" in loc_features:
                 exp = 70
-                result = "ore presence"
+                result = "Ore presence is detected. mining is possible. "
                 jobtext = "after scanning at {loc_name}, found ore".format(
                     loc_name=loc_name)
             elif text_job.endswith("and encountered mining_event"):
@@ -341,14 +345,11 @@ async def scan_area(message, state):
                     loc_name=loc_name)
             else:
                 exp = 40
-                result = "nothing"
+                result = "Found nothing."
                 jobtext = "after scanning at {loc_name}, found nothing.".format(
                     loc_name=loc_name)
-            await state.set_state(State.scanning)
-            await state.update_data(job="scanning in progress", scanning="scanning at {loc_name}...".format(loc_name=loc_name))
-            await message.answer("Scanning at {loc_name}".format(loc_name=loc_name), reply_markup=keyboard)
-            await sleep(COOLDOWN)
-            await invent.add_pl_exp(message.from_user.id, exp)
+        await state.update_data(job=jobtext, scanning="scanning at {loc_name}...".format(loc_name=loc_name))
+        await invent.add_pl_exp(message.from_user.id, exp)
 
 
 # / scan event fork
@@ -360,6 +361,7 @@ async def scan_area(message, state):
     else:
         result = None
         await message.answer("Your ship is out of energy! Charge it on Station or with Energy Cell", reply_markup=keyboard)
+        return
     return result
 
 
@@ -394,7 +396,7 @@ async def trigger_scan_event(message, state):
     exp_text = "Received:\n{bar_chart}Exploration Data: {exp}".format(
         exp=exp, bar_chart=bar_chart)
     drop_text.append(exp_text)
-    return True, "\n".join(drop_text)
+    return True, "\n".join(drop_text), exp
 
 
 async def trigger_minings_event(message, state):
@@ -409,7 +411,7 @@ async def trigger_minings_event(message, state):
     drop_text = []
     await energy_manager.use_one_energy(message.from_user.id)
     await energy_manager.use_one_energy(message.from_user.id)
-
+    sleep(COOLDOWN)
     only_materials = {key: value for key,
                       value in event_details.items() if key.startswith("material_")}
     print("only_materials", only_materials)

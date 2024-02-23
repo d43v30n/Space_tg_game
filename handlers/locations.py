@@ -27,7 +27,7 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
     if await is_busy(state_data):
         await message.answer(f"You are {text}.", reply_markup=keyboard)
     else:
-        await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+        await message.answer("Your {emoji}Ship AI awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.".format(energy=energy, emoji=rocket), reply_markup=keyboard)
 
 
 @router.message(State.repairing, F.text == "Back")
@@ -38,10 +38,7 @@ async def back_button_docked_handler(message: Message, state: FSMContext) -> Non
     energy = await m.get_energy(message.from_user.id)
     keyboard = await kb.keyboard_selector(state)
     await message.answer(f"You are back to RW now.", reply_markup=keyboard)
-    # if await is_busy(state_data):
-    #     await message.answer(f"You are {text}.", reply_markup=keyboard)
-    # else:
-    #     await message.answer(f"Your ship and crew awaits your orders! Currently we have {energy[0]}/{energy[1]} energy to do some stuff.", reply_markup=keyboard)
+
 
 
 @router.message(State.repairing)
